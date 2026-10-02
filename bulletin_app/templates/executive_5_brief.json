@@ -1,0 +1,104 @@
+{
+  "name": "Quick Daily Brief (5 Pages)",
+  "description": "Rapid executive format: Cover, Cumulative Snapshot, VIP Lead Story, 2-Story Split, and Back Cover.",
+  "globalDate": "20th September, 2026",
+  "language": "en",
+  "pages": [
+    {
+      "id": "page-1",
+      "type": "cover",
+      "theme": "theme-teal",
+      "sectionTitle": "Cover Page",
+      "coverTitle": "Swachhata\nHi Seva",
+      "coverYear": "2026",
+      "coverBadge": "Daily Brief",
+      "coverDate": "20th September, 2026",
+      "images": [
+        "assets/sample1.jpg",
+        "assets/sample3.jpg",
+        "assets/sample4.jpg"
+      ]
+    },
+    {
+      "id": "page-2",
+      "type": "snapshot",
+      "theme": "theme-green",
+      "sectionTitle": "Overall Snapshot",
+      "heroHeadline": "Overall Citizens Participation: 85,98,584",
+      "heroSub": "Households Participated: 27,97,819",
+      "stats": [
+        {
+          "label": "Cleanliness Target Units (CTUs)",
+          "val1": "9,83,108 Total",
+          "val2": "1,59,292 Cleaned",
+          "val3": "59,77,214 Volunteers",
+          "val4": "23,201 Spots",
+          "val5": "9,39,006 Citizens"
+        },
+        {
+          "label": "SafaiMitra Suraksha & Welfare",
+          "val1": "1,382 Shivirs",
+          "val2": "8,006 Workers",
+          "val3": "2,013 Health Camps",
+          "val4": "5,393 PPE Kits",
+          "val5": "14,922 Enrolled"
+        },
+        {
+          "label": "Public Mobilisation & RRR",
+          "val1": "1,05,599 Segregation Drives",
+          "val2": "592 RRR Centers",
+          "val3": "16,769 Green Events",
+          "val4": "23,556 Sports Drives",
+          "val5": "12,830 Composting Units"
+        }
+      ]
+    },
+    {
+      "id": "page-3",
+      "type": "hero-1-story",
+      "theme": "theme-orange",
+      "sectionTitle": "Top Stories of the Day",
+      "stories": [
+        {
+          "headline": "State Leadership Spearheads Mega Coastal Cleanliness Drive",
+          "blurb": "Senior leadership and municipal administrators reviewed major cleanliness drives across key public avenues. The initiative mobilized sanitation task forces, citizen volunteers, and mechanical cleaning units to transform key transit spots.",
+          "images": [
+            "assets/sample3.jpg",
+            "assets/sample1.jpg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "page-4",
+      "type": "split-2-story",
+      "theme": "theme-blue",
+      "sectionTitle": "State & ULB Initiatives",
+      "stories": [
+        {
+          "headline": "Municipal Corporation Transforms Public Parks",
+          "blurb": "A special three-day beautification drive was executed across city parks with local citizen committees signing maintenance agreements.",
+          "images": [
+            "assets/sample6.jpg"
+          ]
+        },
+        {
+          "headline": "Material Recovery Facility Exposure Visit for Students",
+          "blurb": "School and college youth were given practical briefings on modern waste segregation and recycling methodologies.",
+          "images": [
+            "assets/sample4.jpg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "page-5",
+      "type": "visit-us",
+      "theme": "theme-teal",
+      "sectionTitle": "Back Cover",
+      "visitText": "VISIT US",
+      "urbanTitle": "Swachh Bharat Mission – Urban",
+      "grameenTitle": "Swachh Bharat Mission (Grameen)"
+    }
+  ]
+}

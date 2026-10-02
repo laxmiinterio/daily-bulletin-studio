@@ -1,0 +1,84 @@
+{
+  "name": "CTU Transformation Special (Before & After)",
+  "description": "Showcases major Cleanliness Target Unit transformations with paired Before & After photos, dates, and outcomes.",
+  "globalDate": "20th September, 2026",
+  "language": "en",
+  "pages": [
+    {
+      "id": "page-1",
+      "type": "cover",
+      "theme": "theme-teal",
+      "sectionTitle": "Cover Page",
+      "coverTitle": "Swachhata\nHi Seva",
+      "coverYear": "2026",
+      "coverBadge": "CTU Transformations",
+      "coverDate": "20th September, 2026",
+      "images": [
+        "assets/sample1.jpg",
+        "assets/sample3.jpg",
+        "assets/sample4.jpg"
+      ]
+    },
+    {
+      "id": "page-2",
+      "type": "snapshot",
+      "theme": "theme-green",
+      "sectionTitle": "Overall Snapshot",
+      "heroHeadline": "Total CTUs Identified: 9,83,108",
+      "heroSub": "CTUs Successfully Transformed: 1,59,292",
+      "stats": [
+        {
+          "label": "Legacy Waste Dumpsites Cleared",
+          "val1": "12,410 Sites",
+          "val2": "84,000 Tonnes",
+          "val3": "4,200 Machinery Units",
+          "val4": "1,200 Ward Teams",
+          "val5": "High Impact"
+        },
+        {
+          "label": "Public Transit Blackspots",
+          "val1": "45,210 Cleaned",
+          "val2": "32,100 Beautified",
+          "val3": "18,500 Painted Walls",
+          "val4": "9,800 Tree Plantations",
+          "val5": "Sustainable"
+        }
+      ]
+    },
+    {
+      "id": "page-3",
+      "type": "ctu-transformation",
+      "theme": "theme-coral",
+      "sectionTitle": "CTU Transformations in Focus",
+      "ctuPairs": [
+        {
+          "title": "Somnath Community Hall Vicinity Transformation (Ward 17)",
+          "location": "Rewa, Madhya Pradesh",
+          "beforeImg": "assets/sample10.jpg",
+          "afterImg": "assets/sample6.jpg",
+          "beforeDate": "15th Sept",
+          "afterDate": "20th Sept",
+          "desc": "A persistent open garbage dumping blackspot was completely cleared, leveled, and converted into a green recreation corner."
+        },
+        {
+          "title": "Koparkhairane Waste Transport Yard Cleanup",
+          "location": "Navi Mumbai, Maharashtra",
+          "beforeImg": "assets/sample4.jpg",
+          "afterImg": "assets/sample3.jpg",
+          "beforeDate": "16th Sept",
+          "afterDate": "20th Sept",
+          "desc": "Intensive deep cleaning and sanitization carried out jointly by municipal workers and transport fleet teams."
+        }
+      ]
+    },
+    {
+      "id": "page-4",
+      "type": "visit-us",
+      "theme": "theme-teal",
+      "sectionTitle": "Back Cover",
+      "visitText": "VISIT US",
+      "urbanTitle": "Swachh Bharat Mission – Urban",
+      "grameenTitle": "Swachh Bharat Mission (Grameen)"
+    }
+  ]
+}

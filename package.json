@@ -1,0 +1,38 @@
+{
+  "name": "daily-bulletin-studio",
+  "version": "2.0.0",
+  "description": "Daily Government Bulletin Studio - Desktop Edition",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win portable"
+  },
+  "author": "Government Bulletin Studio",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "in.gov.bulletin.studio",
+    "productName": "Daily Bulletin Studio",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "bulletin_app/**/*"
+    ],
+    "win": {
+      "target": [
+        "portable",
+        "dir"
+      ],
+      "icon": "electron/icon.ico"
+    },
+    "portable": {
+      "artifactName": "Daily-Bulletin-Studio-v2-Portable.exe"
+    }
+  }
+}

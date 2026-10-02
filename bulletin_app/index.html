@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Government Bulletin Studio v2.0</title>
+  
+  <!-- Fonts: Plus Jakarta Sans & Noto Sans Devanagari for full Hindi support -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Local Vendor Libraries -->
+  <link rel="stylesheet" href="libs/cropper.min.css">
+  <link rel="stylesheet" href="style.css?v=2.6">
+</head>
+<body>
+
+  <!-- DUAL TOP APP BAR CONTAINER -->
+  <header class="top-bar-container">
+    <!-- ROW 1: PRIMARY APPLICATION & METADATA BAR -->
+    <div class="top-bar top-bar-primary">
+      <div class="brand">
+        <span class="brand-badge">Gov v2.0</span>
+        <h1>Daily Bulletin Studio</h1>
+        
+        <!-- Auto-Save Status Indicator -->
+        <div class="status-indicator" id="autoSaveIndicator">
+          <span class="dot" id="saveDot"></span>
+          <span id="saveStatusText">Saved</span>
+        </div>
+      </div>
+
+      <!-- Date, Language & Utilities Controls -->
+      <div class="controls-group">
+        <!-- Date Selector Pill -->
+        <div class="date-pill">
+          <label>Date:</label>
+          <input type="text" id="globalDateInput" class="date-input" value="20th September, 2026" title="Change date across entire bulletin">
+          <button class="btn btn-secondary" id="btnSyncDate" title="Apply date to all pages">Sync All</button>
+        </div>
+
+        <!-- Hindi / Bilingual Language Switcher -->
+        <div class="lang-toggle" id="langToggle">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="hi">हिन्दी</button>
+          <button class="lang-btn" data-lang="bi">Bilingual</button>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <!-- Quick Utilities Group -->
+        <div class="btn-group-tight">
+          <button class="btn btn-secondary" id="btnOpenLogoModal" title="Manage official logos & emblems" style="font-size: 11.5px; padding: 5px 10px; display: inline-flex; align-items: center; gap: 5px;">🏛️ Logos</button>
+          <button class="btn btn-secondary" id="btnOpenGeminiSettings" title="Configure Google Gemini API Key" style="font-size: 11.5px; padding: 5px 10px; display: inline-flex; align-items: center; gap: 5px;"><span style="color:#f59e0b;">🔑</span> Gemini AI <span id="topBarGeminiDot" style="width: 7px; height: 7px; border-radius: 50%; background: #ef4444; display: inline-block;"></span></button>
+          <button class="btn" id="btnShortcutsHelp" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">⌨️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2: ACTION & PRODUCTION COMMAND TOOLBAR -->
+    <div class="top-bar top-bar-secondary">
+      <!-- Left: Creation & Quality Actions -->
+      <div class="controls-group">
+        <!-- Undo / Redo Group -->
+        <div class="btn-group-tight">
+          <button class="btn" id="btnUndo" title="Undo (Ctrl+Z)">↩</button>
+          <button class="btn" id="btnRedo" title="Redo (Ctrl+Y)">↪</button>
+        </div>
+
+        <div class="toolbar-divider"></div>
+
+        <button class="btn btn-secondary" id="btnNewBulletin" title="Start new bulletin or choose template (Ctrl+N)">
+          📄 New Bulletin
+        </button>
+
+        <button class="btn btn-ai" id="btnOpenAIModal" title="Formalize ground notes with AI">
+          ✨ AI Copy
+        </button>
+
+        <button class="btn btn-secondary" id="btnOpenBulkIngestTop" title="Paste raw WhatsApp forwards or field notes" style="display: inline-flex; align-items: center; gap: 5px;">
+          📥 Ingest Notes
+        </button>
+
+        <button class="btn btn-review" id="btnToggleReview" title="Review layout & empty slots before export">
+          🔍 Pre-Flight Check
+        </button>
+      </div>
+
+      <!-- Right: Drafts & Export Actions -->
+      <div class="controls-group">
+        <!-- Unified Drafts Dropdown -->
+        <div class="dropdown" id="saveDropdown">
+          <button class="btn btn-secondary" id="btnSaveMenu" title="Draft & Template Management">
+            💾 Drafts ▾
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" id="btnSaveDraftJson">💾 Download Draft (.json)</button>
+            <label class="dropdown-item" style="cursor: pointer; margin: 0;">
+              📂 Open / Load Draft (.json)
+              <input type="file" id="fileLoadDraft" accept=".json" style="display: none;">
+            </label>
+            <div style="height: 1px; background: var(--border-color); margin: 3px 0;"></div>
+            <button class="dropdown-item" id="btnSaveAsTemplate">⭐ Save as Custom Template</button>
+            <button class="dropdown-item" id="btnCloneYesterday">📋 Clone Yesterday's Draft</button>
+          </div>
+        </div>
+
+        <!-- Dual PDF Export Dropdown -->
+        <div class="dropdown" id="exportDropdown">
+          <button class="btn btn-export" id="btnExportMenu" title="Export Bulletin to PDF (Ctrl+P)">
+            📄 Export PDF ▾
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" id="btnExportPrintPdf">
+              <div>
+                <strong>📄 High-Res Print PDF</strong>
+                <span style="font-size:10px; color:#94a3b8; display:block;">Full vector & image clarity</span>
+              </div>
+            </button>
+            <button class="dropdown-item" id="btnExportWhatsAppPdf">
+              <div>
+                <strong>📱 WhatsApp-Optimized PDF</strong>
+                <span style="font-size:10px; color:#10b981; display:block;">Target &lt; 5 MB, fast sharing</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3-PANEL WORKSPACE WRAPPER -->
+  <div class="workspace-wrapper">
+    
+    <!-- LEFT PANEL: FIXED INDEPENDENT SIDEBAR -->
+    <aside class="sidebar-left">
+      <div class="sidebar-header">
+        <span id="pageCountDisplay">Pages Outline</span>
+        <button class="btn btn-primary" id="btnAddPageMenu" style="padding: 3px 8px; font-size: 11px;">+ Add Page</button>
+      </div>
+      
+      <div class="page-list-scroll" id="sidebarPageList">
+        <!-- Rendered dynamically with drag handles & live scroll spy -->
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-secondary" id="btnDuplicateActivePage" style="flex: 1; justify-content: center; font-size: 11px;">
+          📄 Duplicate
+        </button>
+        <button class="btn btn-secondary" id="btnDeleteActivePage" style="flex: 1; justify-content: center; font-size: 11px; color:#ef4444;">
+          🗑️ Delete
+        </button>
+      </div>
+    </aside>
+
+    <!-- CENTER PANEL: A4 CANVAS VIEWPORT -->
+    <main class="canvas-viewport" id="canvasViewport">
+      <!-- A4 pages rendered here -->
+    </main>
+
+    <!-- RIGHT PANEL: SEGMENT POOL & PHOTO DRAWER -->
+    <aside class="segment-drawer" id="segmentDrawer">
+      <div class="drawer-header">
+        <span style="font-size: 13px; font-weight: 700;">📦 Story Segments & Media</span>
+        <button class="btn-tiny" id="btnCloseDrawer" style="font-size: 14px;">✕</button>
+      </div>
+
+      <!-- Drawer Tabs -->
+      <div class="drawer-tabs">
+        <button class="drawer-tab-btn active" data-tab="segments">Segments (<span id="segCountBadge">0</span>)</button>
+        <button class="drawer-tab-btn" data-tab="photos">Photo Pool (<span id="photoCountBadge">0</span>)</button>
+        <button class="drawer-tab-btn" data-tab="favorites">⭐ Favorites</button>
+      </div>
+
+      <!-- Tab Content Area -->
+      <div class="drawer-content" id="drawerTabContent">
+        <!-- Dynamically populated based on active tab -->
+      </div>
+    </aside>
+
+    <!-- FLOATING TOGGLE FOR SEGMENT DRAWER -->
+    <button class="drawer-toggle-btn" id="btnToggleDrawer">
+      <span>📦</span>
+      <span>S</span>
+      <span>E</span>
+      <span>G</span>
+      <span>S</span>
+    </button>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. WELCOME SCREEN / TEMPLATE SELECTOR MODAL -->
+  <div class="modal-backdrop" id="welcomeModal">
+    <div class="modal-box" style="width: 880px;">
+      <div class="modal-header">
+        <div>
+          <h2 style="font-size: 18px; font-weight: 800;">🏛️ Official Government Bulletin Studio</h2>
+          <p style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Select an official pre-made template pack or resume yesterday's work.</p>
+        </div>
+        <button class="btn-tiny" id="btnCloseWelcomeModal" style="font-size: 18px;">✕</button>
+      </div>
+
+      <!-- Category Filter Bar (Fixed Subheader) -->
+      <div class="template-filter-bar">
+        <button class="template-filter-btn active" onclick="filterWelcomeTemplates('all', this)">All Templates (11)</button>
+        <button class="template-filter-btn" onclick="filterWelcomeTemplates('national', this)">🏛️ National & Exec</button>
+        <button class="template-filter-btn" onclick="filterWelcomeTemplates('campaign', this)">🌿 Green & CTU</button>
+        <button class="template-filter-btn" onclick="filterWelcomeTemplates('community', this)">👥 Citizens & Workers</button>
+        <button class="template-filter-btn" onclick="filterWelcomeTemplates('special', this)">🌊 Oceans & Lens</button>
+        <button class="template-filter-btn" onclick="filterWelcomeTemplates('custom', this)">📝 Custom & Blank</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- 11 Pre-Made Template Grid -->
+        <div class="template-grid" id="officialTemplateGrid">
+          
+          <!-- 1. Swachhata Standard 17 Pages -->
+          <div class="template-card" data-cat="all national" style="border-left-color: #0f766e;" onclick="loadTemplatePack('standard_17')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">🇮🇳</span>
+              <span class="template-tag" style="background:#0f766e; color:white;">17 Pages</span>
+            </div>
+            <div class="template-title">Swachhata Hi Seva Standard</div>
+            <div class="template-desc">Comprehensive national edition: Cover, Cumulative Progress Table, Lead VIP Story, 2-Story Split, CTU Before/After, State Initiatives, Citizen Action, and Back Cover.</div>
+            <div class="template-meta-row">
+              <span style="color:#2dd4bf;">● National Flagship</span>
+              <span>Multi-Theme Sequence</span>
+            </div>
+          </div>
+
+          <!-- 2. Quick Executive 5 Pages -->
+          <div class="template-card" data-cat="all national" style="border-left-color: #1e3a8a;" onclick="loadTemplatePack('executive_5')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">⚡</span>
+              <span class="template-tag" style="background:#1e3a8a; color:white;">5 Pages</span>
+            </div>
+            <div class="template-title">Quick Daily Brief (Executive)</div>
+            <div class="template-desc">Designed for Ministers, Cabinet Secretaries, and District Collectors. High-density, high-impact overview of daily priority metrics, lead inspection, and urban milestones.</div>
+            <div class="template-meta-row">
+              <span style="color:#60a5fa;">● Executive Brief</span>
+              <span>Theme: Deep Navy</span>
+            </div>
+          </div>
+
+          <!-- 3. CTU Transformation Special -->
+          <div class="template-card" data-cat="all campaign" style="border-left-color: #dc2626;" onclick="loadTemplatePack('ctu_special')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">🔄</span>
+              <span class="template-tag" style="background:#dc2626; color:white;">4 Pages</span>
+            </div>
+            <div class="template-title">CTU Transformation Special</div>
+            <div class="template-desc">Cleanliness Target Unit showcase highlighting elimination of chronic garbage dumps with paired Before (Red) and After (Green) photos and geo-tagged metrics.</div>
+            <div class="template-meta-row">
+              <span style="color:#f87171;">● Remediation In Focus</span>
+              <span>Theme: Crimson / Coral</span>
+            </div>
+          </div>
+
+          <!-- 4. Green Earth & Circular Economy -->
+          <div class="template-card" data-cat="all campaign" style="border-left-color: #059669;" onclick="loadTemplatePack('green_earth')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">🌿</span>
+              <span class="template-tag" style="background:#059669; color:white;">6 Pages</span>
+            </div>
+            <div class="template-title">Green Earth & Circular Economy</div>
+            <div class="template-desc">Focus on sustainability, Waste-to-Wealth Eco-Parks, RRR (Reduce, Reuse, Recycle) centers, 'Ek Ped Maa Ke Naam' plantations, and zero-plastic bazaars.</div>
+            <div class="template-meta-row">
+              <span style="color:#34d399;">● Sustainability Edition</span>
+              <span>Theme: Emerald Green</span>
+            </div>
+          </div>
+
+          <!-- 5. Smart City & Municipal Ops -->
+          <div class="template-card" data-cat="all national" style="border-left-color: #4f46e5;" onclick="loadTemplatePack('smart_city')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">🏛️</span>
+              <span class="template-tag" style="background:#4f46e5; color:white;">5 Pages</span>
+            </div>
+            <div class="template-title">Smart City & Municipal Ops</div>
+            <div class="template-desc">Tailored for Municipal Commissioners and Nagar Nigams: 100% electric mechanized sweepers, ICCC control centers, RFID waste tracking, and MRF facilities.</div>
+            <div class="template-meta-row">
+              <span style="color:#818cf8;">● Civic Governance</span>
+              <span>Theme: Smart Indigo</span>
+            </div>
+          </div>
+
+          <!-- 6. Jan Andolan: Citizens & Youth -->
+          <div class="template-card" data-cat="all community" style="border-left-color: #d97706;" onclick="loadTemplatePack('jan_andolan')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">👥</span>
+              <span class="template-tag" style="background:#d97706; color:white;">6 Pages</span>
+            </div>
+            <div class="template-title">Jan Andolan: Youth & Citizens</div>
+            <div class="template-desc">Celebrating grassroots people's movements: mass shramdaan, youth cyclothons, school rallies, wall painting murals, and self-help group composting masterclasses.</div>
+            <div class="template-meta-row">
+              <span style="color:#fbbf24;">● Mass Participation</span>
+              <span>Theme: Saffron Gold</span>
+            </div>
+          </div>
+
+          <!-- 7. SafaiMitra Suraksha & Welfare -->
+          <div class="template-card" data-cat="all community" style="border-left-color: #7c3aed;" onclick="loadTemplatePack('safaimitra')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">🛡️</span>
+              <span class="template-tag" style="background:#7c3aed; color:white;">5 Pages</span>
+            </div>
+            <div class="template-title">SafaiMitra Suraksha & Welfare</div>
+            <div class="template-desc">Honoring sanitation frontline heroes: Felicitation ceremonies, comprehensive preventive health checkup camps, PPE kits, and robotic manhole cleaning machines.</div>
+            <div class="template-meta-row">
+              <span style="color:#a78bfa;">● Worker Dignity</span>
+              <span>Theme: Royal Purple</span>
+            </div>
+          </div>
+
+          <!-- 8. Jal Shakti & Coastal Cleanliness -->
+          <div class="template-card" data-cat="all special" style="border-left-color: #0891b2;" onclick="loadTemplatePack('jal_shakti')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">🌊</span>
+              <span class="template-tag" style="background:#0891b2; color:white;">5 Pages</span>
+            </div>
+            <div class="template-title">Jal Shakti & Coastal Swachhata</div>
+            <div class="template-desc">Riverfront and ocean rejuvenation: Sunrise river ghat sanitization, marine debris recovery by scuba divers, lake bio-remediation, and plastic barriers.</div>
+            <div class="template-meta-row">
+              <span style="color:#38bdf8;">● Water Ecosystems</span>
+              <span>Theme: Ocean Cyan</span>
+            </div>
+          </div>
+
+          <!-- 9. Swachhata in Lens (Photojournalism) -->
+          <div class="template-card" data-cat="all special" style="border-left-color: #334155;" onclick="loadTemplatePack('photojournalism')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">📸</span>
+              <span class="template-tag" style="background:#334155; color:white;">4 Pages</span>
+            </div>
+            <div class="template-title">Swachhata in Lens (Photojournalism)</div>
+            <div class="template-desc">Media and PR documentary layout with two 6-photo high-impact spotlight galleries capturing human-interest moments, ground transformations, and community energy.</div>
+            <div class="template-meta-row">
+              <span style="color:#94a3b8;">● Press & Documentary</span>
+              <span>Theme: Editorial Slate</span>
+            </div>
+          </div>
+
+          <!-- 10. Hindi Standard National Edition -->
+          <div class="template-card" data-cat="all national" style="border-left-color: #ea580c;" onclick="loadTemplatePack('hindi_standard')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">🕉️</span>
+              <span class="template-tag" style="background:#ea580c; color:white;">5 Pages</span>
+            </div>
+            <div class="template-title">दैनिक बुलेटिन (हिन्दी मानक)</div>
+            <div class="template-desc">पूर्णतः राजभाषा हिन्दी में सुसज्जित: समग्र प्रगति सांख्यिकी तालिका, मुख्य कहानियाँ, राज्य एवं नगर निकाय पहल, नागरिक सहभागिता एवं सफाईमित्र सम्मान।</div>
+            <div class="template-meta-row">
+              <span style="color:#fb923c;">● राजभाषा मानक</span>
+              <span>Theme: Saffron / Orange</span>
+            </div>
+          </div>
+
+          <!-- 11. Fast Field Flash (1 Page Dispatch) -->
+          <div class="template-card" data-cat="all national" style="border-left-color: #dc2626;" onclick="loadTemplatePack('fast_flash')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">⚡</span>
+              <span class="template-tag" style="background:#dc2626; color:white;">1 Page</span>
+            </div>
+            <div class="template-title">Fast Field Flash (1-Page Urgent)</div>
+            <div class="template-desc">Single-page rapid dispatch designed for immediate WhatsApp and Twitter broadcast within minutes of completing a special cleanliness drive.</div>
+            <div class="template-meta-row">
+              <span style="color:#f87171;">● Rapid Broadcast</span>
+              <span>Theme: Action Crimson</span>
+            </div>
+          </div>
+
+          <!-- Blank Canvas Option -->
+          <div class="template-card" data-cat="all custom" style="border-left-color: #64748b;" onclick="loadTemplatePack('blank')">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">📝</span>
+              <span class="template-tag" style="background:#64748b; color:white;">3 Pages</span>
+            </div>
+            <div class="template-title">Start Blank Canvas</div>
+            <div class="template-desc">Clean minimal slate: Cover Page, 1 Story Page, and Back Cover. Build and design your sequence from scratch.</div>
+            <div class="template-meta-row">
+              <span style="color:#cbd5e1;">● Custom Project</span>
+              <span>Theme: Neutral</span>
+            </div>
+          </div>
+
+          <!-- Clone Yesterday Option -->
+          <div class="template-card" data-cat="all custom" style="border-left-color: #64748b;" onclick="triggerCloneYesterday()">
+            <div class="template-card-top">
+              <span style="font-size: 22px;">📋</span>
+              <span class="template-tag" style="background:#64748b; color:white;">Clone</span>
+            </div>
+            <div class="template-title">Clone Yesterday's Bulletin</div>
+            <div class="template-desc">Preserves your custom page structure, logos, and themes, but clears photos and text for today's new input.</div>
+            <div class="template-meta-row">
+              <span style="color:#cbd5e1;">● Quick Roll-Forward</span>
+              <span>Keep Structure</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Custom User Templates Container -->
+        <div id="userCustomTemplatesSection" style="display: none; margin-top: 14px;">
+          <h4 style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #94a3b8; margin-bottom: 6px;">Your Saved Custom Templates</h4>
+          <div class="template-grid" id="customTemplatesGrid"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <label class="btn btn-secondary" style="cursor: pointer;">
+          📂 Load Draft (.json)
+          <input type="file" id="fileLoadDraftWelcome" accept=".json" style="display: none;">
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. IMAGE CROPPER & FOCAL ADJUSTER MODAL -->
+  <div class="modal-backdrop" id="cropModal">
+    <div class="modal-box" style="width: 740px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700;">✂️ Crop, Rotate & Adjust Photo</h3>
+        <button class="btn-tiny" id="btnCloseCropModal" style="font-size: 16px;">✕</button>
+      </div>
+      <div class="modal-body" style="align-items: center;">
+        
+        <!-- Direct File Chooser inside Crop Modal -->
+        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 6px; border: 1px solid #334155;">
+          <span style="font-size: 12px; color: #cbd5e1; font-weight: 600;">Want to use a different photo?</span>
+          <button class="btn btn-primary" id="btnBrowseInCropper" onclick="browseFileForCropper()" style="padding: 5px 12px; font-size: 11px;">
+            📁 Choose Photo from PC...
+          </button>
+        </div>
+
+        <div style="max-height: 380px; width: 100%; display: flex; justify-content: center; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px;">
+          <img id="cropperTargetImg" src="" style="max-width: 100%; display: block;" alt="To Crop">
+        </div>
+
+        <!-- Aspect Ratio & Transform Toolbar -->
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; width: 100%; justify-content: center; margin-top: 10px;">
+          <button class="btn btn-secondary" onclick="setCropAspect(16/9)">16:9 (Landscape)</button>
+          <button class="btn btn-secondary" onclick="setCropAspect(4/3)">4:3 (Standard)</button>
+          <button class="btn btn-secondary" onclick="setCropAspect(1)">1:1 (Square)</button>
+          <button class="btn btn-secondary" onclick="setCropAspect(NaN)">Free Crop</button>
+          <button class="btn btn-secondary" onclick="rotateCropper(90)">↻ Rotate 90°</button>
+          <button class="btn btn-secondary" onclick="resetCropper()">↺ Reset</button>
+        </div>
+
+        <!-- Photo Quality Warning Indicator -->
+        <div id="cropQualityNotice" style="font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: none; width: 100%; text-align: center;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCancelCrop">Cancel</button>
+        <button class="btn btn-primary" id="btnApplyCrop">✓ Apply Photo to Slot</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. LOGO & BRANDING MANAGER MODAL -->
+  <div class="modal-backdrop" id="logoModal">
+    <div class="modal-box" style="width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700;">🏛️ Official Government Logos & Header Setup</h3>
+        <button class="btn-tiny" id="btnCloseLogoModal" style="font-size: 16px;">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12px; color: #94a3b8;">
+          Configure the official emblems displayed across all page headers. You can toggle default Ministry seals or upload state/municipal logos.
+        </p>
+
+        <div style="background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 700; color: #cbd5e1;">Live Header Preview:</span>
+            <span style="font-size: 11px; color: #94a3b8;">Updates in real-time</span>
+          </div>
+          <div id="headerPreviewContainer" class="page-header-logos" style="height: 76px; padding: 4px 16px; border-radius: 6px; box-shadow: inset 0 0 0 1px #e2e8f0; width: 100%; background: white;">
+            <!-- dynamically rendered preview matching canvas -->
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.5px;">Toggle Official Emblems</div>
+          <label style="font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: #e2e8f0; cursor: pointer;">
+            <input type="checkbox" id="chkLogoJalShakti" checked> Ministry of Jal Shakti (Dept of Drinking Water & Sanitation)
+          </label>
+          <label style="font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: #e2e8f0; cursor: pointer;">
+            <input type="checkbox" id="chkLogoSwachhata" checked> Swachhata Hi Seva 2026 Campaign Badge
+          </label>
+          <label style="font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: #e2e8f0; cursor: pointer;">
+            <input type="checkbox" id="chkLogoMoHUA" checked> Ministry of Housing and Urban Affairs (MoHUA)
+          </label>
+        </div>
+
+        <div style="background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label style="font-size: 12px; font-weight: 700; color: #cbd5e1;">
+              Custom State Seal / Municipal Logo (Optional):
+            </label>
+            <button type="button" class="btn btn-tiny btn-danger" id="btnClearCustomLogo" style="display: none; padding: 2px 8px; font-size: 10px;">✕ Remove Logo</button>
+          </div>
+          <input type="file" id="customLogoUploader" accept="image/*" style="font-size: 12px; color: #cbd5e1; width: 100%;">
+          <span id="customLogoStatus" style="font-size: 11px; color: #10b981; display: none; margin-top: 4px;"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnResetDefaultLogos">Reset Default</button>
+        <button class="btn btn-primary" id="btnSaveLogos">Save Logos</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. AI BUREAUCRATIC COPYWRITER MODAL -->
+  <div class="modal-backdrop" id="aiModal">
+    <div class="modal-card modal-box" style="width: 620px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700;">✨ AI Bureaucratic Bulletin Writer</h3>
+        <button class="btn-tiny" id="btnCloseAIModal" style="font-size: 16px;">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12px; color: #94a3b8;">
+          Convert raw WhatsApp forwards, field bullet notes, or official circulars into formal, publication-ready government press phrasing.
+        </p>
+
+        <!-- Google Gemini AI Connection Banner -->
+        <div id="aiModalKeyBanner" style="margin-bottom: 12px; padding: 10px 14px; border-radius: 8px; border: 1px solid #334155; display: flex; align-items: center; justify-content: space-between; background: #0f172a;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span id="aiModalKeyDot" style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+            <span id="aiModalKeyText" style="font-size: 12px; font-weight: 600; color: #cbd5e1;">Google Gemini 2.0 Flash: Offline (No API Key)</span>
+          </div>
+          <button type="button" class="btn btn-secondary" id="btnConfigureKeyInAiModal" style="font-size: 11px; padding: 4px 10px; background: #1e293b; border-color: #475569; display: inline-flex; align-items: center; gap: 5px;">
+            🔑 Connect / Change Key
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;" class="input-group">
+            <label style="font-size: 11px; font-weight: 700; color: #94a3b8;">Target Section</label>
+            <select id="aiSectionSelect" style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px; border-radius: 6px; font-size: 12px;">
+              <option value="Top Stories">Top Stories of the Day (VIP / Large Drive)</option>
+              <option value="State & ULB Initiatives">State & ULB Initiatives</option>
+              <option value="Citizen Participation">Citizen Participation (Jan Bhagidari)</option>
+              <option value="SafaiMitra Suraksha">SafaiMitra Suraksha & Welfare</option>
+              <option value="CTU Transformation">CTU Transformation (Before & After)</option>
+            </select>
+          </div>
+          <div style="width: 130px;" class="input-group">
+            <label style="font-size: 11px; font-weight: 700; color: #94a3b8;">Output Language</label>
+            <select id="aiLanguageSelect" style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px; border-radius: 6px; font-size: 12px;">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label style="font-size: 11px; font-weight: 700; color: #94a3b8;">Location & Dignitaries</label>
+          <input type="text" id="aiLocationInput" placeholder="e.g. Visakhapatnam, CM Chandrababu Naidu / Ward 17 Rewa" style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px; border-radius: 6px; font-size: 12px;">
+        </div>
+
+        <div class="input-group">
+          <label style="font-size: 11px; font-weight: 700; color: #94a3b8;">Raw Notes / WhatsApp Bullet Points</label>
+          <textarea id="aiRawNotes" rows="3" placeholder="e.g. Cleared 98 tons garbage from 100 parks, 22 parks adopted by citizens through MoUs, set up waste-to-wonder selfie spots." style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px; border-radius: 6px; font-size: 12px;"></textarea>
+        </div>
+
+        <div class="input-group">
+          <label style="font-size: 11px; font-weight: 700; color: #94a3b8;">Generated Headline</label>
+          <input type="text" id="aiResultHeadline" placeholder="Click 'Generate Official Copy'..." style="width: 100%; background: #0f172a; border: 1px solid #334155; color: #38bdf8; font-weight: 700; padding: 8px; border-radius: 6px; font-size: 13px;">
+        </div>
+
+        <div class="input-group">
+          <label style="font-size: 11px; font-weight: 700; color: #94a3b8;">Generated Formal Copy</label>
+          <textarea id="aiResultBlurb" rows="3" placeholder="Generated text appears here..." style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px; border-radius: 6px; font-size: 12px; line-height: 1.5;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnRunAiGenerate">⚡ Generate Official Copy</button>
+        <button class="btn btn-primary" id="btnApplyAiToSegment">Save to Segment Pool</button>
+        <button class="btn btn-primary" id="btnApplyAiToPage">Insert to Active Page</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. PRE-FLIGHT REVIEW SUMMARY MODAL -->
+  <div class="modal-backdrop" id="reviewModal">
+    <div class="modal-box" style="width: 580px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700; color: #f59e0b;">🔍 Pre-Flight Review Checklist</h3>
+        <button class="btn-tiny" id="btnCloseReviewModal" style="font-size: 16px;">✕</button>
+      </div>
+      <div class="modal-body" id="reviewModalBody">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnDismissReview">Close Review</button>
+        <button class="btn btn-export" id="btnProceedToExport">Proceed to Export PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. SAVE AS TEMPLATE MODAL -->
+  <div class="modal-backdrop" id="saveTemplateModal">
+    <div class="modal-box" style="width: 480px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700;">⭐ Save Bulletin Structure as Template</h3>
+        <button class="btn-tiny" id="btnCloseSaveTemplateModal" style="font-size: 16px;">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12px; color: #94a3b8;">
+          This saves your page layouts, themes, and branding structure so you can reuse it anytime from the Welcome screen without redoing setup.
+        </p>
+        <div class="input-group">
+          <label style="font-size: 11px; font-weight: 700; color: #94a3b8;">Template Name</label>
+          <input type="text" id="customTemplateName" placeholder="e.g. Weekly Swachhata Review Format" style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px; border-radius: 6px; font-size: 13px;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCancelSaveTemplate">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmSaveTemplate">Save Template</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. KEYBOARD SHORTCUTS MODAL -->
+  <div class="modal-backdrop" id="shortcutsModal">
+    <div class="modal-box" style="width: 500px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700;">⌨️ Keyboard Shortcuts</h3>
+        <button class="btn-tiny" id="btnCloseShortcutsModal" style="font-size: 16px;">✕</button>
+      </div>
+      <div class="modal-body" style="font-size: 12px;">
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 8px; color: #cbd5e1;">
+          <div><kbd style="background: #334155; padding: 2px 6px; border-radius: 4px;">Ctrl + S</kbd></div><div>Save Draft JSON</div>
+          <div><kbd style="background: #334155; padding: 2px 6px; border-radius: 4px;">Ctrl + P</kbd></div><div>Export PDF (Print)</div>
+          <div><kbd style="background: #334155; padding: 2px 6px; border-radius: 4px;">Ctrl + Z</kbd></div><div>Undo last edit</div>
+          <div><kbd style="background: #334155; padding: 2px 6px; border-radius: 4px;">Ctrl + Y</kbd></div><div>Redo edit</div>
+          <div><kbd style="background: #334155; padding: 2px 6px; border-radius: 4px;">Ctrl + N</kbd></div><div>New Bulletin / Template Packs</div>
+          <div><kbd style="background: #334155; padding: 2px 6px; border-radius: 4px;">Ctrl + D</kbd></div><div>Duplicate active page</div>
+          <div><kbd style="background: #334155; padding: 2px 6px; border-radius: 4px;">Esc</kbd></div><div>Close any open modal or drawer</div>
+          <div><kbd style="background: #334155; padding: 2px 6px; border-radius: 4px;">?</kbd></div><div>Show this shortcuts list</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnDismissShortcuts">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. RECOVERY DRAFT MODAL -->
+  <div class="modal-backdrop" id="recoveryModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-card" style="width: 480px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700;">📂 Restore Previous Session?</h3>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: #94a3b8; line-height: 1.5;">
+          An auto-saved bulletin draft from a previous session was detected in your browser storage.
+        </p>
+        <p id="recoveryDraftInfo" style="color: #38bdf8; font-weight: 600; font-size: 12px; margin-top: 8px;"></p>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px;">
+        <button class="btn btn-secondary" id="btnDiscardRecovery">Start Fresh</button>
+        <button class="btn btn-primary" id="btnConfirmRecovery">Restore Draft</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. EXPORT OPTIONS & PAGE SELECTOR MODAL -->
+  <div class="modal-backdrop" id="exportModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-card" style="width: 520px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700;">📤 Export Bulletin Pages</h3>
+        <button class="btn-tiny" id="btnCloseExportModal" style="font-size: 16px;" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <span style="font-size:12px; color:#94a3b8;">Select pages to include in the exported PDF:</span>
+          <div style="display:flex; gap:6px;">
+            <button class="btn-tiny" id="btnSelectAllExport">Select All</button>
+            <button class="btn-tiny" id="btnDeselectAllExport">Deselect All</button>
+          </div>
+        </div>
+        <div id="exportPageChecklist" style="max-height: 260px; overflow-y: auto; background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; display:flex; flex-direction:column; gap:6px;">
+          <!-- Dynamically filled -->
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <span id="exportSelectedCount" style="font-size: 11px; color:#38bdf8; font-weight:600;">All pages selected</span>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-secondary" id="btnTriggerHiResPrint">🖨️ High-Res Print PDF</button>
+          <button class="btn btn-export" id="btnTriggerWhatsAppDownload">📱 WhatsApp PDF (&lt;5MB)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. GEMINI AI SETTINGS MODAL -->
+  <div class="modal-backdrop" id="geminiSettingsModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-card" style="width: 500px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700;">🔑 Gemini AI Assistant Configuration</h3>
+        <button class="btn-tiny" id="btnCloseGeminiModal" style="font-size: 16px;" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5; margin-bottom: 14px;">
+          Connect Google Gemini (Free Tier) to unlock intelligent WhatsApp message parsing, 1-click overflow text trimming, and authentic PIB bureaucratic copywriting.
+        </p>
+        <div class="input-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+            <label style="font-size: 11px; font-weight: 700; color: #cbd5e1;">Google Gemini API Key</label>
+            <span id="geminiKeyStatusBadge" style="font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: #334155; color: #94a3b8;">Not Configured</span>
+          </div>
+          <div style="position: relative; display: flex; align-items: center;">
+            <input type="password" id="geminiApiKeyInput" placeholder="Paste your AIzaSy... key here" style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 9px 36px 9px 10px; border-radius: 6px; font-size: 13px; font-family: monospace;">
+            <button type="button" id="btnToggleShowKey" style="position: absolute; right: 8px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 14px;" title="Show/Hide Key">👁️</button>
+          </div>
+          <span style="font-size: 11px; color: #94a3b8; margin-top: 6px; line-height: 1.4; display: block;">
+            Get a 100% free Gemini API key in 30 seconds at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #38bdf8; text-decoration: underline; font-weight: 600;">aistudio.google.com</a> (no credit card required). Your key is stored securely in your local browser/app storage only.
+          </span>
+        </div>
+        <div id="geminiTestStatus" style="font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; display: none;"></div>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <button class="btn btn-secondary" id="btnTestGeminiKey">⚡ Test Connection</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary" id="btnClearGeminiKey">Clear Key</button>
+          <button class="btn btn-primary" id="btnSaveGeminiKey">Save Key</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. BULK WHATSAPP INGESTION MODAL -->
+  <div class="modal-backdrop" id="bulkIngestModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-card" style="width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px; font-weight: 700;">📥 Bulk Field Notes & WhatsApp Ingestion</h3>
+        <button class="btn-tiny" id="btnCloseBulkIngestModal" style="font-size: 16px;" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5; margin-bottom: 10px;">
+          Paste raw WhatsApp forwards, district bullet points, or press notes. Multiple stories separated by blank lines will be parsed into structured story cards.
+        </p>
+        <div class="input-group">
+          <textarea id="bulkIngestRawText" rows="9" placeholder="Paste WhatsApp messages or bullet points here...&#10;&#10;Example:&#10;Rewa ward 17 somnath hall ground cleared today by 120 volunteers. 45 ton kachra nikala.&#10;&#10;Puri beach cleanup led by Sudarsan Pattnaik with 500 volunteers." style="width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 10px; border-radius: 6px; font-size: 12px; line-height: 1.4; resize: vertical;"></textarea>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <label style="font-size: 11px; color:#94a3b8; display:flex; align-items:center; gap:6px;">
+            <input type="checkbox" id="checkUseGeminiParsing" checked> Use Gemini AI to structure into PIB press release tone
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px;">
+        <button class="btn btn-secondary" id="btnCancelBulkIngest">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmBulkIngest">📥 Ingest into Segments Pool</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATIONS ==================== -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- ==================== FILE INPUTS FOR DIRECT UPLOADS ==================== -->
+  <!-- Direct Slot Image Uploader -->
+  <input type="file" id="slotImageUploader" accept="image/*" style="display: none;">
+  <!-- Direct Segment Photo Uploader -->
+  <input type="file" id="segmentPhotoUploader" accept="image/*" multiple style="display: none;">
+  <!-- Bulk Photos Input -->
+  <input type="file" id="bulkPhotoInput" accept="image/*" multiple style="display: none;">
+
+  <!-- Scripts -->
+  <script src="libs/cropper.min.js"></script>
+  <script src="libs/sortable.min.js"></script>
+  <script src="libs/html2pdf.bundle.min.js"></script>
+  <script src="app.js?v=2.3"></script>
+</body>
+</html>
