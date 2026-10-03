@@ -115,10 +115,22 @@
     <!-- ═══ INSERT PANEL ═══ -->
     <div class="ribbon-panel" id="ribbon-insert">
       <div class="ribbon-group">
-        <span class="ribbon-group-label">Pages</span>
+        <span class="ribbon-group-label">Canvas Elements</span>
         <div class="ribbon-btn-row">
-          <button class="ribbon-btn ribbon-btn-primary" id="btnAddPageMenu">+ Add Page</button>
-          <button class="ribbon-btn" id="btnDuplicateActivePage">📄 Duplicate</button>
+          <button class="ribbon-btn ribbon-btn-primary" id="btnInsertFloatingText" title="Insert movable text box anywhere">➕ Text Box</button>
+          <button class="ribbon-btn" id="btnInsertFloatingPhoto" title="Insert photo anywhere on slide">🖼️ Photo</button>
+          <button class="ribbon-btn" id="btnInsertFloatingMetric" title="Insert KPI stat metric tile">📊 Stat Tile</button>
+          <button class="ribbon-btn" id="btnInsertFloatingQuote" title="Insert quote callout box">💬 Pull Quote</button>
+          <button class="ribbon-btn" id="btnInsertFloatingLogos" title="Insert official emblems box onto slide">🏛️ Official Logos</button>
+        </div>
+      </div>
+      <div class="ribbon-divider"></div>
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">Slides</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn" id="btnInsertBlankSlide" title="Insert clean PowerPoint blank slide">📄 Blank Slide</button>
+          <button class="ribbon-btn" id="btnAddPageMenu">+ Standard Slide</button>
+          <button class="ribbon-btn" id="btnDuplicateActivePage">📋 Duplicate</button>
           <button class="ribbon-btn ribbon-btn-danger" id="btnDeleteActivePage">🗑️ Delete</button>
         </div>
       </div>
@@ -240,179 +252,324 @@
         <button class="template-filter-btn" data-category="national" onclick="filterWelcomeTemplates('national', this)">🏛️ National & Exec</button>
         <button class="template-filter-btn" data-category="campaign" onclick="filterWelcomeTemplates('campaign', this)">🌿 Green & CTU</button>
         <button class="template-filter-btn" data-category="community" onclick="filterWelcomeTemplates('community', this)">👥 Citizens & Workers</button>
-        <button class="template-filter-btn" data-category="special" onclick="filterWelcomeTemplates('special', this)">🌊 Oceans & Lens</button>
+        <button class="template-filter-btn" data-category="special" onclick="filterWelcomeTemplates('special', this)">📸 Lens & Gazette</button>
         <button class="template-filter-btn" data-category="custom" onclick="filterWelcomeTemplates('custom', this)">📝 Custom & Blank</button>
       </div>
 
       <div class="modal-body">
-        <!-- 11 Pre-Made Template Grid -->
+        <!-- 11 Pre-Made Distinct Template Grid with Visual Previews -->
         <div class="template-grid" id="officialTemplateGrid">
           
           <!-- 1. Swachhata Standard 17 Pages -->
           <div class="template-card" data-cat="all national" style="border-left-color: #0f766e;" onclick="loadTemplatePack('standard_17')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#f0fdf4;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot"></span><span class="mini-emblem-dot" style="background:#0284c7;"></span></div><span style="font-size:7px; font-weight:800; color:#0f766e;">GOV OF INDIA</span></div>
+                <div class="mini-preview-banner" style="background:#0f766e;">SWACHHATA HI SEVA 2026</div>
+                <div class="mini-preview-body" style="flex-direction:column; gap:3px;">
+                  <div style="height:32px; background:#ccfbf1; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:7px; font-weight:800; color:#0f766e;">17-PAGE NATIONAL FLAGSHIP</div>
+                  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:3px;">
+                    <div style="height:20px; background:#e0f2fe; border-radius:2px;"></div>
+                    <div style="height:20px; background:#e0f2fe; border-radius:2px;"></div>
+                    <div style="height:20px; background:#e0f2fe; border-radius:2px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="template-card-top">
               <span style="font-size: 22px;">🇮🇳</span>
               <span class="template-tag" style="background:#0f766e; color:white;">17 Pages</span>
             </div>
             <div class="template-title">Swachhata Hi Seva Standard</div>
-            <div class="template-desc">Comprehensive national edition: Cover, Cumulative Progress Table, Lead VIP Story, 2-Story Split, CTU Before/After, State Initiatives, Citizen Action, and Back Cover.</div>
+            <div class="template-desc">Comprehensive national flagship: Cover, Cumulative Progress Table, Lead VIP Story, 2-Story Split, CTU Transformations, State Initiatives, Citizen Action, and Back Cover.</div>
             <div class="template-meta-row">
               <span style="color:#2dd4bf;">● National Flagship</span>
-              <span>Multi-Theme Sequence</span>
+              <span>Theme: Teal Standard</span>
             </div>
           </div>
 
-          <!-- 2. Quick Executive 5 Pages -->
+          <!-- 2. Quick Executive 5 Pages (Dashboard Architecture) -->
           <div class="template-card" data-cat="all national" style="border-left-color: #1e3a8a;" onclick="loadTemplatePack('executive_5')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#f8fafc;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#1e3a8a;"></span></div><span style="font-size:7px; font-weight:800; color:#1e3a8a;">CABINET BRIEF</span></div>
+                <div class="mini-preview-banner" style="background:#1e3a8a;">DAILY EXECUTIVE DASHBOARD</div>
+                <div class="mini-preview-body" style="flex-direction:column; gap:4px;">
+                  <div class="mini-kpi-grid">
+                    <div class="mini-kpi-tile"><span class="mini-kpi-val">98.4%</span><span class="mini-kpi-lbl">Cleared</span></div>
+                    <div class="mini-kpi-tile"><span class="mini-kpi-val">1.4L</span><span class="mini-kpi-lbl">Wards</span></div>
+                    <div class="mini-kpi-tile"><span class="mini-kpi-val">85L</span><span class="mini-kpi-lbl">Citizens</span></div>
+                    <div class="mini-kpi-tile"><span class="mini-kpi-val">100%</span><span class="mini-kpi-lbl">Verified</span></div>
+                  </div>
+                  <div style="height:20px; background:#e2e8f0; border-radius:3px; display:flex; align-items:center; padding:0 6px; font-size:6px; color:#475569;">Ministerial Review Directives & Dispatch</div>
+                </div>
+              </div>
+            </div>
             <div class="template-card-top">
               <span style="font-size: 22px;">⚡</span>
               <span class="template-tag" style="background:#1e3a8a; color:white;">5 Pages</span>
             </div>
-            <div class="template-title">Quick Daily Brief (Executive)</div>
-            <div class="template-desc">Designed for Ministers, Cabinet Secretaries, and District Collectors. High-density, high-impact overview of daily priority metrics, lead inspection, and urban milestones.</div>
+            <div class="template-title">Executive Brief & Dashboard</div>
+            <div class="template-desc">Tailored for Cabinet Ministers, Secretaries & Collectors: High-density KPI metric cards, ministerial inspection dispatch with movable quote pullout, and urban matrix.</div>
             <div class="template-meta-row">
-              <span style="color:#60a5fa;">● Executive Brief</span>
+              <span style="color:#60a5fa;">● KPI Dashboard</span>
               <span>Theme: Deep Navy</span>
             </div>
           </div>
 
-          <!-- 3. CTU Transformation Special -->
+          <!-- 3. CTU Transformation Special (Before / After Architecture) -->
           <div class="template-card" data-cat="all campaign" style="border-left-color: #dc2626;" onclick="loadTemplatePack('ctu_special')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#fef2f2;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#dc2626;"></span></div><span style="font-size:7px; font-weight:800; color:#dc2626;">CTU SPECIAL</span></div>
+                <div class="mini-preview-banner" style="background:#dc2626;">BEFORE & AFTER REMEDIATION</div>
+                <div class="mini-preview-body">
+                  <div class="mini-ctu-compare">
+                    <div class="mini-ctu-box mini-ctu-before">
+                      <span>⚠️ BEFORE</span>
+                      <span style="font-size:6px; font-weight:normal;">Chronic Garbage Spot</span>
+                    </div>
+                    <div class="mini-ctu-box mini-ctu-after">
+                      <span>✨ AFTER</span>
+                      <span style="font-size:6px; font-weight:normal;">Green Public Park</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="template-card-top">
               <span style="font-size: 22px;">🔄</span>
               <span class="template-tag" style="background:#dc2626; color:white;">4 Pages</span>
             </div>
-            <div class="template-title">CTU Transformation Special</div>
-            <div class="template-desc">Cleanliness Target Unit showcase highlighting elimination of chronic garbage dumps with paired Before (Red) and After (Green) photos and geo-tagged metrics.</div>
+            <div class="template-title">CTU Transformation Showcase</div>
+            <div class="template-desc">Dedicated Cleanliness Target Unit showcase featuring high-impact side-by-side Before (Red) and After (Green) photos, tonnage cleared, geotags, and 4-point micro-remediation grid.</div>
             <div class="template-meta-row">
               <span style="color:#f87171;">● Remediation In Focus</span>
-              <span>Theme: Crimson / Coral</span>
+              <span>Theme: Action Crimson</span>
             </div>
           </div>
 
-          <!-- 4. Green Earth & Circular Economy -->
-          <div class="template-card" data-cat="all campaign" style="border-left-color: #059669;" onclick="loadTemplatePack('green_earth')">
+          <!-- 4. Swachhata in Lens (Photojournalism Masonry) -->
+          <div class="template-card" data-cat="all special" style="border-left-color: #334155;" onclick="loadTemplatePack('photojournalism')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#0f172a; color:#f8fafc;">
+                <div class="mini-preview-header" style="border-color:#334155;"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#94a3b8;"></span></div><span style="font-size:7px; font-weight:800; color:#cbd5e1;">LENS IN FOCUS</span></div>
+                <div class="mini-preview-banner" style="background:#334155;">PHOTOJOURNALISM MASONRY</div>
+                <div class="mini-preview-body">
+                  <div class="mini-masonry-grid">
+                    <div class="mini-masonry-hero">📸 HERO</div>
+                    <div class="mini-masonry-stack">
+                      <div class="mini-masonry-sub"></div>
+                      <div class="mini-masonry-sub"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="template-card-top">
-              <span style="font-size: 22px;">🌿</span>
-              <span class="template-tag" style="background:#059669; color:white;">6 Pages</span>
+              <span style="font-size: 22px;">📸</span>
+              <span class="template-tag" style="background:#334155; color:white;">4 Pages</span>
             </div>
-            <div class="template-title">Green Earth & Circular Economy</div>
-            <div class="template-desc">Focus on sustainability, Waste-to-Wealth Eco-Parks, RRR (Reduce, Reuse, Recycle) centers, 'Ek Ped Maa Ke Naam' plantations, and zero-plastic bazaars.</div>
+            <div class="template-title">Swachhata In Lens (Masonry)</div>
+            <div class="template-desc">High-impact visual journalism: Full-bleed dramatic hero photography, 6-photo asymmetrical documentary masonry grid, journalistic captions, and human-interest portrait features.</div>
             <div class="template-meta-row">
-              <span style="color:#34d399;">● Sustainability Edition</span>
-              <span>Theme: Emerald Green</span>
+              <span style="color:#94a3b8;">● Visual Storytelling</span>
+              <span>Theme: Editorial Slate</span>
             </div>
           </div>
 
-          <!-- 5. Smart City & Municipal Ops -->
-          <div class="template-card" data-cat="all national" style="border-left-color: #4f46e5;" onclick="loadTemplatePack('smart_city')">
+          <!-- 5. Modern Bureaucratic Magazine (2-Column Editorial) -->
+          <div class="template-card" data-cat="all national" style="border-left-color: #0284c7;" onclick="loadTemplatePack('magazine')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#ffffff;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#0284c7;"></span></div><span style="font-size:7px; font-weight:800; color:#0284c7;">BUREAUCRATIC REVIEW</span></div>
+                <div class="mini-preview-banner" style="background:#0284c7;">MODERN MAGAZINE (2-COL)</div>
+                <div class="mini-preview-body" style="flex-direction:column; gap:3px;">
+                  <div class="mini-magazine-cols">
+                    <div class="mini-mag-text"><div class="mini-mag-line"></div><div class="mini-mag-line"></div><div class="mini-mag-line" style="width:70%;"></div></div>
+                    <div class="mini-mag-text"><div class="mini-mag-line"></div><div class="mini-mag-line"></div><div class="mini-mag-line" style="width:85%;"></div></div>
+                  </div>
+                  <div class="mini-mag-quote">“ Cleanliness is our national pride ”</div>
+                </div>
+              </div>
+            </div>
             <div class="template-card-top">
-              <span style="font-size: 22px;">🏛️</span>
-              <span class="template-tag" style="background:#4f46e5; color:white;">5 Pages</span>
+              <span style="font-size: 22px;">📰</span>
+              <span class="template-tag" style="background:#0284c7; color:white;">4 Pages</span>
             </div>
-            <div class="template-title">Smart City & Municipal Ops</div>
-            <div class="template-desc">Tailored for Municipal Commissioners and Nagar Nigams: 100% electric mechanized sweepers, ICCC control centers, RFID waste tracking, and MRF facilities.</div>
+            <div class="template-title">Modern Bureaucratic Magazine</div>
+            <div class="template-desc">Prestigious publication layout: High-gloss magazine cover, balanced 2-column editorial article, floating leadership pull-quote callout, author bylines, and case study column.</div>
             <div class="template-meta-row">
-              <span style="color:#818cf8;">● Civic Governance</span>
-              <span>Theme: Smart Indigo</span>
+              <span style="color:#38bdf8;">● 2-Column Editorial</span>
+              <span>Theme: Smart Cyan</span>
             </div>
           </div>
 
-          <!-- 6. Jan Andolan: Citizens & Youth -->
+          <!-- 6. Jan Andolan & Social Wall (Community Voices) -->
           <div class="template-card" data-cat="all community" style="border-left-color: #d97706;" onclick="loadTemplatePack('jan_andolan')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#fffbeb;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#d97706;"></span></div><span style="font-size:7px; font-weight:800; color:#d97706;">PEOPLE'S MOVEMENT</span></div>
+                <div class="mini-preview-banner" style="background:#d97706;">JAN ANDOLAN & SOCIAL WALL</div>
+                <div class="mini-preview-body">
+                  <div class="mini-social-grid">
+                    <div class="mini-social-card"><span>🗣️ Youth Lead</span><span style="color:#64748b;">"500 cyclists..."</span></div>
+                    <div class="mini-social-card"><span>🌱 SHG Leader</span><span style="color:#64748b;">"2T compost..."</span></div>
+                    <div class="mini-social-card"><span>🚴 Cyclothon</span><span style="color:#64748b;">"35km ride..."</span></div>
+                    <div class="mini-social-card"><span>🛡️ SafaiMitra</span><span style="color:#64748b;">"Health camp..."</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="template-card-top">
               <span style="font-size: 22px;">👥</span>
-              <span class="template-tag" style="background:#d97706; color:white;">6 Pages</span>
+              <span class="template-tag" style="background:#d97706; color:white;">5 Pages</span>
             </div>
-            <div class="template-title">Jan Andolan: Youth & Citizens</div>
-            <div class="template-desc">Celebrating grassroots people's movements: mass shramdaan, youth cyclothons, school rallies, wall painting murals, and self-help group composting masterclasses.</div>
+            <div class="template-title">Jan Andolan & Social Wall</div>
+            <div class="template-desc">Grassroots public movement format: Interactive Social Wall with 6 citizen voice cards, student cyclothon testimonials, wall mural photos, and mass community shramdaan galleries.</div>
             <div class="template-meta-row">
-              <span style="color:#fbbf24;">● Mass Participation</span>
+              <span style="color:#fbbf24;">● Citizen Voices</span>
               <span>Theme: Saffron Gold</span>
             </div>
           </div>
 
-          <!-- 7. SafaiMitra Suraksha & Welfare -->
+          <!-- 7. Official Gazette Order & Administrative Circular -->
+          <div class="template-card" data-cat="all special" style="border-left-color: #475569;" onclick="loadTemplatePack('gazette')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#fffdfa;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#475569;"></span></div><span style="font-size:7px; font-weight:800; color:#334155;">RAJAPATRA</span></div>
+                <div class="mini-gazette-doc">
+                  <span class="mini-gazette-seal">🏛️</span>
+                  <span class="mini-gazette-title">THE GAZETTE OF INDIA</span>
+                  <span style="font-size:5px; color:#64748b;">EXTRAORDINARY NOTIFICATION</span>
+                  <div style="width:100%; border-top:1px solid #cbd5e1; margin-top:2px; padding-top:2px; font-size:5px; color:#334155; line-height:1.2;">
+                    1.1 Directives on CTU Verification<br>
+                    1.2 SafaiMitra Health Saturation
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="template-card-top">
+              <span style="font-size: 22px;">🏛️</span>
+              <span class="template-tag" style="background:#475569; color:white;">3 Pages</span>
+            </div>
+            <div class="template-title">Official Gazette Order & Circular</div>
+            <div class="template-desc">Formal legal & administrative layout: Official Gazette of India banner, numbered statutory clauses (1.1, 1.2), compliance directives, and digital Ministry seal/signature block.</div>
+            <div class="template-meta-row">
+              <span style="color:#94a3b8;">● Official Administrative</span>
+              <span>Theme: Formal Parchment</span>
+            </div>
+          </div>
+
+          <!-- 8. SafaiMitra Suraksha & Welfare Honor Roll -->
           <div class="template-card" data-cat="all community" style="border-left-color: #7c3aed;" onclick="loadTemplatePack('safaimitra')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#faf5ff;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#7c3aed;"></span></div><span style="font-size:7px; font-weight:800; color:#7c3aed;">SAMMAN SHIVIR</span></div>
+                <div class="mini-preview-banner" style="background:#7c3aed;">SAFAIMITRA SURAKSHA & DIGNITY</div>
+                <div class="mini-preview-body" style="flex-direction:column; gap:3px;">
+                  <div style="display:flex; gap:4px; align-items:center;">
+                    <div style="width:24px; height:24px; background:#ddd6fe; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px;">🛡️</div>
+                    <div style="flex:1; font-size:6px; font-weight:700; color:#5b21b6;">100% PPE & Ayushman Bharat Saturation</div>
+                  </div>
+                  <div class="mini-kpi-grid">
+                    <div class="mini-kpi-tile" style="border-top-color:#7c3aed;"><span class="mini-kpi-val" style="color:#7c3aed;">1.8L</span><span class="mini-kpi-lbl">Screened</span></div>
+                    <div class="mini-kpi-tile" style="border-top-color:#7c3aed;"><span class="mini-kpi-val" style="color:#7c3aed;">2.1L</span><span class="mini-kpi-lbl">PPE Kits</span></div>
+                    <div class="mini-kpi-tile" style="border-top-color:#7c3aed;"><span class="mini-kpi-val" style="color:#7c3aed;">99%</span><span class="mini-kpi-lbl">Insured</span></div>
+                    <div class="mini-kpi-tile" style="border-top-color:#7c3aed;"><span class="mini-kpi-val" style="color:#7c3aed;">Zero</span><span class="mini-kpi-lbl">Manual</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="template-card-top">
               <span style="font-size: 22px;">🛡️</span>
               <span class="template-tag" style="background:#7c3aed; color:white;">5 Pages</span>
             </div>
-            <div class="template-title">SafaiMitra Suraksha & Welfare</div>
-            <div class="template-desc">Honoring sanitation frontline heroes: Felicitation ceremonies, comprehensive preventive health checkup camps, PPE kits, and robotic manhole cleaning machines.</div>
+            <div class="template-title">SafaiMitra Welfare & Honor Roll</div>
+            <div class="template-desc">Honoring frontline sanitation champions: Dedicated worker spotlight portrait, preventive health screening metrics, PPE kits distribution, and robotic cleaning machine deployments.</div>
             <div class="template-meta-row">
               <span style="color:#a78bfa;">● Worker Dignity</span>
               <span>Theme: Royal Purple</span>
             </div>
           </div>
 
-          <!-- 8. Jal Shakti & Coastal Cleanliness -->
-          <div class="template-card" data-cat="all special" style="border-left-color: #0891b2;" onclick="loadTemplatePack('jal_shakti')">
-            <div class="template-card-top">
-              <span style="font-size: 22px;">🌊</span>
-              <span class="template-tag" style="background:#0891b2; color:white;">5 Pages</span>
+          <!-- 9. Green Earth & Circular Economy (RRR Special) -->
+          <div class="template-card" data-cat="all campaign" style="border-left-color: #059669;" onclick="loadTemplatePack('green_earth')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#f0fdf4;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#059669;"></span></div><span style="font-size:7px; font-weight:800; color:#059669;">CIRCULAR ECONOMY</span></div>
+                <div class="mini-preview-banner" style="background:#059669;">GREEN EARTH & RRR SPECIAL</div>
+                <div class="mini-preview-body" style="flex-direction:column; gap:3px;">
+                  <div style="height:26px; background:#d1fae5; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:7px; font-weight:800; color:#065f46;">♻️ Waste-to-Wealth Eco Park</div>
+                  <div class="mini-kpi-grid">
+                    <div class="mini-kpi-tile" style="border-top-color:#059669;"><span class="mini-kpi-val" style="color:#059669;">12K</span><span class="mini-kpi-lbl">RRR Hubs</span></div>
+                    <div class="mini-kpi-tile" style="border-top-color:#059669;"><span class="mini-kpi-val" style="color:#059669;">48K</span><span class="mini-kpi-lbl">Compost</span></div>
+                    <div class="mini-kpi-tile" style="border-top-color:#059669;"><span class="mini-kpi-val" style="color:#059669;">14L</span><span class="mini-kpi-lbl">Trees</span></div>
+                    <div class="mini-kpi-tile" style="border-top-color:#059669;"><span class="mini-kpi-val" style="color:#059669;">Zero</span><span class="mini-kpi-lbl">Plastic</span></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="template-title">Jal Shakti & Coastal Swachhata</div>
-            <div class="template-desc">Riverfront and ocean rejuvenation: Sunrise river ghat sanitization, marine debris recovery by scuba divers, lake bio-remediation, and plastic barriers.</div>
+            <div class="template-card-top">
+              <span style="font-size: 22px;">🌿</span>
+              <span class="template-tag" style="background:#059669; color:white;">5 Pages</span>
+            </div>
+            <div class="template-title">Green Earth & Circular Economy</div>
+            <div class="template-desc">Zero-waste sustainability edition: Waste-to-Wealth Eco-Parks, RRR (Reduce, Reuse, Recycle) centers, 'Ek Ped Maa Ke Naam' mass plantations, and zero-plastic market initiatives.</div>
             <div class="template-meta-row">
-              <span style="color:#38bdf8;">● Water Ecosystems</span>
-              <span>Theme: Ocean Cyan</span>
+              <span style="color:#34d399;">● Sustainability Focus</span>
+              <span>Theme: Emerald Green</span>
             </div>
           </div>
 
-          <!-- 9. Swachhata in Lens (Photojournalism) -->
-          <div class="template-card" data-cat="all special" style="border-left-color: #334155;" onclick="loadTemplatePack('photojournalism')">
-            <div class="template-card-top">
-              <span style="font-size: 22px;">📸</span>
-              <span class="template-tag" style="background:#334155; color:white;">4 Pages</span>
+          <!-- 10. Fast Field Flash (1-Page High-Density Urgent Dispatch) -->
+          <div class="template-card" data-cat="all national" style="border-left-color: #e11d48;" onclick="loadTemplatePack('fast_flash')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#fff1f2;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#e11d48;"></span></div><span style="font-size:7px; font-weight:800; color:#e11d48;">URGENT DISPATCH</span></div>
+                <div class="mini-preview-banner" style="background:#e11d48;">⚡ FAST FIELD FLASH (1-PAGE)</div>
+                <div class="mini-preview-body" style="flex-direction:column; gap:3px;">
+                  <div style="height:28px; background:#fecdd3; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:7px; font-weight:800; color:#9f1239;">RAPID WHATSAPP BROADCAST</div>
+                  <div style="display:flex; flex-direction:column; gap:2px; font-size:6px; color:#475569;">
+                    <span>• Immediate Inspection Verified</span>
+                    <span>• Collector Signatory Clearance</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="template-title">Swachhata in Lens (Photojournalism)</div>
-            <div class="template-desc">Media and PR documentary layout with two 6-photo high-impact spotlight galleries capturing human-interest moments, ground transformations, and community energy.</div>
-            <div class="template-meta-row">
-              <span style="color:#94a3b8;">● Press & Documentary</span>
-              <span>Theme: Editorial Slate</span>
-            </div>
-          </div>
-
-          <!-- 10. Hindi Standard National Edition -->
-          <div class="template-card" data-cat="all national" style="border-left-color: #ea580c;" onclick="loadTemplatePack('hindi_standard')">
-            <div class="template-card-top">
-              <span style="font-size: 22px;">🕉️</span>
-              <span class="template-tag" style="background:#ea580c; color:white;">5 Pages</span>
-            </div>
-            <div class="template-title">दैनिक बुलेटिन (हिन्दी मानक)</div>
-            <div class="template-desc">पूर्णतः राजभाषा हिन्दी में सुसज्जित: समग्र प्रगति सांख्यिकी तालिका, मुख्य कहानियाँ, राज्य एवं नगर निकाय पहल, नागरिक सहभागिता एवं सफाईमित्र सम्मान।</div>
-            <div class="template-meta-row">
-              <span style="color:#fb923c;">● राजभाषा मानक</span>
-              <span>Theme: Saffron / Orange</span>
-            </div>
-          </div>
-
-          <!-- 11. Fast Field Flash (1 Page Dispatch) -->
-          <div class="template-card" data-cat="all national" style="border-left-color: #dc2626;" onclick="loadTemplatePack('fast_flash')">
             <div class="template-card-top">
               <span style="font-size: 22px;">⚡</span>
-              <span class="template-tag" style="background:#dc2626; color:white;">1 Page</span>
+              <span class="template-tag" style="background:#e11d48; color:white;">1 Page</span>
             </div>
             <div class="template-title">Fast Field Flash (1-Page Urgent)</div>
-            <div class="template-desc">Single-page rapid dispatch designed for immediate WhatsApp and Twitter broadcast within minutes of completing a special cleanliness drive.</div>
+            <div class="template-desc">Single-page rapid dispatch designed for immediate WhatsApp and Twitter broadcast: Urgent banner, breaking inspection photo, 3 metric badges, and Collector signature block.</div>
             <div class="template-meta-row">
-              <span style="color:#f87171;">● Rapid Broadcast</span>
-              <span>Theme: Action Crimson</span>
+              <span style="color:#f43f5e;">● Rapid Broadcast</span>
+              <span>Theme: Urgent Rose</span>
             </div>
           </div>
 
-          <!-- Blank Canvas Option -->
+          <!-- 11. Blank Canvas (PowerPoint Pure Freedom Starter) -->
           <div class="template-card" data-cat="all custom" style="border-left-color: #64748b;" onclick="loadTemplatePack('blank')">
+            <div class="template-card-preview">
+              <div class="mini-preview-canvas" style="background:#ffffff; border:1px dashed #cbd5e1;">
+                <div class="mini-preview-header"><div class="mini-header-emblems"><span class="mini-emblem-dot" style="background:#64748b;"></span></div><span style="font-size:7px; font-weight:800; color:#64748b;">POWERPOINT STYLE</span></div>
+                <div class="mini-preview-banner" style="background:#64748b;">📄 BLANK CANVAS STARTER</div>
+                <div class="mini-preview-body" style="align-items:center; justify-content:center; flex-direction:column; gap:3px; color:#94a3b8;">
+                  <span style="font-size:16px;">➕</span>
+                  <span style="font-size:7px; font-weight:700;">Drag Text, Photos & Stats Anywhere</span>
+                </div>
+              </div>
+            </div>
             <div class="template-card-top">
-              <span style="font-size: 22px;">📝</span>
-              <span class="template-tag" style="background:#64748b; color:white;">3 Pages</span>
+              <span style="font-size: 22px;">📄</span>
+              <span class="template-tag" style="background:#64748b; color:white;">1 Blank Slide</span>
             </div>
             <div class="template-title">Start Blank Canvas</div>
-            <div class="template-desc">Clean minimal slate: Cover Page, 1 Story Page, and Back Cover. Build and design your sequence from scratch.</div>
+            <div class="template-desc">Clean PowerPoint-style blank canvas pre-loaded with starter draggable headline, photo card, metric tile, and pull-quote box. Drag and place elements wherever you want!</div>
             <div class="template-meta-row">
-              <span style="color:#cbd5e1;">● Custom Project</span>
-              <span>Theme: Neutral</span>
+              <span style="color:#cbd5e1;">● Freeform PowerPoint</span>
+              <span>Theme: Blank Freedom</span>
             </div>
           </div>
 
@@ -507,6 +664,28 @@
           </div>
           <div id="headerPreviewContainer" class="page-header-logos" style="height: 76px; padding: 4px 16px; border-radius: 6px; box-shadow: inset 0 0 0 1px #e2e8f0; width: 100%; background: white;">
             <!-- dynamically rendered preview matching canvas -->
+          </div>
+        </div>
+
+        <!-- Position & Layout Selector -->
+        <div style="background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.5px; margin-bottom: 8px;">Logo Placement & Layout</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px;">
+            <button type="button" class="btn btn-secondary logo-pos-btn active" data-pos="top" id="btnLogoPosTop">🔝 Top Header Strip</button>
+            <button type="button" class="btn btn-secondary logo-pos-btn" data-pos="bottom" id="btnLogoPosBottom">⬇️ Bottom Footer Strip</button>
+            <button type="button" class="btn btn-secondary logo-pos-btn" data-pos="top-left" id="btnLogoPosTopLeft">↖️ Top-Left Corner</button>
+            <button type="button" class="btn btn-secondary logo-pos-btn" data-pos="top-right" id="btnLogoPosTopRight">↗️ Top-Right Corner</button>
+            <button type="button" class="btn btn-secondary logo-pos-btn" data-pos="freeform" id="btnLogoPosFreeform" style="grid-column: span 2;">🔀 Freeform Draggable (Move Anywhere on Slide)</button>
+          </div>
+        </div>
+
+        <!-- Size Selector -->
+        <div style="background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155; display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 12px; font-weight: 700; color: #cbd5e1;">Emblem Scale & Height:</span>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" class="btn btn-secondary logo-size-btn" data-size="small" id="btnLogoSizeSmall">Compact (50px)</button>
+            <button type="button" class="btn btn-secondary logo-size-btn active" data-size="medium" id="btnLogoSizeMedium">Standard (75px)</button>
+            <button type="button" class="btn btn-secondary logo-size-btn" data-size="large" id="btnLogoSizeLarge">Prominent (95px)</button>
           </div>
         </div>
 

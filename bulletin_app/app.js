@@ -9,7 +9,9 @@ let bulletin = {
     jalShakti: true,
     swachhata: true,
     mohua: true,
-    customLogo: null
+    customLogo: null,
+    position: "top",
+    size: "medium"
   },
   pages: [],
   segments: [],
@@ -443,32 +445,40 @@ const STANDARD_17_PAGE_PACK = [
   }
 ];
 
-// 2. Executive 5-Page Digest Pack
+// 2. Executive 5-Page Digest & KPI Dashboard Pack
 const EXECUTIVE_5_PACK = [
   {
     id: "page-1", type: "cover", theme: "theme-navy", sectionTitle: "Cover Page",
-    coverTitle: "Daily Executive\\nBriefing", coverYear: "2026", coverBadge: "High-Level Review", coverDate: "20th September, 2026",
+    coverTitle: "Executive Daily\\nBriefing", coverYear: "2026", coverBadge: "Cabinet Review", coverDate: "20th September, 2026",
     images: ["assets/smart_city_fleet.jpg", "assets/sample3.jpg", "assets/sample1.jpg"], isLocked: true
   },
   {
-    id: "page-2", type: "snapshot", theme: "theme-navy", sectionTitle: "Overall Snapshot",
+    id: "page-2", type: "snapshot", theme: "theme-navy", sectionTitle: "Executive KPI Dashboard",
     heroHeadline: "National Daily Execution: 1,42,890 Wards Monitored", heroSub: "Total Shramdaan Hours Logged: 48,20,110 hrs",
     stats: [
       { label: "Cleanliness Target Units (CTUs) Cleared", val1: "9,83,108 Identified", val2: "1,59,292 Cleared", val3: "59,77,214 Citizens", val4: "23,201 Spots", val5: "94.8% Verified" },
       { label: "SafaiMitra Suraksha & Welfare Camps", val1: "1,382 Camps", val2: "8,006 Screened", val3: "2,013 Health Camps", val4: "5,393 PPE Kits", val5: "14,922 Enrolled" },
       { label: "Public Mobilisation & RRR Saturation", val1: "1,05,599 Drives", val2: "592 RRR Centers", val3: "16,769 Green Events", val4: "23,556 Drives", val5: "12,830 Units" }
+    ],
+    elements: [
+      { id: "exec-stat-1", type: "stat", x: 40, y: 720, width: 220, height: 110, metricValue: "98.4%", metricLabel: "Grievances Resolved in 24h", accentColor: "#1e3a8a", zIndex: 12 },
+      { id: "exec-stat-2", type: "stat", x: 280, y: 720, width: 220, height: 110, metricValue: "1,840", metricLabel: "EV Sweepers Deployed", accentColor: "#0284c7", zIndex: 12 },
+      { id: "exec-stat-3", type: "stat", x: 520, y: 720, width: 220, height: 110, metricValue: "100%", metricLabel: "ICCC Fleet Telemetry", accentColor: "#059669", zIndex: 12 }
     ]
   },
   {
-    id: "page-3", type: "hero-1-story", theme: "theme-navy", sectionTitle: "Top Stories of the Day",
+    id: "page-3", type: "hero-1-story", theme: "theme-navy", sectionTitle: "Ministerial Inspection Dispatch",
     stories: [{
       headline: "Hon'ble Minister Reviews Pan-India Sanitation Saturation Drive",
       blurb: "A high-level inter-ministerial review assessed ground-level progress under the Swachhata Hi Seva campaign across state capitals and major municipal corporations. Emphasizing digital geo-tagged verification of eliminated blackspots, senior officials reviewed mechanized sanitation equipment deployment and instructed municipal commissioners to prioritize SafaiMitra healthcare saturation.",
-      images: ["assets/sample3.jpg", "assets/smart_city_fleet.jpg", "assets/sample1.jpg"]
-    }]
+      images: ["assets/smart_city_fleet.jpg", "assets/sample3.jpg", "assets/sample1.jpg"]
+    }],
+    elements: [
+      { id: "exec-quote-1", type: "quote", x: 380, y: 650, width: 370, height: 120, quoteText: "Accountability and ground speed are our core directives across every urban local body.", quoteAuthor: "Cabinet Directive, High-Level Review", accentColor: "#1e3a8a", zIndex: 15 }
+    ]
   },
   {
-    id: "page-4", type: "split-2-story", theme: "theme-navy", sectionTitle: "State & ULB Initiatives",
+    id: "page-4", type: "split-2-story", theme: "theme-navy", sectionTitle: "Inter-State Urban Compliance",
     stories: [
       { headline: "State Administrations Accelerate Zero-Landfill Transformation", blurb: "Chief Secretaries issued unified directives mandating bio-remediation of legacy dumpsites and zero-waste public events across all municipal districts.", images: ["assets/sample6.jpg"] },
       { headline: "District Collectors Mobilize Gram Panchayats for Door-to-Door Saturation", blurb: "Rural development departments achieved 100% daily segregated waste pickup coverage across 42,000 model villages under ODF Plus protocols.", images: ["assets/sample4.jpg"] }
@@ -479,7 +489,7 @@ const EXECUTIVE_5_PACK = [
   }
 ];
 
-// 3. CTU Transformations Special Pack
+// 3. CTU Transformations Special Pack (Before & After Remediation)
 const CTU_SPECIAL_PACK = [
   {
     id: "page-1", type: "cover", theme: "theme-crimson", sectionTitle: "Cover Page",
@@ -487,16 +497,7 @@ const CTU_SPECIAL_PACK = [
     images: ["assets/sample10.jpg", "assets/sample6.jpg", "assets/green_earth_park.jpg"], isLocked: true
   },
   {
-    id: "page-2", type: "snapshot", theme: "theme-crimson", sectionTitle: "Overall Snapshot",
-    heroHeadline: "Total CTUs Identified: 9,83,108", heroSub: "CTUs Successfully Transformed: 1,59,292",
-    stats: [
-      { label: "Legacy Waste Dumpsites Cleared", val1: "12,410 Sites", val2: "84,000 Tonnes", val3: "4,200 Machinery Units", val4: "1,200 Ward Teams", val5: "High Impact" },
-      { label: "Public Transit Blackspots Restored", val1: "45,210 Cleaned", val2: "32,100 Beautified", val3: "18,500 Painted Walls", val4: "9,800 Plantations", val5: "Sustainable" },
-      { label: "Citizen Cleanliness Pledges at CTUs", val1: "62,400 Pledges", val2: "4,800 MoUs Signed", val3: "12,000 Bins Installed", val4: "98% No Re-dump", val5: "Strict Vigil" }
-    ]
-  },
-  {
-    id: "page-3", type: "ctu-transformation", theme: "theme-crimson", sectionTitle: "CTU Transformations in Focus", pairCount: 2,
+    id: "page-2", type: "ctu-transformation", theme: "theme-crimson", sectionTitle: "Major Urban CTU Transformations", pairCount: 2,
     ctuPairs: [
       {
         title: "Somnath Community Hall Vicinity Transformation (Ward 17)",
@@ -515,10 +516,10 @@ const CTU_SPECIAL_PACK = [
     ]
   },
   {
-    id: "page-4", type: "ctu-transformation", theme: "theme-crimson", sectionTitle: "CTU Transformations in Focus", pairCount: 2,
+    id: "page-3", type: "ctu-transformation", theme: "theme-crimson", sectionTitle: "Transit & Waterfront Cleanliness Units", pairCount: 2,
     ctuPairs: [
       {
-        title: "Railway Approach Road Blackspot Remediated into Garden",
+        title: "Railway Approach Road Blackspot Remediated into Public Walkway",
         location: "Tirupati, Andhra Pradesh",
         beforeImg: "assets/sample10.jpg", afterImg: "assets/green_earth_park.jpg",
         beforeDate: "14th Sept", afterDate: "20th Sept",
@@ -534,11 +535,165 @@ const CTU_SPECIAL_PACK = [
     ]
   },
   {
-    id: "page-5", type: "visit-us", theme: "theme-crimson", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
+    id: "page-4", type: "snapshot", theme: "theme-crimson", sectionTitle: "Transformation Impact Analytics",
+    heroHeadline: "Total CTUs Identified: 9,83,108", heroSub: "CTUs Successfully Transformed: 1,59,292",
+    stats: [
+      { label: "Legacy Waste Dumpsites Cleared", val1: "12,410 Sites", val2: "84,000 Tonnes", val3: "4,200 Machinery Units", val4: "1,200 Ward Teams", val5: "High Impact" },
+      { label: "Public Transit Blackspots Restored", val1: "45,210 Cleaned", val2: "32,100 Beautified", val3: "18,500 Painted Walls", val4: "9,800 Plantations", val5: "Sustainable" },
+      { label: "Citizen Cleanliness Pledges at CTUs", val1: "62,400 Pledges", val2: "4,800 MoUs Signed", val3: "12,000 Bins Installed", val4: "98% No Re-dump", val5: "Strict Vigil" }
+    ],
+    elements: [
+      { id: "ctu-stat-1", type: "stat", x: 40, y: 720, width: 340, height: 110, metricValue: "1,59,292", metricLabel: "Total Blackspots Permanently Cleaned", accentColor: "#dc2626", zIndex: 12 },
+      { id: "ctu-stat-2", type: "stat", x: 410, y: 720, width: 340, height: 110, metricValue: "84,000 MT", metricLabel: "Legacy Rubble Re-utilized as Paving", accentColor: "#16a34a", zIndex: 12 }
+    ]
   }
 ];
 
-// 4. Green Earth & Circular Economy Pack
+// 4. Swachhata in Lens (Photojournalism Masonry)
+const PHOTOJOURNALISM_PACK = [
+  {
+    id: "page-1", type: "cover", theme: "theme-slate", sectionTitle: "Cover Page",
+    coverTitle: "Swachhata In Lens\\nVisual Chronicle", coverYear: "2026", coverBadge: "Photojournalism", coverDate: "20th September, 2026",
+    images: ["assets/jal_shakti_river.jpg", "assets/green_earth_park.jpg", "assets/smart_city_fleet.jpg"], isLocked: true
+  },
+  {
+    id: "page-2", type: "spotlight-6", theme: "theme-slate", sectionTitle: "Ground Action in Focus (Masonry)",
+    images: [
+      "assets/sample1.jpg", "assets/safaimitra_welfare.jpg", "assets/sample3.jpg",
+      "assets/green_earth_park.jpg", "assets/sample4.jpg", "assets/smart_city_fleet.jpg"
+    ]
+  },
+  {
+    id: "page-3", type: "hero-1-story", theme: "theme-slate", sectionTitle: "Human Dignity & Field Portrayal",
+    stories: [{
+      headline: "The Unsung Custodians of Dawn: A Portrait of Municipal Dedication",
+      blurb: "Captured in the golden morning light, sanitation workers operate motorized sweepers along heritage avenues before city traffic begins. Their synchronized efforts ensure that millions wake up to pristine public squares, exemplifying the quiet dignity and relentless commitment that underpins urban life across modern India.",
+      images: ["assets/safaimitra_welfare.jpg", "assets/sample1.jpg", "assets/sample6.jpg"]
+    }],
+    elements: [
+      { id: "lens-quote-1", type: "quote", x: 380, y: 620, width: 370, height: 130, quoteText: "Every sweep before dawn is a testament to national pride and quiet heroism.", quoteAuthor: "Photojournalism Special Dispatch", accentColor: "#475569", zIndex: 15 }
+    ]
+  },
+  {
+    id: "page-4", type: "visit-us", theme: "theme-slate", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
+  }
+];
+
+// 5. Modern Bureaucratic Magazine Pack (2-Column Editorial)
+const MAGAZINE_PACK = [
+  {
+    id: "page-1", type: "cover", theme: "theme-cyan", sectionTitle: "Cover Page",
+    coverTitle: "Bureaucratic\\nReview & Digest", coverYear: "2026", coverBadge: "Special Magazine Edition", coverDate: "20th September, 2026",
+    images: ["assets/smart_city_fleet.jpg", "assets/sample1.jpg", "assets/green_earth_park.jpg"], isLocked: true
+  },
+  {
+    id: "page-2", type: "magazine-2col", theme: "theme-cyan", sectionTitle: "Editorial Column",
+    headline: "Transforming Civic Habits: The Paradigm Shift in Urban Solid Waste",
+    byline: "Special Correspondent, Bureaucratic Review",
+    pullquote: "Cleanliness is neither an isolated event nor a top-down mandate; it is a living civic habit that defines our collective national future.",
+    images: ["assets/smart_city_fleet.jpg"]
+  },
+  {
+    id: "page-3", type: "split-2-story", theme: "theme-cyan", sectionTitle: "Municipal Innovations",
+    stories: [
+      { headline: "Decentralized Biomethanation Plants Power Street Lighting in 14 Wards", blurb: "City administrations installed automated biomethanation digesters processing wholesale vegetable waste into green biogas electricity, offsetting municipal power grids.", images: ["assets/sample6.jpg"] },
+      { headline: "Zero-Plastic Bazaars: 50,000 Cloth Bags Distributed by Women SHGs", blurb: "Local women cooperatives set up eco-stalls replacing thin polythene carry bags with washable cotton totes across vegetable and grain markets.", images: ["assets/sample4.jpg"] }
+    ]
+  },
+  {
+    id: "page-4", type: "visit-us", theme: "theme-cyan", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
+  }
+];
+
+// 6. Jan Andolan: Citizen Mobilization & Social Wall Pack
+const JAN_ANDOLAN_PACK = [
+  {
+    id: "page-1", type: "cover", theme: "theme-saffron", sectionTitle: "Cover Page",
+    coverTitle: "Jan Andolan\\nSwachhata", coverYear: "2026", coverBadge: "Citizen Champions", coverDate: "20th September, 2026",
+    images: ["assets/sample4.jpg", "assets/sample1.jpg", "assets/sample3.jpg"], isLocked: true
+  },
+  {
+    id: "page-2", type: "social-wall", theme: "theme-saffron", sectionTitle: "Jan Andolan Social Wall"
+  },
+  {
+    id: "page-3", type: "spotlight-6", theme: "theme-saffron", sectionTitle: "Mass Action Photo Gallery",
+    images: [
+      "assets/sample4.jpg", "assets/sample1.jpg", "assets/sample6.jpg",
+      "assets/green_earth_park.jpg", "assets/sample3.jpg", "assets/jal_shakti_river.jpg"
+    ]
+  },
+  {
+    id: "page-4", type: "split-2-story", theme: "theme-saffron", sectionTitle: "Grassroots Movements",
+    stories: [
+      { headline: "Yuva Cyclothon Covers 35 Kilometers Spreading Segregation Awareness", blurb: "Over 2,500 college athletes cycled through residential sectors waving informative placards on 2-bin segregation.", images: ["assets/sample4.jpg"] },
+      { headline: "College Fine Arts Students Transform 2,000 Meters of Broken Boundary Walls with Murals", blurb: "Vibrant traditional Warli and Madhubani murals now adorn former garbage blackspots, deterring future public dumping.", images: ["assets/sample6.jpg"] }
+    ]
+  },
+  {
+    id: "page-5", type: "visit-us", theme: "theme-saffron", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
+  }
+];
+
+// 7. Official Gazette Order & Administrative Circular Pack
+const GAZETTE_PACK = [
+  {
+    id: "page-1", type: "gazette", theme: "theme-slate", sectionTitle: "Official Notification",
+    orderNo: "Q-11015/2026-SBM-U",
+    orderDate: "20th September, 2026",
+    orderTitle: "NOTIFICATION: STATUTORY DIRECTIVE ON MASS SHRAMDAAN, ZERO BLACKSPOTS & CTU REMEDIATION",
+    signatory: "Joint Secretary to Government of India"
+  },
+  {
+    id: "page-2", type: "snapshot", theme: "theme-navy", sectionTitle: "Statutory Compliance Matrix",
+    heroHeadline: "Inter-State Urban Compliance: 100% Wards Notified", heroSub: "Total Monitored Municipal Bodies: 4,820 ULBs",
+    stats: [
+      { label: "Mandatory Source Segregation Bylaws Enforced", val1: "4,820 ULBs", val2: "100% Coverage", val3: "Fines Imposed", val4: "Commercial Audited", val5: "Strict Vigil" },
+      { label: "SafaiMitra Welfare & Health Insurance Saturation", val1: "1,84,320 Workers", val2: "99.8% Enrolled", val3: "Zero Delay", val4: "Full Saturation", val5: "Audited" },
+      { label: "Elimination of Open Rubble & Plastic Dumping", val1: "9,83,108 CTUs", val2: "84% Target Met", val3: "Geo-tagged", val4: "Verified by Collectors", val5: "Clean" }
+    ]
+  },
+  {
+    id: "page-3", type: "visit-us", theme: "theme-slate", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
+  }
+];
+
+// 8. SafaiMitra Suraksha & Welfare Honor Roll Pack
+const SAFAIMITRA_PACK = [
+  {
+    id: "page-1", type: "cover", theme: "theme-purple", sectionTitle: "Cover Page",
+    coverTitle: "SafaiMitra Suraksha\\nEvam Samman", coverYear: "2026", coverBadge: "Worker Dignity", coverDate: "20th September, 2026",
+    images: ["assets/safaimitra_welfare.jpg", "assets/sample3.jpg", "assets/sample1.jpg"], isLocked: true
+  },
+  {
+    id: "page-2", type: "snapshot", theme: "theme-purple", sectionTitle: "Welfare & Preventive Healthcare",
+    heroHeadline: "SafaiMitras Screened in Health Camps: 1,84,320", heroSub: "Personal Protective Equipment (PPE) Distributed: 2,15,000 Kits",
+    stats: [
+      { label: "Preventive Healthcare & Eye Screenings", val1: "2,410 Camps Held", val2: "1,84,320 Workers", val3: "42,000 Glasses Given", val4: "Free Meds", val5: "Full Saturation" },
+      { label: "Ayushman Bharat Golden Card Coverage", val1: "99.8% Workers Enrolled", val2: "Rs 5 Lakh Cover", val3: "Zero Out-of-Pocket", val4: "Full Family", val5: "Dignity" },
+      { label: "100% Mechanized Cleaning Transition", val1: "1,200 Suction Trucks", val2: "340 Robotic Units", val3: "Zero Manual Entry", val4: "Certified Ops", val5: "Life Safety" }
+    ],
+    elements: [
+      { id: "safai-stat-1", type: "stat", x: 40, y: 720, width: 340, height: 110, metricValue: "2,15,000", metricLabel: "Safety PPE Kits Handed Over", accentColor: "#7c3aed", zIndex: 12 },
+      { id: "safai-stat-2", type: "stat", x: 410, y: 720, width: 340, height: 110, metricValue: "Zero", metricLabel: "Hazardous Manual Cleaning Incidents", accentColor: "#059669", zIndex: 12 }
+    ]
+  },
+  {
+    id: "page-3", type: "hero-1-story", theme: "theme-purple", sectionTitle: "SafaiMitra Dignity Spotlight",
+    stories: [{
+      headline: "SafaiMitra Samman Samaroh Honors 1,200 Frontline Sanitation Champions",
+      blurb: "In a dedicated civic ceremony, municipal leadership awarded certificates of distinction, comprehensive healthcare kits, and full Ayushman Bharat golden cards to frontline sanitation workers. The administration highlighted the transition to 100% mechanized sewer entry, strictly enforcing zero hazardous manual cleaning protocols across all wards.",
+      images: ["assets/safaimitra_welfare.jpg", "assets/sample3.jpg", "assets/sample1.jpg"]
+    }],
+    elements: [
+      { id: "safai-quote-1", type: "quote", x: 380, y: 640, width: 370, height: 120, quoteText: "SafaiMitras are the bedrock of urban public health; their safety and honor are non-negotiable.", quoteAuthor: "Municipal Commissioner, Civic Address", accentColor: "#7c3aed", zIndex: 15 }
+    ]
+  },
+  {
+    id: "page-4", type: "visit-us", theme: "theme-purple", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
+  }
+];
+
+// 9. Green Earth & Circular Economy Pack
 const GREEN_EARTH_PACK = [
   {
     id: "page-1", type: "cover", theme: "theme-emerald", sectionTitle: "Cover Page",
@@ -546,7 +701,7 @@ const GREEN_EARTH_PACK = [
     images: ["assets/green_earth_park.jpg", "assets/sample6.jpg", "assets/sample4.jpg"], isLocked: true
   },
   {
-    id: "page-2", type: "snapshot", theme: "theme-emerald", sectionTitle: "Overall Snapshot",
+    id: "page-2", type: "snapshot", theme: "theme-emerald", sectionTitle: "Circular Economy Saturation",
     heroHeadline: "Total Green Shramdaan Volunteers: 28,45,190", heroSub: "Trees Planted ('Ek Ped Maa Ke Naam'): 14,20,500 Saplings",
     stats: [
       { label: "RRR Centers (Reduce, Reuse, Recycle)", val1: "12,410 Centers", val2: "1,84,000 Tonnes Goods", val3: "92,000 Beneficiaries", val4: "4,200 Wards", val5: "Zero Waste" },
@@ -555,7 +710,7 @@ const GREEN_EARTH_PACK = [
     ]
   },
   {
-    id: "page-3", type: "hero-1-story", theme: "theme-emerald", sectionTitle: "Top Stories of the Day",
+    id: "page-3", type: "hero-1-story", theme: "theme-emerald", sectionTitle: "Waste-to-Wealth Spotlight",
     stories: [{
       headline: "Vrindavan Waste-to-Wealth Eco-Park Restores 12-Acre Municipal Dumpsite",
       blurb: "A former 12-acre municipal open dump has been miraculously transformed into the Vrindavan Waste-to-Wealth Public Eco-Park. Featuring life-sized artistic sculptures crafted entirely from scrap tyres, decommissioned street poles, and discarded scrap metal, the facility also includes a 5 TPD on-site organic composting reactor powering botanical nurseries and public gardens.",
@@ -563,200 +718,7 @@ const GREEN_EARTH_PACK = [
     }]
   },
   {
-    id: "page-4", type: "split-2-story", theme: "theme-emerald", sectionTitle: "State & ULB Initiatives",
-    stories: [
-      { headline: "Decentralized Biomethanation Plants Power Street Lighting in 14 Wards", blurb: "City administrations installed automated biomethanation digesters processing food waste from wholesale markets into green biogas electricity.", images: ["assets/sample6.jpg"] },
-      { headline: "Zero-Plastic Bazaars: 50,000 Cloth Bags Distributed by Women SHGs", blurb: "Local women cooperatives set up eco-stalls replacing thin polythene carry bags with washable cotton totes across vegetable and grain markets.", images: ["assets/sample4.jpg"] }
-    ]
-  },
-  {
-    id: "page-5", type: "standard-3-story", theme: "theme-emerald", sectionTitle: "Citizen Participation",
-    stories: [
-      { headline: "School Eco-Clubs Champion Seedball Preparation Across 120 Campuses", blurb: "Students rolled 1.2 lakh native tree seedballs to be dispersed along dry hillsides and highway medians during seasonal monsoon showers.", images: ["assets/sample4.jpg"] },
-      { headline: "Construction & Demolition Waste Processed into Eco-Bricks for Sidewalks", blurb: "Municipal recycling mills pulverized 8,000 tonnes of concrete debris into certified paving bricks for city footpaths.", images: ["assets/green_earth_park.jpg"] },
-      { headline: "Green Sunday Community Drive Cleans and Rejuvenates Urban Orchards", blurb: "Over 4,000 citizen volunteers cleared wild weeds, mulched trees with compost, and established drip irrigation rings in civic botanical gardens.", images: ["assets/sample6.jpg"] }
-    ]
-  },
-  {
-    id: "page-6", type: "visit-us", theme: "theme-emerald", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
-  }
-];
-
-// 5. Smart City & Municipal Ops Pack
-const SMART_CITY_PACK = [
-  {
-    id: "page-1", type: "cover", theme: "theme-indigo", sectionTitle: "Cover Page",
-    coverTitle: "Smart City &\\nMunicipal Ops", coverYear: "2026", coverBadge: "Urban Governance", coverDate: "20th September, 2026",
-    images: ["assets/smart_city_fleet.jpg", "assets/sample1.jpg", "assets/sample6.jpg"], isLocked: true
-  },
-  {
-    id: "page-2", type: "snapshot", theme: "theme-indigo", sectionTitle: "Overall Snapshot",
-    heroHeadline: "Urban Waste Segregation at Source: 92.4%", heroSub: "Active Mechanized Sweeping Fleet: 1,840 Units",
-    stats: [
-      { label: "Mechanized Night Sweeping Coverage", val1: "4,820 km Arterials", val2: "100% Dust Free", val3: "98.2% Vehicle Uptime", val4: "GPS Tracked", val5: "PM10 Reduced" },
-      { label: "Automated Material Recovery Facilities (MRF)", val1: "420 Mega MRFs", val2: "18,400 Tonnes/Day", val3: "94% Dry Sorted", val4: "Baling Plants", val5: "Zero Landfill" },
-      { label: "Integrated Command & Control Center (ICCC)", val1: "24,000 IoT Sensors", val2: "99.4% Bin Compliance", val3: "3,200 Tiper Fleets", val4: "RFID Tracked", val5: "Real-time" }
-    ]
-  },
-  {
-    id: "page-3", type: "hero-1-story", theme: "theme-indigo", sectionTitle: "Top Stories of the Day",
-    stories: [{
-      headline: "Naya Raipur Municipal Corporation Launches 100% Electric Sweeping Fleet",
-      blurb: "To achieve zero-emission municipal maintenance, the city administration inducted 45 high-capacity all-electric street sweepers and GPS-linked secondary collection tippers. The mechanized fleet operates on a 24x7 scheduled grid, drastically cutting airborne particulate pollution (PM10) along arterial avenues while improving operator ergonomic safety.",
-      images: ["assets/smart_city_fleet.jpg", "assets/sample1.jpg", "assets/sample3.jpg"]
-    }]
-  },
-  {
-    id: "page-4", type: "split-2-story", theme: "theme-indigo", sectionTitle: "State & ULB Initiatives",
-    stories: [
-      { headline: "Command & Control Center (ICCC) Integrates Real-time Bin Fill Sensors", blurb: "Ultrasonic sensors fitted inside communal bins trigger automated dispatch alerts to nearby compactor trucks once levels hit 80% volume.", images: ["assets/smart_city_fleet.jpg"] },
-      { headline: "Mechanized Night Cleaning Drive Sanitizes High-Density Commercial Corridors", blurb: "Water recycling vacuum sweepers and scrubbers sanitized 14 central bazaar corridors during zero-traffic night hours.", images: ["assets/sample6.jpg"] }
-    ]
-  },
-  {
-    id: "page-5", type: "visit-us", theme: "theme-indigo", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
-  }
-];
-
-// 6. Jan Andolan: Citizen Mobilization & Youth Action Pack
-const JAN_ANDOLAN_PACK = [
-  {
-    id: "page-1", type: "cover", theme: "theme-saffron", sectionTitle: "Cover Page",
-    coverTitle: "Jan Andolan\\nSwachhata", coverYear: "2026", coverBadge: "Citizen Champions", coverDate: "20th September, 2026",
-    images: ["assets/sample4.jpg", "assets/sample1.jpg", "assets/sample3.jpg"], isLocked: true
-  },
-  {
-    id: "page-2", type: "snapshot", theme: "theme-saffron", sectionTitle: "Overall Snapshot",
-    heroHeadline: "Total Youth & Citizen Volunteers: 1,12,40,900", heroSub: "Swachhata Pledges Taken: 78,50,000 Citizens",
-    stats: [
-      { label: "Community Shramdaan Drives Executed", val1: "1,05,599 Drives", val2: "4.8 Crore Hours", val3: "24,000 Wards", val4: "58,000 Villages", val5: "Mass Action" },
-      { label: "Swachhata Cyclothons & Marathons", val1: "8,420 Cyclothons", val2: "14,20,000 Runners", val3: "98,000 km Covered", val4: "Zero Waste Events", val5: "High Spirit" },
-      { label: "School & College Student Campaigns", val1: "69,928 Paathshalas", val2: "1.2 Crore Students", val3: "45,000 Murals", val4: "18,000 Plays", val5: "Youth Energy" }
-    ]
-  },
-  {
-    id: "page-3", type: "hero-1-story", theme: "theme-saffron", sectionTitle: "Top Stories of the Day",
-    stories: [{
-      headline: "Mass Shramdaan Mobilizes 65,000 Volunteers for Historic Heritage Cleanliness Drive",
-      blurb: "From school students and NCC cadets to senior citizen forums and residential welfare associations, citizens assembled at dawn to execute comprehensive shramdaan across public squares, heritage monument approaches, and central marketplaces. The massive community collective demonstrated that cleanliness is fundamentally a shared cultural value.",
-      images: ["assets/sample4.jpg", "assets/sample1.jpg", "assets/sample6.jpg"]
-    }]
-  },
-  {
-    id: "page-4", type: "split-2-story", theme: "theme-saffron", sectionTitle: "Citizen Participation",
-    stories: [
-      { headline: "Yuva Cyclothon Covers 35 Kilometers Spreading Segregation Awareness", blurb: "Over 2,500 college athletes cycled through residential sectors waving informative placards on 2-bin segregation.", images: ["assets/sample4.jpg"] },
-      { headline: "College Fine Arts Students Transform 2,000 Meters of Broken Boundary Walls with Murals", blurb: "Vibrant traditional Warli and Madhubani murals now adorn former garbage blackspots, deterring future public dumping.", images: ["assets/sample6.jpg"] }
-    ]
-  },
-  {
-    id: "page-5", type: "standard-3-story", theme: "theme-saffron", sectionTitle: "Citizen Participation",
-    stories: [
-      { headline: "Market Welfare Associations Pledge 100% Ban on Single-Use Plastic Bags", blurb: "Commercial trader bodies unanimously agreed to enforce cloth-bag-only policies, fining violators internally.", images: ["assets/sample1.jpg"] },
-      { headline: "Self-Help Groups Lead Home Composting Masterclasses in 40 Residential Societies", blurb: "Urban housewives were trained in aerated terra-cotta bio-composters, turning daily vegetable trimmings into rich black soil.", images: ["assets/sample4.jpg"] },
-      { headline: "Ploggers Jog & Clean: 18 Tonnes of Plastic Waste Recovered Along Foothill Trails", blurb: "Fitness enthusiasts combined cardiovascular jogging with litter cleanup, collecting thousands of discarded snack wrappers.", images: ["assets/green_earth_park.jpg"] }
-    ]
-  },
-  {
-    id: "page-6", type: "visit-us", theme: "theme-saffron", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
-  }
-];
-
-// 7. SafaiMitra Suraksha & Welfare Special Pack
-const SAFAIMITRA_PACK = [
-  {
-    id: "page-1", type: "cover", theme: "theme-purple", sectionTitle: "Cover Page",
-    coverTitle: "SafaiMitra Suraksha\\nEvam Samman", coverYear: "2026", coverBadge: "Worker Dignity", coverDate: "20th September, 2026",
-    images: ["assets/safaimitra_welfare.jpg", "assets/sample3.jpg", "assets/sample1.jpg"], isLocked: true
-  },
-  {
-    id: "page-2", type: "snapshot", theme: "theme-purple", sectionTitle: "Overall Snapshot",
-    heroHeadline: "SafaiMitras Screened in Health Camps: 1,84,320", heroSub: "Personal Protective Equipment (PPE) Distributed: 2,15,000 Kits",
-    stats: [
-      { label: "Preventive Healthcare & Eye Screenings", val1: "2,410 Camps Held", val2: "1,84,320 Workers", val3: "42,000 Glasses Given", val4: "Free Meds", val5: "Full Saturation" },
-      { label: "Ayushman Bharat Golden Card Coverage", val1: "99.8% Workers Enrolled", val2: "Rs 5 Lakh Cover", val3: "Zero Out-of-Pocket", val4: "Full Family", val5: "Dignity" },
-      { label: "100% Mechanized Cleaning Transition", val1: "1,200 Suction Trucks", val2: "340 Robotic Units", val3: "Zero Manual Entry", val4: "Certified Ops", val5: "Life Safety" }
-    ]
-  },
-  {
-    id: "page-3", type: "hero-1-story", theme: "theme-purple", sectionTitle: "Top Stories of the Day",
-    stories: [{
-      headline: "SafaiMitra Samman Samaroh Honors 1,200 Frontline Sanitation Champions",
-      blurb: "In a dedicated civic ceremony, municipal leadership awarded certificates of distinction, comprehensive healthcare kits, and full Ayushman Bharat golden cards to frontline sanitation workers. The administration highlighted the transition to 100% mechanized sewer entry, strictly enforcing zero hazardous manual cleaning protocols across all wards.",
-      images: ["assets/safaimitra_welfare.jpg", "assets/sample3.jpg", "assets/sample1.jpg"]
-    }]
-  },
-  {
-    id: "page-4", type: "split-2-story", theme: "theme-purple", sectionTitle: "SafaiMitra Welfare & Dignity",
-    stories: [
-      { headline: "Robotic Manhole Scavenging Units Deployed Across Core Sewer Network", blurb: "Compact robotic entry machines with high-definition optical sensors and mechanized grabbers now service deep underground junctions.", images: ["assets/safaimitra_welfare.jpg"] },
-      { headline: "Free Preventive Health Screenings Saturation Reaches 100% Municipal Workforce", blurb: "Specialized occupational pulmonologists and dermatologists conducted extensive health profiles for all municipal cleaning personnel.", images: ["assets/smart_city_fleet.jpg"] }
-    ]
-  },
-  {
-    id: "page-5", type: "visit-us", theme: "theme-purple", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
-  }
-];
-
-// 8. Jal Shakti & Coastal Cleanliness Pack
-const JAL_SHAKTI_PACK = [
-  {
-    id: "page-1", type: "cover", theme: "theme-cyan", sectionTitle: "Cover Page",
-    coverTitle: "Jal Shakti &\\nCoastal Swachhata", coverYear: "2026", coverBadge: "Clean Rivers & Seas", coverDate: "20th September, 2026",
-    images: ["assets/jal_shakti_river.jpg", "assets/sample3.jpg", "assets/sample1.jpg"], isLocked: true
-  },
-  {
-    id: "page-2", type: "snapshot", theme: "theme-cyan", sectionTitle: "Overall Snapshot",
-    heroHeadline: "Kilometers of Coastline Cleaned: 4,820 km", heroSub: "Water Bodies & Ghats Rejuvenated: 16,340 Sites",
-    stats: [
-      { label: "Coastal Marine Plastic Debris Diverted", val1: "8,420 Tonnes", val2: "18 Harbors", val3: "4,200 Scuba Dives", val4: "Fishermen Incentivized", val5: "Ocean Recovery" },
-      { label: "Riverfront Ghats Sanitized (Namami Gange)", val1: "1,240 Ghats", val2: "45 Rivers", val3: "High-Pressure Jets", val4: "Trash Skimmers", val5: "Sparkling" },
-      { label: "Urban Wetlands & Lake Conservation", val1: "2,840 Water Bodies", val2: "De-silted", val3: "Aeration Fountains", val4: "Bio-fencing", val5: "Ecosystem Revived" }
-    ]
-  },
-  {
-    id: "page-3", type: "hero-1-story", theme: "theme-cyan", sectionTitle: "Top Stories of the Day",
-    stories: [{
-      headline: "Sunrise Ghat Sanitization & River Cleanup Drives Rejuvenate Sacred Waters",
-      blurb: "At dawn along historic riverfront stone steps, municipal task forces and volunteer pilgrims united to sweep, sanitize, and de-silt riverbanks. Utilizing floating trash skimmers and biodegradable collection baskets, hundreds of kilograms of floral and plastic waste were collected and diverted directly to localized bio-composting pits.",
-      images: ["assets/jal_shakti_river.jpg", "assets/sample3.jpg", "assets/sample1.jpg"]
-    }]
-  },
-  {
-    id: "page-4", type: "split-2-story", theme: "theme-cyan", sectionTitle: "Jal Shakti Initiatives",
-    stories: [
-      { headline: "Scuba Divers & Fishermen Divert 15 Tonnes of Ghost Fishing Nets at Coastal Harbor", blurb: "Deep-sea divers freed coral reefs and underwater marine life from abandoned commercial nylon netting off the eastern coastline.", images: ["assets/sample3.jpg"] },
-      { headline: "Wetland Bio-remediation Project Restores Natural Water Quality in Urban Lake Basin", blurb: "Engineered reed beds and floating wetland islands effectively filtered urban stormwater runoff before entering the reservoir.", images: ["assets/jal_shakti_river.jpg"] }
-    ]
-  },
-  {
-    id: "page-5", type: "visit-us", theme: "theme-cyan", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
-  }
-];
-
-// 9. Swachhata in Lens (Photojournalism Spotlight Pack)
-const PHOTOJOURNALISM_PACK = [
-  {
-    id: "page-1", type: "cover", theme: "theme-slate", sectionTitle: "Cover Page",
-    coverTitle: "Swachhata In Lens\\nVisual Chronicle", coverYear: "2026", coverBadge: "Photojournalism", coverDate: "20th September, 2026",
-    images: ["assets/jal_shakti_river.jpg", "assets/green_earth_park.jpg", "assets/smart_city_fleet.jpg"], isLocked: true
-  },
-  {
-    id: "page-2", type: "spotlight-6", theme: "theme-slate", sectionTitle: "Ground Action in Focus",
-    images: [
-      "assets/sample1.jpg", "assets/safaimitra_welfare.jpg", "assets/sample3.jpg",
-      "assets/green_earth_park.jpg", "assets/sample4.jpg", "assets/smart_city_fleet.jpg"
-    ]
-  },
-  {
-    id: "page-3", type: "spotlight-6", theme: "theme-slate", sectionTitle: "Community Spirit & Transformations",
-    images: [
-      "assets/jal_shakti_river.jpg", "assets/sample6.jpg", "assets/sample10.jpg",
-      "assets/sample1.jpg", "assets/sample4.jpg", "assets/safaimitra_welfare.jpg"
-    ]
-  },
-  {
-    id: "page-4", type: "visit-us", theme: "theme-slate", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
+    id: "page-4", type: "visit-us", theme: "theme-emerald", sectionTitle: "Back Cover", visitText: "VISIT US", isLocked: true
   }
 ];
 
@@ -800,15 +762,24 @@ const HINDI_STANDARD_PACK = [
 // 11. Fast Field Flash (Single-Page Breaking Dispatch Pack)
 const FAST_FLASH_PACK = [
   {
-    id: "page-1", type: "hero-1-story", theme: "theme-crimson", sectionTitle: "Breaking Action: Daily Field Flash",
+    id: "page-1", type: "hero-1-story", theme: "theme-crimson", sectionTitle: "⚡ Urgent Field Flash: Daily Dispatch",
     stories: [{
       headline: "Rapid Action: 100-Hour Continuous Deep Clean Achieves Zero-Garbage Blackspots",
       blurb: "In an emergency 100-hour multi-ward cleanliness saturation drive, municipal quick-response sanitation teams cleared 34 persistent roadside waste dumps, installed 120 ornamental planters, and permanently eliminated vector breeding grounds. Citizen monitoring squads have taken charge of daily maintenance to ensure sustainable outcomes.",
       images: ["assets/green_earth_park.jpg", "assets/smart_city_fleet.jpg", "assets/sample6.jpg"]
     }],
+    elements: [
+      { id: "flash-stat-1", type: "stat", x: 40, y: 720, width: 220, height: 110, metricValue: "100 Hrs", metricLabel: "Continuous Drive", accentColor: "#e11d48", zIndex: 12 },
+      { id: "flash-stat-2", type: "stat", x: 280, y: 720, width: 220, height: 110, metricValue: "34 Spots", metricLabel: "Cleared & Remediated", accentColor: "#059669", zIndex: 12 },
+      { id: "flash-stat-3", type: "stat", x: 520, y: 720, width: 220, height: 110, metricValue: "100%", metricLabel: "Collector Approved", accentColor: "#1e3a8a", zIndex: 12 }
+    ],
     isLocked: false
   }
 ];
+
+// Compatibility aliases
+const SMART_CITY_PACK = MAGAZINE_PACK;
+const JAL_SHAKTI_PACK = MAGAZINE_PACK;
 
 const DEFAULT_SEGMENTS_POOL = [
   {
@@ -1231,6 +1202,39 @@ function initEventHandlers() {
     openExportModal();
   });
 
+  // PowerPoint Freeform Insert Element Tools
+  document.getElementById("btnInsertFloatingText")?.addEventListener("click", () => {
+    addNewElementToPage(activePageIndex, "text", 100, 160);
+  });
+  document.getElementById("btnInsertFloatingPhoto")?.addEventListener("click", () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = async (ev) => {
+          const compressed = await compressImage(ev.target.result, 1200, 1200);
+          const ref = await storeImage(compressed);
+          addNewElementToPage(activePageIndex, "photo", 120, 180, { src: ref });
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  });
+  document.getElementById("btnInsertFloatingMetric")?.addEventListener("click", () => {
+    addNewElementToPage(activePageIndex, "stat", 80, 200);
+  });
+  document.getElementById("btnInsertFloatingQuote")?.addEventListener("click", () => {
+    addNewElementToPage(activePageIndex, "quote", 60, 220);
+  });
+  document.getElementById("btnInsertFloatingLogos")?.addEventListener("click", () => {
+    addNewElementToPage(activePageIndex, "logos", 38, 20);
+  });
+  document.getElementById("btnInsertBlankSlide")?.addEventListener("click", insertBlankSlide);
+
   // Save / Draft Actions (Ribbon — direct buttons, no dropdowns)
   document.getElementById("btnSaveDraftJson").addEventListener("click", downloadDraftJson);
   document.getElementById("btnSaveAsTemplate").addEventListener("click", openSaveTemplateModal);
@@ -1322,6 +1326,18 @@ function initEventHandlers() {
   document.getElementById("customLogoUploader").addEventListener("change", handleCustomLogoUpload);
   document.getElementById("btnClearCustomLogo").addEventListener("click", clearCustomLogo);
 
+  // Position and Size buttons
+  document.querySelectorAll(".logo-pos-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setLogoPosition(btn.getAttribute("data-pos"));
+    });
+  });
+  document.querySelectorAll(".logo-size-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setLogoSize(btn.getAttribute("data-size"));
+    });
+  });
+
   // AI Modal & Key Banner
   document.getElementById("btnOpenAIModal").addEventListener("click", () => {
     updateGeminiStatusUI();
@@ -1393,10 +1409,21 @@ function initEventHandlers() {
     } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "n") {
       e.preventDefault();
       openWelcomeModal();
+    } else if (selectedElementInfo && !isInputFocused() && (e.key === "Delete" || e.key === "Backspace")) {
+      e.preventDefault();
+      deleteElement(selectedElementInfo.pIdx, selectedElementInfo.id);
+    } else if (selectedElementInfo && !isInputFocused() && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "d") {
+      e.preventDefault();
+      duplicateElement(selectedElementInfo.pIdx, selectedElementInfo.id);
+    } else if (selectedElementInfo && !isInputFocused() && e.key.startsWith("Arrow")) {
+      e.preventDefault();
+      const step = e.shiftKey ? 10 : 2;
+      nudgeElement(selectedElementInfo.pIdx, selectedElementInfo.id, e.key, step);
     } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "d") {
       e.preventDefault();
       duplicatePage(activePageIndex);
     } else if (e.key === "Escape") {
+      deselectAllElements();
       document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
       document.querySelectorAll(".dropdown").forEach(d => d.classList.remove("open"));
     } else if (e.key === "?" && !isInputFocused()) {
@@ -1687,6 +1714,542 @@ function movePage(index, dir) {
   scrollToPage(activePageIndex);
 }
 
+function insertBlankSlide() {
+  pushState();
+  const newPage = {
+    id: "p-" + Date.now(),
+    type: "blank",
+    theme: bulletin.pages[activePageIndex]?.theme || "theme-blue",
+    sectionTitle: "Custom Slide",
+    elements: [
+      {
+        id: "el-" + Date.now() + "-title",
+        type: "text",
+        x: 60,
+        y: 130,
+        width: 674,
+        height: 60,
+        content: "Enter Slide Title Here",
+        fontSize: 26,
+        fontWeight: "800",
+        color: "#0f172a",
+        bgColor: "transparent",
+        zIndex: 10
+      },
+      {
+        id: "el-" + Date.now() + "-sub",
+        type: "text",
+        x: 60,
+        y: 200,
+        width: 674,
+        height: 80,
+        content: "Double-click anywhere on this slide to insert custom text boxes, or use the Insert ribbon above to place photos and stat tiles.",
+        fontSize: 16,
+        fontWeight: "500",
+        color: "#475569",
+        bgColor: "transparent",
+        zIndex: 11
+      }
+    ]
+  };
+  bulletin.pages.splice(activePageIndex + 1, 0, newPage);
+  activePageIndex++;
+  renderAll();
+  scrollToPage(activePageIndex);
+  showToast(`Added Blank Slide ${activePageIndex + 1}!`, "success");
+}
+
+// ==================== POWERPOINT FREEFORM CANVAS ENGINE ====================
+let selectedElementInfo = null; // { pIdx, id }
+
+function selectElement(pIdx, id) {
+  deselectAllElements();
+  selectedElementInfo = { pIdx, id };
+  const box = document.getElementById(`canvas-elem-${id}`);
+  if (box) box.classList.add("selected");
+}
+
+function deselectAllElements() {
+  document.querySelectorAll(".canvas-element-box.selected").forEach(el => el.classList.remove("selected"));
+  selectedElementInfo = null;
+}
+
+function deleteElement(pIdx, id) {
+  const page = bulletin.pages[pIdx];
+  if (!page || !page.elements) return;
+  const idx = page.elements.findIndex(e => e.id === id);
+  if (idx !== -1) {
+    pushState();
+    page.elements.splice(idx, 1);
+    deselectAllElements();
+    renderCanvas();
+    renderSidebar();
+    showToast("Element deleted", "info");
+  }
+}
+
+function duplicateElement(pIdx, id) {
+  const page = bulletin.pages[pIdx];
+  if (!page || !page.elements) return;
+  const el = page.elements.find(e => e.id === id);
+  if (!el) return;
+  pushState();
+  const copy = JSON.parse(JSON.stringify(el));
+  copy.id = "el-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
+  copy.x = Math.min(740 - (copy.width || 200), (copy.x || 40) + 24);
+  copy.y = Math.min(1080 - 80, (copy.y || 120) + 24);
+  copy.zIndex = 10 + page.elements.length;
+  page.elements.push(copy);
+  renderCanvas();
+  renderSidebar();
+  selectElement(pIdx, copy.id);
+  showToast("Element duplicated (Ctrl+D)", "success");
+}
+
+function moveElementToSlide(sourcePIdx, id, targetPIdx) {
+  if (sourcePIdx === targetPIdx) return;
+  const sourcePage = bulletin.pages[sourcePIdx];
+  const targetPage = bulletin.pages[targetPIdx];
+  if (!sourcePage || !targetPage || !sourcePage.elements) return;
+
+  const idx = sourcePage.elements.findIndex(e => e.id === id);
+  if (idx === -1) return;
+
+  pushState();
+  const [element] = sourcePage.elements.splice(idx, 1);
+  if (!targetPage.elements) targetPage.elements = [];
+  targetPage.elements.push(element);
+
+  activePageIndex = targetPIdx;
+  renderAll();
+  scrollToPage(targetPIdx);
+  selectElement(targetPIdx, element.id);
+  showToast(`Moved element to Slide ${targetPIdx + 1}!`, "success");
+}
+
+function nudgeElement(pIdx, id, key, step = 2) {
+  const page = bulletin.pages[pIdx];
+  if (!page || !page.elements) return;
+  const el = page.elements.find(e => e.id === id);
+  if (!el) return;
+
+  if (key === "ArrowLeft") el.x = Math.max(10, (el.x || 40) - step);
+  if (key === "ArrowRight") el.x = Math.min(794 - (el.width || 200), (el.x || 40) + step);
+  if (key === "ArrowUp") el.y = Math.max(10, (el.y || 120) - step);
+  if (key === "ArrowDown") el.y = Math.min(1123 - 40, (el.y || 120) + step);
+
+  const box = document.getElementById(`canvas-elem-${id}`);
+  if (box) {
+    box.style.left = el.x + "px";
+    box.style.top = el.y + "px";
+  }
+}
+
+function addNewElementToPage(pIdx, type, x = 60, y = 140, extra = {}) {
+  const page = bulletin.pages[pIdx];
+  if (!page) return;
+  if (!page.elements) page.elements = [];
+
+  pushState();
+  const newId = "el-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
+  let newEl = null;
+
+  if (type === "text") {
+    newEl = {
+      id: newId,
+      type: "text",
+      x: x,
+      y: y,
+      width: 380,
+      height: 80,
+      content: extra.content || "Click here and start typing your headline or story...",
+      fontSize: extra.fontSize || 18,
+      fontWeight: extra.fontWeight || "700",
+      color: extra.color || "#0f172a",
+      bgColor: extra.bgColor || "transparent",
+      zIndex: 10 + page.elements.length
+    };
+  } else if (type === "photo") {
+    newEl = {
+      id: newId,
+      type: "photo",
+      x: x,
+      y: y,
+      width: 320,
+      height: 220,
+      src: extra.src || "assets/sample1.jpg",
+      caption: extra.caption || "Enter photo caption...",
+      zIndex: 10 + page.elements.length
+    };
+  } else if (type === "stat") {
+    newEl = {
+      id: newId,
+      type: "stat",
+      x: x,
+      y: y,
+      width: 240,
+      height: 110,
+      metricValue: extra.metricValue || "85,98,584",
+      metricLabel: extra.metricLabel || "Citizen Footfall Recorded",
+      accentColor: extra.accentColor || "#0284c7",
+      zIndex: 10 + page.elements.length
+    };
+  } else if (type === "quote") {
+    newEl = {
+      id: newId,
+      type: "quote",
+      x: x,
+      y: y,
+      width: 440,
+      height: 120,
+      quoteText: extra.quoteText || "Cleanliness is not just a civic duty; it is a profound national service.",
+      quoteAuthor: extra.quoteAuthor || "Hon'ble Dignitary / Citizen Representative",
+      accentColor: extra.accentColor || "#0284c7",
+      zIndex: 10 + page.elements.length
+    };
+  } else if (type === "logos") {
+    newEl = {
+      id: newId,
+      type: "logos",
+      x: x !== undefined ? x : 38,
+      y: y !== undefined ? y : 18,
+      width: 718,
+      height: 76,
+      zIndex: 25 + page.elements.length
+    };
+  }
+
+  if (newEl) {
+    page.elements.push(newEl);
+    renderCanvas();
+    renderSidebar();
+    selectElement(pIdx, newId);
+    showToast(`Added ${type} to Slide ${pIdx + 1}! Drag anywhere to position.`, "success");
+  }
+}
+
+function handleCanvasDoubleClick(e, pIdx) {
+  if (e.target.closest(".canvas-element-box") || e.target.closest(".page-toolbar") || e.target.closest(".btn")) return;
+  const pageCard = document.getElementById(`page-card-${pIdx}`);
+  if (!pageCard) return;
+
+  const rect = pageCard.getBoundingClientRect();
+  const clickX = Math.round(e.clientX - rect.left);
+  const clickY = Math.round(e.clientY - rect.top);
+
+  addNewElementToPage(pIdx, "text", Math.min(500, Math.max(40, clickX)), Math.min(1000, Math.max(60, clickY)));
+}
+
+function renderSlideElements(page, pIdx, pageEl) {
+  if (!page.elements || page.elements.length === 0) return;
+
+  page.elements.forEach(el => {
+    const box = document.createElement("div");
+    box.className = `canvas-element-box ${selectedElementInfo?.id === el.id ? "selected" : ""}`;
+    box.id = `canvas-elem-${el.id}`;
+    box.style.left = (el.x || 40) + "px";
+    box.style.top = (el.y || 120) + "px";
+    box.style.width = (el.width || 300) + "px";
+    if (el.height && el.height !== "auto") box.style.height = el.height + "px";
+    box.style.zIndex = el.zIndex || 10;
+
+    // Slide teleport options
+    const slideOptions = bulletin.pages.map((p, i) => 
+      `<option value="${i}" ${i === pIdx ? "selected" : ""}>Slide ${i + 1}</option>`
+    ).join("");
+
+    // Toolbar Header
+    let typeSpecificControls = "";
+    if (el.type === "text") {
+      typeSpecificControls = `
+        <button class="elem-tool-btn" title="Increase Font Size" onclick="event.stopPropagation(); changeElementFontSize(${pIdx}, '${el.id}', 2)">A+</button>
+        <button class="elem-tool-btn" title="Decrease Font Size" onclick="event.stopPropagation(); changeElementFontSize(${pIdx}, '${el.id}', -2)">A-</button>
+        <input type="color" value="${el.color || '#0f172a'}" title="Text Color" style="width:18px; height:18px; border:none; padding:0; background:transparent; cursor:pointer;" onchange="changeElementColor(${pIdx}, '${el.id}', this.value)">
+      `;
+    } else if (el.type === "photo") {
+      typeSpecificControls = `
+        <button class="elem-tool-btn" title="Upload Photo" onclick="event.stopPropagation(); triggerElementPhotoUpload(${pIdx}, '${el.id}')">📁</button>
+        <button class="elem-tool-btn" title="Crop Photo" onclick="event.stopPropagation(); triggerElementPhotoCrop(${pIdx}, '${el.id}')">✂️</button>
+      `;
+    }
+
+    box.innerHTML = `
+      <div class="elem-drag-bar">
+        <span>⋮⋮ Drag</span>
+      </div>
+      <div class="elem-floating-toolbar">
+        ${typeSpecificControls}
+        <button class="elem-tool-btn" title="Duplicate Element (Ctrl+D)" onclick="event.stopPropagation(); duplicateElement(${pIdx}, '${el.id}')">📋</button>
+        <select class="elem-tool-select" title="Move to Slide" onchange="event.stopPropagation(); moveElementToSlide(${pIdx}, '${el.id}', parseInt(this.value, 10))">
+          ${slideOptions}
+        </select>
+        <button class="elem-tool-btn danger" title="Delete Element (Del)" onclick="event.stopPropagation(); deleteElement(${pIdx}, '${el.id}')">🗑️</button>
+      </div>
+      <div class="resize-handle resize-nw" data-dir="nw"></div>
+      <div class="resize-handle resize-n"  data-dir="n"></div>
+      <div class="resize-handle resize-ne" data-dir="ne"></div>
+      <div class="resize-handle resize-e"  data-dir="e"></div>
+      <div class="resize-handle resize-se" data-dir="se"></div>
+      <div class="resize-handle resize-s"  data-dir="s"></div>
+      <div class="resize-handle resize-sw" data-dir="sw"></div>
+      <div class="resize-handle resize-w"  data-dir="w"></div>
+    `;
+
+    // Inner Content by Element Type
+    const contentContainer = document.createElement("div");
+    contentContainer.style.width = "100%";
+    contentContainer.style.height = "100%";
+
+    if (el.type === "text") {
+      contentContainer.innerHTML = `
+        <div class="elem-text-content" contenteditable="${!page.isLocked}" 
+             style="font-size: ${el.fontSize || 18}px; font-weight: ${el.fontWeight || '700'}; color: ${el.color || '#0f172a'}; background: ${el.bgColor || 'transparent'}; outline: none; word-wrap: break-word; line-height: 1.4; padding: 4px;"
+             onblur="updateElementText(${pIdx}, '${el.id}', this.innerHTML)">
+          ${el.content}
+        </div>
+      `;
+    } else if (el.type === "photo") {
+      contentContainer.innerHTML = `
+        <div class="photo-elem-card">
+          <img src="${el.src || 'assets/sample1.jpg'}" alt="Slide Photo">
+          ${el.caption ? `<div class="photo-elem-overlay" contenteditable="${!page.isLocked}" onblur="updateElementPhotoCaption(${pIdx}, '${el.id}', this.innerText)">${escapeHtml(el.caption)}</div>` : ''}
+        </div>
+      `;
+    } else if (el.type === "stat") {
+      contentContainer.innerHTML = `
+        <div class="stat-elem-card" style="border-top-color: ${el.accentColor || 'var(--primary)'};">
+          <div class="stat-elem-val" contenteditable="${!page.isLocked}" onblur="updateElementStatVal(${pIdx}, '${el.id}', this.innerText)">${el.metricValue}</div>
+          <div class="stat-elem-label" contenteditable="${!page.isLocked}" onblur="updateElementStatLabel(${pIdx}, '${el.id}', this.innerText)">${el.metricLabel}</div>
+        </div>
+      `;
+    } else if (el.type === "quote") {
+      contentContainer.innerHTML = `
+        <div class="quote-elem-card" style="border-left-color: ${el.accentColor || 'var(--primary)'};">
+          <div class="quote-elem-text" contenteditable="${!page.isLocked}" onblur="updateElementQuoteText(${pIdx}, '${el.id}', this.innerText)">"${el.quoteText}"</div>
+          <div class="quote-elem-author" contenteditable="${!page.isLocked}" onblur="updateElementQuoteAuthor(${pIdx}, '${el.id}', this.innerText)">— ${el.quoteAuthor}</div>
+        </div>
+      `;
+    } else if (el.type === "logos") {
+      const sizeClass = bulletin.logosConfig?.size ? " logos-size-" + bulletin.logosConfig.size : " logos-size-medium";
+      contentContainer.innerHTML = `
+        <div class="movable-logos-box ${sizeClass}">
+          ${buildHeaderLogosContentHtml()}
+        </div>
+      `;
+    }
+
+    box.appendChild(contentContainer);
+
+    // Setup Dragging & 8-Point Resizing
+    setupElementDragging(box, el, pIdx);
+    box.querySelectorAll(".resize-handle").forEach(handle => {
+      setupElementResizing(handle, box, el, pIdx, handle.getAttribute("data-dir"));
+    });
+
+    box.addEventListener("click", (e) => {
+      e.stopPropagation();
+      selectElement(pIdx, el.id);
+    });
+
+    pageEl.appendChild(box);
+  });
+}
+
+function setupElementDragging(box, el, pIdx) {
+  const dragBar = box.querySelector(".elem-drag-bar") || box;
+
+  dragBar.addEventListener("mousedown", (e) => {
+    if (e.button !== 0 || e.target.closest(".elem-floating-toolbar") || e.target.classList.contains("resize-handle")) return;
+    if (e.target.isContentEditable && document.activeElement === e.target) return;
+
+    e.preventDefault();
+    selectElement(pIdx, el.id);
+
+    const startMouseX = e.clientX;
+    const startMouseY = e.clientY;
+    const startElemX = el.x || 40;
+    const startElemY = el.y || 120;
+    let hasMoved = false;
+
+    function onMouseMove(moveEvent) {
+      hasMoved = true;
+      const dx = moveEvent.clientX - startMouseX;
+      const dy = moveEvent.clientY - startMouseY;
+
+      let newX = Math.round(startElemX + dx);
+      let newY = Math.round(startElemY + dy);
+
+      const boxWidth = box.offsetWidth || el.width || 200;
+      newX = Math.max(10, Math.min(794 - boxWidth - 10, newX));
+      newY = Math.max(10, Math.min(1123 - 40, newY));
+
+      el.x = newX;
+      el.y = newY;
+      box.style.left = newX + "px";
+      box.style.top = newY + "px";
+    }
+
+    function onMouseUp() {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+
+      if (hasMoved) {
+        pushState();
+        saveToLocalStorage();
+        renderSidebar();
+      }
+    }
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+  });
+}
+
+function setupElementResizing(handle, box, el, pIdx, dir) {
+  handle.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    selectElement(pIdx, el.id);
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startW = box.offsetWidth;
+    const startH = box.offsetHeight;
+    const startLeft = el.x || 40;
+    const startTop = el.y || 120;
+
+    function onMouseMove(me) {
+      const dx = me.clientX - startX;
+      const dy = me.clientY - startY;
+
+      let newW = startW;
+      let newH = startH;
+      let newX = startLeft;
+      let newY = startTop;
+
+      if (dir.includes("e")) newW = Math.max(80, startW + dx);
+      if (dir.includes("s")) newH = Math.max(40, startH + dy);
+      if (dir.includes("w")) {
+        newW = Math.max(80, startW - dx);
+        newX = startLeft + (startW - newW);
+      }
+      if (dir.includes("n")) {
+        newH = Math.max(40, startH - dy);
+        newY = startTop + (startH - newH);
+      }
+
+      el.width = Math.round(newW);
+      el.height = Math.round(newH);
+      el.x = Math.round(newX);
+      el.y = Math.round(newY);
+
+      box.style.width = el.width + "px";
+      box.style.height = el.height + "px";
+      box.style.left = el.x + "px";
+      box.style.top = el.y + "px";
+    }
+
+    function onMouseUp() {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      pushState();
+      saveToLocalStorage();
+      renderSidebar();
+    }
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+  });
+}
+
+// Element Content Update Helpers
+function updateElementText(pIdx, elId, val) {
+  const el = bulletin.pages[pIdx]?.elements?.find(e => e.id === elId);
+  if (el) {
+    el.content = val;
+    saveToLocalStorage();
+  }
+}
+function updateElementPhotoCaption(pIdx, elId, val) {
+  const el = bulletin.pages[pIdx]?.elements?.find(e => e.id === elId);
+  if (el) { el.caption = val.trim(); saveToLocalStorage(); }
+}
+function updateElementStatVal(pIdx, elId, val) {
+  const el = bulletin.pages[pIdx]?.elements?.find(e => e.id === elId);
+  if (el) { el.metricValue = val.trim(); saveToLocalStorage(); }
+}
+function updateElementStatLabel(pIdx, elId, val) {
+  const el = bulletin.pages[pIdx]?.elements?.find(e => e.id === elId);
+  if (el) { el.metricLabel = val.trim(); saveToLocalStorage(); }
+}
+function updateElementQuoteText(pIdx, elId, val) {
+  const el = bulletin.pages[pIdx]?.elements?.find(e => e.id === elId);
+  if (el) { el.quoteText = val.replace(/^"|"$/g, "").trim(); saveToLocalStorage(); }
+}
+function updateElementQuoteAuthor(pIdx, elId, val) {
+  const el = bulletin.pages[pIdx]?.elements?.find(e => e.id === elId);
+  if (el) { el.quoteAuthor = val.replace(/^—\s*/, "").trim(); saveToLocalStorage(); }
+}
+function changeElementFontSize(pIdx, elId, delta) {
+  const el = bulletin.pages[pIdx]?.elements?.find(e => e.id === elId);
+  if (el) {
+    pushState();
+    el.fontSize = Math.max(10, Math.min(72, (el.fontSize || 18) + delta));
+    renderCanvas();
+  }
+}
+function changeElementColor(pIdx, elId, color) {
+  const el = bulletin.pages[pIdx]?.elements?.find(e => e.id === elId);
+  if (el) {
+    pushState();
+    el.color = color;
+    renderCanvas();
+  }
+}
+
+// Element Photo Upload Trigger
+function triggerElementPhotoUpload(pIdx, elId) {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async (ev) => {
+        const compressed = await compressImage(ev.target.result, 1200, 1200);
+        const ref = await storeImage(compressed);
+        pushState();
+        const el = bulletin.pages[pIdx]?.elements?.find(item => item.id === elId);
+        if (el) {
+          el.src = ref;
+          renderCanvas();
+          renderSidebar();
+          showToast("Photo updated!", "success");
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  input.click();
+}
+
+function triggerElementPhotoCrop(pIdx, elId) {
+  const el = bulletin.pages[pIdx]?.elements?.find(item => item.id === elId);
+  if (!el || !el.src) return;
+  const resolved = getImageSync(el.src);
+  currentCropTarget = { pIdx, elId, isElementPhoto: true };
+  document.getElementById("cropperImage").src = resolved;
+  document.getElementById("cropperModal").classList.add("open");
+  if (currentCropper) currentCropper.destroy();
+  if (typeof Cropper !== "undefined") {
+    currentCropper = new Cropper(document.getElementById("cropperImage"), {
+      aspectRatio: NaN,
+      viewMode: 1
+    });
+  }
+}
+
 // Render Canvas: A4 Pages
 function renderCanvas() {
   const container = document.getElementById("canvasViewport");
@@ -1723,10 +2286,18 @@ function renderCanvas() {
     pageEl.appendChild(toolbar);
 
     // Official Header Strip (with emblems)
-    const headerStrip = document.createElement("div");
-    headerStrip.className = "page-header-logos";
-    headerStrip.innerHTML = buildHeaderLogosHtml(page);
-    pageEl.appendChild(headerStrip);
+    const logoCfg = bulletin.logosConfig || { position: "top", size: "medium" };
+    let headerStrip = null;
+    if (logoCfg.position !== "freeform") {
+      headerStrip = document.createElement("div");
+      const posClass = " logos-pos-" + (logoCfg.position || "top");
+      const sizeClass = " logos-size-" + (logoCfg.size || "medium");
+      headerStrip.className = "page-header-logos" + posClass + sizeClass;
+      headerStrip.innerHTML = buildHeaderLogosHtml(page);
+      if (logoCfg.position !== "bottom") {
+        pageEl.appendChild(headerStrip);
+      }
+    }
 
     // Render Page Body by Type
     if (page.type === "cover") {
@@ -1739,9 +2310,29 @@ function renderCanvas() {
       renderSpotlightPage(pageEl, page, pIdx);
     } else if (page.type === "visit-us") {
       renderVisitUsPage(pageEl, page, pIdx);
+    } else if (page.type === "gazette") {
+      renderGazettePage(pageEl, page, pIdx);
+    } else if (page.type === "social-wall") {
+      renderSocialWallPage(pageEl, page, pIdx);
+    } else if (page.type === "magazine-2col") {
+      renderMagazine2ColPage(pageEl, page, pIdx);
+    } else if (page.type === "blank") {
+      // Pure blank slide canvas
+      const blankArea = document.createElement("div");
+      blankArea.className = "page-content-area blank-canvas-area";
+      blankArea.style.cssText = "height: 100%; position: relative; padding: 20px;";
+      pageEl.appendChild(blankArea);
     } else {
       renderEditorialPage(pageEl, page, pIdx);
     }
+
+    // If logo position is bottom, append after page content
+    if (headerStrip && logoCfg.position === "bottom") {
+      pageEl.appendChild(headerStrip);
+    }
+
+    // Render Freeform Canvas Elements (PowerPoint Model)
+    renderSlideElements(page, pIdx, pageEl);
 
     // Dynamic Footer (Page X of Y)
     const footer = document.createElement("div");
@@ -1750,6 +2341,16 @@ function renderCanvas() {
       footer.innerHTML = `<span>Page ${pIdx + 1} of ${bulletin.pages.length}</span>`;
     }
     pageEl.appendChild(footer);
+
+    // Double-click on blank canvas to insert text box
+    pageEl.addEventListener("dblclick", (e) => handleCanvasDoubleClick(e, pIdx));
+
+    // Click on canvas background to deselect elements
+    pageEl.addEventListener("click", (e) => {
+      if (e.target === pageEl || e.target.classList.contains("page-content-area") || e.target.classList.contains("blank-canvas-area")) {
+        deselectAllElements();
+      }
+    });
 
     container.appendChild(pageEl);
   });
@@ -2189,6 +2790,131 @@ function renderVisitUsPage(pageEl, page, pIdx) {
         <div class="social-row"><span class="social-icon-circle icon-yt">▶</span> @SwachhBharatMissionGramin</div>
         <div class="social-row"><span class="social-icon-circle icon-li">in</span> @swachhbharatmissiongrameen</div>
       </div>
+    </div>
+  `;
+  pageEl.appendChild(content);
+}
+
+// 7. Official Gazette Order & Administrative Circular Page
+function renderGazettePage(pageEl, page, pIdx) {
+  const content = document.createElement("div");
+  content.className = "gazette-page-content";
+  const clauses = page.clauses || [
+    { num: "1.1", text: "All Municipal Commissioners and District Collectors are hereby directed to maintain 100% geo-tagged digital verification of eliminated Cleanliness Target Units (CTUs) across all urban wards." },
+    { num: "1.2", text: "Preventive health screening camps and personal protective equipment (PPE) kit saturation for all frontline SafaiMitras shall be concluded and reported before the conclusion of the national campaign." },
+    { num: "1.3", text: "Commercial establishments and bulk waste generators failing to enforce mandatory dual-stream segregation of wet and dry solid waste shall be served statutory remediation notices under municipal public health bylaws." }
+  ];
+
+  content.innerHTML = `
+    <div class="gazette-header-block">
+      <div class="gazette-national-emblem">🏛️</div>
+      <div class="gazette-super-title">THE GAZETTE OF INDIA / भारत का राजपत्र</div>
+      <div class="gazette-sub-title">EXTRAORDINARY / असाधारण • PART II — SECTION 3 — SUB-SECTION (ii)</div>
+      <div class="gazette-order-meta">
+        <span>No. ${escapeHtml(page.orderNo || "Q-11015/2026-SBM-U")}</span>
+        <span>New Delhi, ${escapeHtml(page.orderDate || bulletin.globalDate)}</span>
+      </div>
+      <div class="gazette-divider-double"></div>
+    </div>
+    <div class="gazette-body">
+      <h2 class="gazette-notification-heading" contenteditable="${!page.isLocked}" onblur="bulletin.pages[${pIdx}].orderTitle = this.innerText">
+        ${escapeHtml(page.orderTitle || "NOTIFICATION: DIRECTIVE ON MASS SHRAMDAAN, ZERO DUMPING & CTU REMEDIATION")}
+      </h2>
+      <div class="gazette-clauses">
+        ${clauses.map((c, cIdx) => `
+          <div class="gazette-clause-item">
+            <span class="gazette-clause-num">${c.num}</span>
+            <span class="gazette-clause-text" contenteditable="${!page.isLocked}" onblur="if(!bulletin.pages[${pIdx}].clauses) bulletin.pages[${pIdx}].clauses=[]; if(!bulletin.pages[${pIdx}].clauses[${cIdx}]) bulletin.pages[${pIdx}].clauses[${cIdx}]={num:'${c.num}',text:''}; bulletin.pages[${pIdx}].clauses[${cIdx}].text = this.innerText">${escapeHtml(c.text)}</span>
+          </div>
+        `).join("")}
+      </div>
+      <div class="gazette-signatory-block">
+        <div class="gazette-seal-badge">OFFICIAL COMPLIANCE SEAL<br>सत्यमेव जयते<br>MINISTRY OF HOUSING & URBAN AFFAIRS</div>
+        <div class="gazette-signatory-details">
+          <div class="gazette-sig-name" contenteditable="${!page.isLocked}" onblur="bulletin.pages[${pIdx}].signatory = this.innerText">${escapeHtml(page.signatory || "Joint Secretary to Government of India")}</div>
+          <div class="gazette-sig-dept">Department of Drinking Water & Sanitation / Swachh Bharat Mission</div>
+        </div>
+      </div>
+    </div>
+  `;
+  pageEl.appendChild(content);
+}
+
+// 8. Jan Andolan & Social Wall Page (Citizen Shoutouts)
+function renderSocialWallPage(pageEl, page, pIdx) {
+  pageEl.appendChild(createSectionBanner(page, pIdx));
+  const content = document.createElement("div");
+  content.className = "social-wall-page-content";
+  const posts = page.socialPosts || [
+    { name: "Aarav Sharma", handle: "@aarav_swachh", role: "Youth Volunteer", text: "Joined 500+ college students at dawn for the riverfront cleanup! Incredible energy and zero plastic left behind! 🌊✨", likes: "1.4k" },
+    { name: "Pooja Verma", handle: "@pooja_rrr", role: "SHG Leader", text: "Our self-help group turned 2 tonnes of discarded wet waste into organic compost for community parks today! 🌱", likes: "2.1k" },
+    { name: "Dr. K. Raman", handle: "@k_raman_ias", role: "District Collector", text: "Inspected 14 CTUs in Ward 9 today. All 14 now completely free of garbage and converted into green recreational corners! 👏", likes: "3.8k" },
+    { name: "Ananya Iyer", handle: "@ananya_cyclist", role: "Cyclothon Lead", text: "35 km pedaled with 2,500 cyclists spreading 2-bin source segregation awareness! Jan Andolan in full swing! 🚴‍♂️🇮🇳", likes: "980" },
+    { name: "Sunil Mane", handle: "@sunil_safaimitra", role: "SafaiMitra Champion", text: "Received PPE kit and comprehensive health checkup at today's Samman Shivir. Feeling proud, protected, and valued! 🛡️", likes: "4.2k" },
+    { name: "Green Earth Club", handle: "@eco_warriors_ind", role: "Citizen Group", text: "Dispersed 10,000 seedballs along the dry highway corridor. Monsoons will bring green wonders to life! 🌳", likes: "1.9k" }
+  ];
+
+  content.innerHTML = `
+    <div class="social-wall-grid">
+      ${posts.map((p, idx) => `
+        <div class="social-post-card">
+          <div class="social-post-header">
+            <div class="social-avatar">${p.name.charAt(0)}</div>
+            <div class="social-author-info">
+              <span class="social-author-name" contenteditable="${!page.isLocked}" onblur="if(!bulletin.pages[${pIdx}].socialPosts) bulletin.pages[${pIdx}].socialPosts=[]; if(!bulletin.pages[${pIdx}].socialPosts[${idx}]) bulletin.pages[${pIdx}].socialPosts[${idx}]={...p}; bulletin.pages[${pIdx}].socialPosts[${idx}].name = this.innerText">${escapeHtml(p.name)}</span>
+              <span class="social-author-handle">${p.handle} • ${p.role}</span>
+            </div>
+            <span class="social-network-badge">𝕏 / Citizen Post</span>
+          </div>
+          <div class="social-post-body" contenteditable="${!page.isLocked}" onblur="if(!bulletin.pages[${pIdx}].socialPosts) bulletin.pages[${pIdx}].socialPosts=[]; if(!bulletin.pages[${pIdx}].socialPosts[${idx}]) bulletin.pages[${pIdx}].socialPosts[${idx}]={...p}; bulletin.pages[${pIdx}].socialPosts[${idx}].text = this.innerText">
+            ${escapeHtml(p.text)}
+          </div>
+          <div class="social-post-footer">
+            <span>❤️ ${p.likes}</span>
+            <span>🔁 Retweeted</span>
+            <span>📍 Verified Shramdaan</span>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+  pageEl.appendChild(content);
+}
+
+// 9. Modern Magazine 2-Column Editorial Page
+function renderMagazine2ColPage(pageEl, page, pIdx) {
+  pageEl.appendChild(createSectionBanner(page, pIdx));
+  const content = document.createElement("div");
+  content.className = "magazine-2col-content";
+
+  content.innerHTML = `
+    <div class="magazine-article-hero image-placeholder-box ${!page.images?.[0] ? 'empty' : ''}"
+         onclick="triggerSlotUpload(${pIdx}, 0, 0, true)"
+         ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleSlotFileDrop(event, ${pIdx}, 0, 0, true)">
+      <img src="${page.images?.[0] || 'assets/sample1.jpg'}" alt="Magazine Hero">
+      <div class="image-actions-overlay">
+        <button class="btn-upload-direct" onclick="event.stopPropagation(); triggerSlotUpload(${pIdx}, 0, 0, true)">📁 Upload</button>
+        <button onclick="event.stopPropagation(); openCropperForTarget(${pIdx}, 0, 0, true)">✂️ Crop</button>
+      </div>
+    </div>
+    <h2 class="magazine-headline" contenteditable="${!page.isLocked}" onblur="bulletin.pages[${pIdx}].headline = this.innerText">
+      ${escapeHtml(page.headline || "Transforming Civic Habits: The Paradigm Shift in Urban Solid Waste")}
+    </h2>
+    <div class="magazine-byline">
+      <span>By ${escapeHtml(page.byline || "Special Correspondent, Bureaucratic Review")}</span> • 
+      <span>National Swachhata Mission Special Dispatch</span>
+    </div>
+    <div class="magazine-columns-wrapper">
+      <div class="magazine-col col-left" contenteditable="${!page.isLocked}" onblur="bulletin.pages[${pIdx}].colLeft = this.innerHTML">
+        ${page.colLeft || "<p>Across major metropolitan centers and Tier-2 municipal corporations, urban local bodies are witnessing unprecedented citizen participation. Daily segregation at source has surged past historical benchmarks as ward-level surveillance and door-to-door educational campaigns take deep root.</p><p>Municipal commissioners report that the elimination of chronic Cleanliness Target Units has fundamentally altered local neighborhood psychology, turning former refuse piles into vibrant community corners.</p>"}
+      </div>
+      <div class="magazine-col col-right" contenteditable="${!page.isLocked}" onblur="bulletin.pages[${pIdx}].colRight = this.innerHTML">
+        ${page.colRight || "<p>Complementing grassroots public action, modern automated Material Recovery Facilities and 100% electric sweeping fleets ensure that municipal waste collection operates with clockwork precision.</p><p>With robotic sewer cleaning units and comprehensive healthcare coverage now shielding frontline SafaiMitras, India's sanitation revolution stands as a global benchmark of participatory civic governance.</p>"}
+      </div>
+    </div>
+    <div class="magazine-pullquote-strip">
+      <span class="pullquote-symbol">“</span>
+      <span class="pullquote-text" contenteditable="${!page.isLocked}" onblur="bulletin.pages[${pIdx}].pullquote = this.innerText">${escapeHtml(page.pullquote || "Cleanliness is neither an isolated event nor a top-down mandate; it is a living civic habit that defines our collective national future.")}</span>
     </div>
   `;
   pageEl.appendChild(content);
@@ -2987,35 +3713,39 @@ function loadTemplatePack(type) {
   } else if (type === "executive_5") {
     bulletin.pages = JSON.parse(JSON.stringify(EXECUTIVE_5_PACK));
     bulletin.language = "en";
-    showToast("Loaded Quick Daily Brief (Executive 5 Pages)", "success");
+    showToast("Loaded Quick Daily Brief & KPI Dashboard (Executive 5 Pages)", "success");
   } else if (type === "ctu_special") {
     bulletin.pages = JSON.parse(JSON.stringify(CTU_SPECIAL_PACK));
     bulletin.language = "en";
-    showToast("Loaded CTU Transformation Special (Before & After)", "success");
+    showToast("Loaded CTU Transformation Special (Before & After Showcase)", "success");
   } else if (type === "green_earth") {
     bulletin.pages = JSON.parse(JSON.stringify(GREEN_EARTH_PACK));
     bulletin.language = "en";
-    showToast("Loaded Green Earth & Circular Economy Special (6 Pages)", "success");
-  } else if (type === "smart_city") {
-    bulletin.pages = JSON.parse(JSON.stringify(SMART_CITY_PACK));
+    showToast("Loaded Green Earth & Circular Economy Special (5 Pages)", "success");
+  } else if (type === "smart_city" || type === "magazine") {
+    bulletin.pages = JSON.parse(JSON.stringify(MAGAZINE_PACK));
     bulletin.language = "en";
-    showToast("Loaded Smart City & Municipal Operations (5 Pages)", "success");
+    showToast("Loaded Modern Bureaucratic Magazine (2-Column Editorial)", "success");
   } else if (type === "jan_andolan") {
     bulletin.pages = JSON.parse(JSON.stringify(JAN_ANDOLAN_PACK));
     bulletin.language = "en";
-    showToast("Loaded Jan Andolan: Youth & Citizen Action (6 Pages)", "success");
+    showToast("Loaded Jan Andolan & Citizen Social Wall (5 Pages)", "success");
+  } else if (type === "gazette") {
+    bulletin.pages = JSON.parse(JSON.stringify(GAZETTE_PACK));
+    bulletin.language = "en";
+    showToast("Loaded Official Gazette Order & Administrative Circular (3 Pages)", "success");
   } else if (type === "safaimitra") {
     bulletin.pages = JSON.parse(JSON.stringify(SAFAIMITRA_PACK));
     bulletin.language = "en";
-    showToast("Loaded SafaiMitra Suraksha & Welfare Special (5 Pages)", "success");
+    showToast("Loaded SafaiMitra Welfare & Dignity Honor Roll (4 Pages)", "success");
   } else if (type === "jal_shakti") {
     bulletin.pages = JSON.parse(JSON.stringify(JAL_SHAKTI_PACK));
     bulletin.language = "en";
-    showToast("Loaded Jal Shakti & Coastal Cleanliness Bulletin (5 Pages)", "success");
+    showToast("Loaded Jal Shakti & Coastal Cleanliness Bulletin", "success");
   } else if (type === "photojournalism") {
     bulletin.pages = JSON.parse(JSON.stringify(PHOTOJOURNALISM_PACK));
     bulletin.language = "en";
-    showToast("Loaded Swachhata In Lens: Photojournalism (4 Pages)", "success");
+    showToast("Loaded Swachhata In Lens: Photojournalism Masonry (4 Pages)", "success");
   } else if (type === "hindi_standard") {
     bulletin.pages = JSON.parse(JSON.stringify(HINDI_STANDARD_PACK));
     bulletin.language = "hi";
@@ -3027,12 +3757,61 @@ function loadTemplatePack(type) {
     showToast("Loaded Fast Field Flash (1-Page Urgent Dispatch)", "success");
   } else if (type === "blank") {
     bulletin.pages = [
-      { id: "p-1", type: "cover", theme: "theme-teal", sectionTitle: "Cover Page", coverTitle: "Daily Bulletin", coverYear: "2026", coverBadge: "Bulletin", images: [] },
-      { id: "p-2", type: "standard-3-story", theme: "theme-blue", sectionTitle: "State & ULB Initiatives", stories: [{ headline: "Enter Headline Here", blurb: "Enter writeup...", images: [] }] },
-      { id: "p-3", type: "visit-us", theme: "theme-teal", sectionTitle: "Back Cover", visitText: "VISIT US" }
+      {
+        id: "p-1",
+        type: "blank",
+        theme: "theme-teal",
+        sectionTitle: "PowerPoint Blank Canvas",
+        elements: [
+          {
+            id: "el-blank-title",
+            type: "text",
+            x: 50,
+            y: 110,
+            width: 694,
+            height: 60,
+            content: "Double-Click or Drag Title Anywhere",
+            fontSize: 28,
+            fontWeight: "800",
+            color: "#0f172a"
+          },
+          {
+            id: "el-blank-photo",
+            type: "photo",
+            x: 50,
+            y: 200,
+            width: 360,
+            height: 250,
+            src: "assets/sample1.jpg",
+            caption: "Drag anywhere or resize using the corner handles"
+          },
+          {
+            id: "el-blank-stat",
+            type: "stat",
+            x: 440,
+            y: 200,
+            width: 300,
+            height: 115,
+            metricValue: "85,98,584",
+            metricLabel: "Movable KPI Metric Tile",
+            accentColor: "#0284c7"
+          },
+          {
+            id: "el-blank-quote",
+            type: "quote",
+            x: 440,
+            y: 335,
+            width: 300,
+            height: 115,
+            quoteText: "Complete PowerPoint-style freedom on this canvas!",
+            quoteAuthor: "Daily Bulletin Studio",
+            accentColor: "#0f766e"
+          }
+        ]
+      }
     ];
     bulletin.language = "en";
-    showToast("Started Fresh Scratchpad", "info");
+    showToast("Started PowerPoint Blank Canvas with movable starter elements!", "info");
   }
 
   activePageIndex = 0;
@@ -3359,49 +4138,91 @@ async function handleLoadDraftFile(e) {
 }
 
 // ==================== DYNAMIC HEADER LOGOS BUILDER ====================
-function buildHeaderLogosHtml(page) {
+function buildHeaderLogosContentHtml(customLogoOverride) {
   const cfg = bulletin.logosConfig || { jalShakti: true, swachhata: true, mohua: true, customLogo: null };
   const showJalShakti = cfg.jalShakti !== false;
   const showSwachhata = cfg.swachhata !== false;
   const showMoHUA = cfg.mohua !== false;
-  const customLogo = cfg.customLogo ? getImageSync(cfg.customLogo) : null;
+  const customLogo = customLogoOverride !== undefined ? customLogoOverride : (cfg.customLogo ? getImageSync(cfg.customLogo) : null);
 
   const hasAnyLogo = showJalShakti || showSwachhata || showMoHUA || customLogo;
 
-  let contentHtml = "";
   if (!hasAnyLogo) {
-    contentHtml = `<span class="header-logos-empty-notice">(No header emblems selected — configure in 🏛️ Logos)</span>`;
-  } else {
-    contentHtml = `
-      <div class="header-logos-container">
-        <div class="header-logo-slot slot-left">
-          ${showJalShakti ? '<img src="assets/logo_jalshakti.png" class="header-logo-img logo-jalshakti" alt="Ministry of Jal Shakti">' : ''}
-        </div>
-        <div class="header-logo-slot slot-center">
-          ${showSwachhata ? '<img src="assets/logo_swachhata.png" class="header-logo-img logo-swachhata" alt="Swachhata Hi Seva 2026">' : ''}
-          ${customLogo ? `<img src="${customLogo}" class="header-logo-img logo-custom" alt="State / Municipal Seal">` : ''}
-        </div>
-        <div class="header-logo-slot slot-right">
-          ${showMoHUA ? '<img src="assets/logo_mohua.png" class="header-logo-img logo-mohua" alt="Ministry of Housing and Urban Affairs">' : ''}
-        </div>
-      </div>
-    `;
+    return `<span class="header-logos-empty-notice">(No emblems selected — configure in 🏛️ Logos)</span>`;
   }
 
   return `
+    <div class="header-logos-container">
+      <div class="header-logo-slot slot-left">
+        ${showJalShakti ? '<img src="assets/logo_jalshakti.png" class="header-logo-img logo-jalshakti" alt="Ministry of Jal Shakti">' : ''}
+      </div>
+      <div class="header-logo-slot slot-center">
+        ${showSwachhata ? '<img src="assets/logo_swachhata.png" class="header-logo-img logo-swachhata" alt="Swachhata Hi Seva 2026">' : ''}
+        ${customLogo ? `<img src="${customLogo}" class="header-logo-img logo-custom" alt="State / Municipal Seal">` : ''}
+      </div>
+      <div class="header-logo-slot slot-right">
+        ${showMoHUA ? '<img src="assets/logo_mohua.png" class="header-logo-img logo-mohua" alt="Ministry of Housing and Urban Affairs">' : ''}
+      </div>
+    </div>
+  `;
+}
+
+function buildHeaderLogosHtml(page) {
+  return `
     ${page && page.isLocked ? '<span class="lock-badge">🔒 Header Locked</span>' : ''}
-    ${contentHtml}
+    ${buildHeaderLogosContentHtml()}
   `;
 }
 
 // ==================== LOGO MANAGER ====================
 let tempCustomLogoDataUrl = null;
 
+function setLogoPosition(pos) {
+  pushState();
+  if (!bulletin.logosConfig) bulletin.logosConfig = {};
+  bulletin.logosConfig.position = pos;
+  document.querySelectorAll(".logo-pos-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-pos") === pos);
+  });
+  if (pos === "freeform") {
+    // If switching to freeform, make sure the active page has a movable logos element
+    const page = bulletin.pages[activePageIndex];
+    if (page && (!page.elements || !page.elements.some(e => e.type === "logos"))) {
+      addNewElementToPage(activePageIndex, "logos", 38, 20);
+    }
+  }
+  updateModalLogoPreview();
+  renderCanvas();
+  setUnsavedStatus(true);
+}
+
+function setLogoSize(size) {
+  pushState();
+  if (!bulletin.logosConfig) bulletin.logosConfig = {};
+  bulletin.logosConfig.size = size;
+  document.querySelectorAll(".logo-size-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-size") === size);
+  });
+  updateModalLogoPreview();
+  renderCanvas();
+  setUnsavedStatus(true);
+}
+
 function openLogoModal() {
-  const cfg = bulletin.logosConfig || { jalShakti: true, swachhata: true, mohua: true, customLogo: null };
+  const cfg = bulletin.logosConfig || { jalShakti: true, swachhata: true, mohua: true, customLogo: null, position: "top", size: "medium" };
   document.getElementById("chkLogoJalShakti").checked = cfg.jalShakti !== false;
   document.getElementById("chkLogoSwachhata").checked = cfg.swachhata !== false;
   document.getElementById("chkLogoMoHUA").checked = cfg.mohua !== false;
+
+  // Sync position buttons
+  document.querySelectorAll(".logo-pos-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-pos") === (cfg.position || "top"));
+  });
+
+  // Sync size buttons
+  document.querySelectorAll(".logo-size-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-size") === (cfg.size || "medium"));
+  });
 
   tempCustomLogoDataUrl = cfg.customLogo ? getImageSync(cfg.customLogo) : null;
   const customStatus = document.getElementById("customLogoStatus");
@@ -3424,7 +4245,7 @@ function openLogoModal() {
 
 function onLogoToggleChange() {
   if (!bulletin.logosConfig) {
-    bulletin.logosConfig = { jalShakti: true, swachhata: true, mohua: true, customLogo: null };
+    bulletin.logosConfig = { jalShakti: true, swachhata: true, mohua: true, customLogo: null, position: "top", size: "medium" };
   }
   const chkJal = document.getElementById("chkLogoJalShakti");
   const chkSwachh = document.getElementById("chkLogoSwachhata");
@@ -3443,32 +4264,11 @@ function updateModalLogoPreview() {
   const container = document.getElementById("headerPreviewContainer");
   if (!container) return;
 
-  const showJalShakti = document.getElementById("chkLogoJalShakti") ? document.getElementById("chkLogoJalShakti").checked : true;
-  const showSwachhata = document.getElementById("chkLogoSwachhata") ? document.getElementById("chkLogoSwachhata").checked : true;
-  const showMoHUA = document.getElementById("chkLogoMoHUA") ? document.getElementById("chkLogoMoHUA").checked : true;
-  const customLogo = tempCustomLogoDataUrl;
+  const cfg = bulletin.logosConfig || {};
+  const currentSize = cfg.size || "medium";
+  container.className = "page-header-logos logos-size-" + currentSize;
 
-  const hasAnyLogo = showJalShakti || showSwachhata || showMoHUA || customLogo;
-
-  if (!hasAnyLogo) {
-    container.innerHTML = `<span class="header-logos-empty-notice">(All emblems unchecked — header will appear clean/blank)</span>`;
-    return;
-  }
-
-  container.innerHTML = `
-    <div class="header-logos-container">
-      <div class="header-logo-slot slot-left">
-        ${showJalShakti ? '<img src="assets/logo_jalshakti.png" class="header-logo-img logo-jalshakti" alt="Ministry of Jal Shakti">' : ''}
-      </div>
-      <div class="header-logo-slot slot-center">
-        ${showSwachhata ? '<img src="assets/logo_swachhata.png" class="header-logo-img logo-swachhata" alt="Swachhata Hi Seva 2026">' : ''}
-        ${customLogo ? `<img src="${customLogo}" class="header-logo-img logo-custom" alt="State / Municipal Seal">` : ''}
-      </div>
-      <div class="header-logo-slot slot-right">
-        ${showMoHUA ? '<img src="assets/logo_mohua.png" class="header-logo-img logo-mohua" alt="Ministry of Housing and Urban Affairs">' : ''}
-      </div>
-    </div>
-  `;
+  container.innerHTML = buildHeaderLogosContentHtml(tempCustomLogoDataUrl);
 }
 
 function handleCustomLogoUpload(e) {
@@ -3525,16 +4325,22 @@ async function saveLogosConfig() {
   renderCanvas();
   saveToLocalStorage();
   document.getElementById("logoModal").classList.remove("open");
-  showToast("Official header emblems updated across all pages!", "success");
+  showToast("Official emblems and placement updated across pages!", "success");
 }
 
 function resetDefaultLogos() {
   pushState();
-  bulletin.logosConfig = { jalShakti: true, swachhata: true, mohua: true, customLogo: null };
+  bulletin.logosConfig = { jalShakti: true, swachhata: true, mohua: true, customLogo: null, position: "top", size: "medium" };
   tempCustomLogoDataUrl = null;
   if (document.getElementById("chkLogoJalShakti")) document.getElementById("chkLogoJalShakti").checked = true;
   if (document.getElementById("chkLogoSwachhata")) document.getElementById("chkLogoSwachhata").checked = true;
   if (document.getElementById("chkLogoMoHUA")) document.getElementById("chkLogoMoHUA").checked = true;
+  document.querySelectorAll(".logo-pos-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-pos") === "top");
+  });
+  document.querySelectorAll(".logo-size-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-size") === "medium");
+  });
   const uploader = document.getElementById("customLogoUploader");
   if (uploader) uploader.value = "";
   const customStatus = document.getElementById("customLogoStatus");
