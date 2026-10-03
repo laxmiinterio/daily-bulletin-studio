@@ -1,7 +1,7 @@
 {
   "name": "daily-bulletin-studio",
-  "version": "2.0.0",
-  "description": "Daily Government Bulletin Studio - Desktop Edition",
+  "version": "3.0.0",
+  "description": "Daily Government Bulletin Studio v3.0 - Professional Presentation Edition",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
@@ -32,7 +32,7 @@
       "icon": "electron/icon.ico"
     },
     "portable": {
-      "artifactName": "Daily-Bulletin-Studio-v2-Portable.exe"
+      "artifactName": "Daily-Bulletin-Studio-v3-Portable.exe"
     }
   }
 }

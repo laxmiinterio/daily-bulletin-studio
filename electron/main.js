@@ -10,7 +10,7 @@ function createWindow() {
     height: 920,
     minWidth: 1024,
     minHeight: 700,
-    title: 'Daily Government Bulletin Studio v2.0',
+    title: 'Daily Government Bulletin Studio v3.0',
     icon: path.join(__dirname, 'icon.ico'),
     backgroundColor: '#0f172a',
     autoHideMenuBar: true,

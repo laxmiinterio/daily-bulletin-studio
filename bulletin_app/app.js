@@ -1072,7 +1072,15 @@ function redo() {
 
 function saveToLocalStorage() {
   try {
-    localStorage.setItem("gov_bulletin_v2_draft", JSON.stringify(bulletin));
+    const data = JSON.stringify(bulletin);
+    // Guard: if draft exceeds 4MB, warn and skip localStorage
+    if (data.length > 4 * 1024 * 1024) {
+      console.warn("Draft exceeds 4MB — skipping localStorage auto-save.");
+      showToast("⚠️ Draft too large for auto-save. Please download as JSON to preserve your work.", "error", 8000);
+      setUnsavedStatus(true);
+      return;
+    }
+    localStorage.setItem("gov_bulletin_v2_draft", data);
     localStorage.setItem("gov_bulletin_v2_timestamp", new Date().toISOString());
     setUnsavedStatus(false);
   } catch (e) {
@@ -1105,8 +1113,68 @@ function setUnsavedStatus(unsaved) {
   }
 }
 
+// ==================== RIBBON TOOLBAR: TAB SWITCHING & THEME GALLERY ====================
+const THEME_GALLERY = [
+  { id: "theme-teal",    name: "National Tricolor",  swatch: ["#0f766e", "#f97316", "#14b8a6"] },
+  { id: "theme-orange",  name: "Top Stories",        swatch: ["#ea580c", "#fbbf24", "#f97316"] },
+  { id: "theme-navy",    name: "Executive Brief",    swatch: ["#1e3a8a", "#60a5fa", "#dbeafe"] },
+  { id: "theme-emerald", name: "Green Earth",        swatch: ["#059669", "#a7f3d0", "#34d399"] },
+  { id: "theme-coral",   name: "Citizen Action",     swatch: ["#e11d48", "#fda4af", "#f43f5e"] },
+  { id: "theme-purple",  name: "SafaiMitra",         swatch: ["#7c3aed", "#c4b5fd", "#a78bfa"] },
+  { id: "theme-cyan",    name: "Jal Shakti",         swatch: ["#0891b2", "#a5f3fc", "#22d3ee"] },
+  { id: "theme-indigo",  name: "Smart City",         swatch: ["#4f46e5", "#c7d2fe", "#818cf8"] },
+  { id: "theme-crimson", name: "CTU Special",        swatch: ["#dc2626", "#fecaca", "#f87171"] },
+  { id: "theme-saffron", name: "Jan Andolan",        swatch: ["#d97706", "#fde68a", "#fbbf24"] },
+  { id: "theme-slate",   name: "Photojournalism",    swatch: ["#334155", "#cbd5e1", "#94a3b8"] },
+  { id: "theme-green",   name: "Progress Snapshot",  swatch: ["#65a30d", "#d9f99d", "#a3e635"] },
+];
+
+function initRibbonTabs() {
+  const tabs = document.querySelectorAll(".ribbon-tab");
+  const panels = document.querySelectorAll(".ribbon-panel");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      panels.forEach(p => p.classList.remove("active"));
+      tab.classList.add("active");
+      const targetPanel = document.getElementById("ribbon-" + tab.getAttribute("data-panel"));
+      if (targetPanel) targetPanel.classList.add("active");
+    });
+  });
+}
+
+function renderThemeGallery() {
+  const strip = document.getElementById("themeStripGallery");
+  if (!strip) return;
+  strip.innerHTML = "";
+
+  const currentTheme = bulletin.pages[activePageIndex]
+    ? bulletin.pages[activePageIndex].theme
+    : "theme-blue";
+
+  THEME_GALLERY.forEach(theme => {
+    const swatch = document.createElement("div");
+    swatch.className = `theme-swatch ${currentTheme === theme.id ? "active" : ""}`;
+    swatch.title = theme.name;
+    swatch.innerHTML = theme.swatch.map(c => `<div class="theme-swatch-stripe" style="background:${c}"></div>`).join("");
+    swatch.addEventListener("click", () => {
+      pushState();
+      if (bulletin.pages[activePageIndex]) {
+        bulletin.pages[activePageIndex].theme = theme.id;
+      }
+      renderCanvas();
+      renderThemeGallery();
+      showToast(`Applied "${theme.name}" theme to Page ${activePageIndex + 1}`, "success");
+    });
+    strip.appendChild(swatch);
+  });
+}
+
 // Event Listeners & Keyboard Shortcuts
 function initEventHandlers() {
+  // Initialize Ribbon Tabs
+  initRibbonTabs();
   // Global Date Sync
   document.getElementById("btnSyncDate").addEventListener("click", () => {
     pushState();
@@ -1145,6 +1213,10 @@ function initEventHandlers() {
   document.getElementById("btnCloseWelcomeModal").addEventListener("click", () => {
     document.getElementById("welcomeModal").classList.remove("open");
   });
+  const tmplSearch = document.getElementById("templateSearchInput");
+  if (tmplSearch) {
+    tmplSearch.addEventListener("input", applyTemplateFilters);
+  }
 
   // Pre-Flight Review Toggle
   document.getElementById("btnToggleReview").addEventListener("click", toggleReviewMode);
@@ -1159,30 +1231,38 @@ function initEventHandlers() {
     openExportModal();
   });
 
-  // Save Dropdown
-  const saveDropdown = document.getElementById("saveDropdown");
-  document.getElementById("btnSaveMenu").addEventListener("click", (e) => {
-    e.stopPropagation();
-    saveDropdown.classList.toggle("open");
-  });
+  // Save / Draft Actions (Ribbon — direct buttons, no dropdowns)
   document.getElementById("btnSaveDraftJson").addEventListener("click", downloadDraftJson);
   document.getElementById("btnSaveAsTemplate").addEventListener("click", openSaveTemplateModal);
   document.getElementById("btnCloneYesterday").addEventListener("click", triggerCloneYesterday);
 
-  // Export Dropdown & Modal
-  const exportDropdown = document.getElementById("exportDropdown");
-  document.getElementById("btnExportMenu").addEventListener("click", (e) => {
-    e.stopPropagation();
-    exportDropdown.classList.toggle("open");
-  });
+  // Export Actions (Ribbon — direct buttons)
   document.getElementById("btnExportPrintPdf").addEventListener("click", () => {
-    exportDropdown.classList.remove("open");
     openExportModal("print");
   });
   document.getElementById("btnExportWhatsAppPdf").addEventListener("click", () => {
-    exportDropdown.classList.remove("open");
     openExportModal("whatsapp");
   });
+
+  // Theme Scope: Apply active theme to all pages
+  const btnApplyAll = document.getElementById("btnApplyThemeAll");
+  if (btnApplyAll) {
+    btnApplyAll.addEventListener("click", () => {
+      const activeTheme = bulletin.pages[activePageIndex]?.theme || "theme-blue";
+      pushState();
+      bulletin.pages.forEach(p => p.theme = activeTheme);
+      renderCanvas();
+      renderSidebar();
+      renderThemeGallery();
+      showToast(`Applied "${activeTheme}" across all ${bulletin.pages.length} pages!`, "success");
+    });
+  }
+
+  // Export panel duplicate draft buttons
+  const btnSaveDraftExport = document.getElementById("btnSaveDraftJsonExport");
+  if (btnSaveDraftExport) btnSaveDraftExport.addEventListener("click", downloadDraftJson);
+  const fileLoadExport = document.getElementById("fileLoadDraftExport");
+  if (fileLoadExport) fileLoadExport.addEventListener("change", (e) => loadDraftFromFile(e.target.files[0]));
 
   // Export Modal Actions
   document.getElementById("btnCloseExportModal").addEventListener("click", () => {
@@ -1195,6 +1275,7 @@ function initEventHandlers() {
 
   // Gemini AI Settings Modal Actions
   document.getElementById("btnOpenGeminiSettings").addEventListener("click", openGeminiSettings);
+  document.getElementById("btnOpenGeminiSettingsHome")?.addEventListener("click", openGeminiSettings);
   document.getElementById("btnCloseGeminiModal").addEventListener("click", () => {
     document.getElementById("geminiSettingsModal").classList.remove("open");
   });
@@ -1229,15 +1310,15 @@ function initEventHandlers() {
 
   document.getElementById("btnOpenLogoModal").addEventListener("click", openLogoModal);
   document.getElementById("btnCloseLogoModal").addEventListener("click", () => {
-    document.getElementById("logoModal").classList.remove("open");
+    saveLogosConfig();
   });
   document.getElementById("btnSaveLogos").addEventListener("click", saveLogosConfig);
   document.getElementById("btnResetDefaultLogos").addEventListener("click", resetDefaultLogos);
   
-  // Real-time logo toggles & preview
-  document.getElementById("chkLogoJalShakti").addEventListener("change", updateModalLogoPreview);
-  document.getElementById("chkLogoSwachhata").addEventListener("change", updateModalLogoPreview);
-  document.getElementById("chkLogoMoHUA").addEventListener("change", updateModalLogoPreview);
+  // Real-time logo toggles & immediate canvas update
+  document.getElementById("chkLogoJalShakti").addEventListener("change", onLogoToggleChange);
+  document.getElementById("chkLogoSwachhata").addEventListener("change", onLogoToggleChange);
+  document.getElementById("chkLogoMoHUA").addEventListener("change", onLogoToggleChange);
   document.getElementById("customLogoUploader").addEventListener("change", handleCustomLogoUpload);
   document.getElementById("btnClearCustomLogo").addEventListener("click", clearCustomLogo);
 
@@ -1324,11 +1405,7 @@ function initEventHandlers() {
     }
   });
 
-  // Close dropdowns on outside click
-  window.addEventListener("click", () => {
-    saveDropdown.classList.remove("open");
-    exportDropdown.classList.remove("open");
-  });
+  // (Old dropdown close handlers removed — ribbon tabs don't need them)
 }
 
 function isInputFocused() {
@@ -1378,15 +1455,138 @@ function initScrollSpy() {
   });
 }
 
+const THEME_ACCENT_COLORS = {
+  "theme-teal": "#0f766e",
+  "theme-orange": "#ea580c",
+  "theme-navy": "#1e3a8a",
+  "theme-emerald": "#059669",
+  "theme-coral": "#e11d48",
+  "theme-purple": "#7c3aed",
+  "theme-cyan": "#0891b2",
+  "theme-indigo": "#4f46e5",
+  "theme-crimson": "#dc2626",
+  "theme-saffron": "#d97706",
+  "theme-slate": "#334155",
+  "theme-green": "#65a30d",
+  "theme-blue": "#0284c7"
+};
+
+function buildSlideMiniPreviewHtml(page) {
+  const accent = THEME_ACCENT_COLORS[page.theme] || "#0284c7";
+  let bodyHtml = "";
+
+  if (page.type === "cover") {
+    bodyHtml = `
+      <div class="slide-wire-row" style="flex: 1.5; gap: 3px;">
+        <div class="slide-wire-box hero-box" style="flex: 1.4;"></div>
+        <div style="flex: 1; display:flex; flex-direction:column; gap:2px;">
+          <div class="slide-wire-box" style="flex: 1;"></div>
+          <div class="slide-wire-box" style="flex: 1;"></div>
+        </div>
+      </div>
+      <div style="height: 18px; display:flex; flex-direction:column; justify-content:center; gap:2px; padding: 2px 0;">
+        <div class="slide-wire-title" style="width: 80%; height: 5px; background: ${accent};"></div>
+        <div class="slide-wire-sub" style="width: 50%; height: 3px;"></div>
+      </div>
+    `;
+  } else if (page.type === "snapshot") {
+    bodyHtml = `
+      <div class="slide-wire-title" style="width: 60%; height: 4px; background: ${accent};"></div>
+      <div style="height: 10px; background: #e0f2fe; border-radius: 2px; margin-bottom: 2px;"></div>
+      <div style="display:flex; flex-direction:column; gap:2px; flex:1;">
+        <div style="height: 5px; background: #f1f5f9; border-radius: 1px;"></div>
+        <div style="height: 5px; background: #f8fafc; border-radius: 1px;"></div>
+        <div style="height: 5px; background: #f1f5f9; border-radius: 1px;"></div>
+      </div>
+    `;
+  } else if (page.type === "ctu-transformation") {
+    bodyHtml = `
+      <div class="slide-wire-title" style="width: 75%; height: 4px; background: ${accent}; margin-bottom: 3px;"></div>
+      <div class="slide-wire-row" style="flex:1; gap:4px;">
+        <div class="slide-wire-box red-box" style="display:flex; align-items:center; justify-content:center; font-size:7px; color:#ef4444; font-weight:800;">BEFORE</div>
+        <div class="slide-wire-box green-box" style="display:flex; align-items:center; justify-content:center; font-size:7px; color:#10b981; font-weight:800;">AFTER</div>
+      </div>
+    `;
+  } else if (page.type === "spotlight-6") {
+    bodyHtml = `
+      <div class="slide-wire-title" style="width: 70%; height: 4px; background: ${accent}; margin-bottom: 2px;"></div>
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 2px; flex: 1;">
+        <div class="slide-wire-box"></div>
+        <div class="slide-wire-box"></div>
+        <div class="slide-wire-box"></div>
+        <div class="slide-wire-box"></div>
+        <div class="slide-wire-box"></div>
+        <div class="slide-wire-box"></div>
+      </div>
+    `;
+  } else if (page.type === "split-2-story") {
+    bodyHtml = `
+      <div class="slide-wire-title" style="width: 65%; height: 4px; background: ${accent}; margin-bottom: 2px;"></div>
+      <div class="slide-wire-row" style="flex: 1; gap: 4px;">
+        <div style="flex:1; display:flex; flex-direction:column; gap:2px;">
+          <div class="slide-wire-sub" style="width: 90%;"></div>
+          <div class="slide-wire-box" style="flex:1;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:2px;">
+          <div class="slide-wire-sub" style="width: 90%;"></div>
+          <div class="slide-wire-box" style="flex:1;"></div>
+        </div>
+      </div>
+    `;
+  } else if (page.type === "visit-us") {
+    bodyHtml = `
+      <div class="slide-wire-title" style="width: 50%; height: 4px; background: ${accent}; margin: 2px auto;"></div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;">
+        <div style="width: 16px; height: 16px; border-radius: 50%; background: #e2e8f0;"></div>
+        <div class="slide-wire-sub" style="width: 60%;"></div>
+      </div>
+    `;
+  } else {
+    bodyHtml = `
+      <div class="slide-wire-title" style="width: 70%; height: 4px; background: ${accent}; margin-bottom: 2px;"></div>
+      <div class="slide-wire-row" style="flex: 1; gap: 4px;">
+        <div style="flex: 1.2; display:flex; flex-direction:column; gap:2px;">
+          <div class="slide-wire-sub" style="width: 100%;"></div>
+          <div class="slide-wire-sub" style="width: 80%;"></div>
+        </div>
+        <div class="slide-wire-box" style="flex: 0.8;"></div>
+      </div>
+      <div class="slide-wire-row" style="flex: 1; gap: 4px;">
+        <div class="slide-wire-box" style="flex: 0.8;"></div>
+        <div style="flex: 1.2; display:flex; flex-direction:column; gap:2px;">
+          <div class="slide-wire-sub" style="width: 100%;"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="slide-preview-box">
+      <div class="slide-preview-accent" style="background: ${accent};"></div>
+      <div class="slide-preview-header">
+        <div class="slide-preview-header-dots">
+          <div class="slide-preview-dot"></div>
+          <div class="slide-preview-dot"></div>
+        </div>
+        <div style="font-size: 6px; color: #94a3b8; font-weight: 700;">GOV</div>
+      </div>
+      <div class="slide-preview-body">
+        ${bodyHtml}
+      </div>
+      <div class="slide-preview-footer"></div>
+    </div>
+  `;
+}
+
 function updateSidebarActiveItem() {
-  document.querySelectorAll(".page-thumb-item").forEach((item, idx) => {
+  document.querySelectorAll(".slide-thumb-card").forEach((item, idx) => {
     if (idx === activePageIndex) {
       item.classList.add("active");
     } else {
       item.classList.remove("active");
     }
   });
-  document.getElementById("pageCountDisplay").innerText = `Page ${activePageIndex + 1} of ${bulletin.pages.length}`;
+  document.getElementById("pageCountDisplay").innerText = `Slide ${activePageIndex + 1} of ${bulletin.pages.length}`;
 }
 
 // Render All Components
@@ -1394,19 +1594,22 @@ function renderAll() {
   renderSidebar();
   renderCanvas();
   renderSegmentDrawer();
+  renderThemeGallery();
 }
 
 // Render Left Sidebar Thumbnails
 function renderSidebar() {
   const list = document.getElementById("sidebarPageList");
+  if (!list) return;
   list.innerHTML = "";
 
   bulletin.pages.forEach((page, idx) => {
     const item = document.createElement("div");
-    item.className = `page-thumb-item ${idx === activePageIndex ? "active" : ""}`;
+    item.className = `slide-thumb-card ${idx === activePageIndex ? "active" : ""}`;
     item.onclick = () => {
       activePageIndex = idx;
       updateSidebarActiveItem();
+      renderThemeGallery();
       scrollToPage(idx);
     };
 
@@ -1421,21 +1624,26 @@ function renderSidebar() {
     else if (page.type === "visit-us") icon = "🔗";
 
     item.innerHTML = `
-      <div style="display: flex; align-items: center; overflow: hidden; width: 100%;">
-        <span class="thumb-handle" title="Drag to reorder">⋮⋮</span>
-        <span class="thumb-badge">${idx + 1}</span>
-        <span style="margin-right: 4px;">${icon}</span>
-        <span class="thumb-title">${title}</span>
+      <div class="slide-thumb-top">
+        <div style="display: flex; align-items: center; gap: 5px;">
+          <span class="thumb-handle" title="Drag to reorder">⋮⋮</span>
+          <span class="slide-num-pill">${idx + 1}</span>
+        </div>
+        <span style="font-size: 11px;">${icon}</span>
       </div>
-      <div class="thumb-actions">
-        <button class="btn-tiny" title="Duplicate" onclick="event.stopPropagation(); duplicatePage(${idx})">📋</button>
-        <button class="btn-tiny delete" title="Delete" onclick="event.stopPropagation(); deletePage(${idx})">✕</button>
+      ${buildSlideMiniPreviewHtml(page)}
+      <div class="slide-thumb-meta">
+        <span class="slide-thumb-title" title="${escapeHtml(title)}">${title}</span>
+        <div class="slide-thumb-actions">
+          <button class="btn-tiny" title="Duplicate Slide" onclick="event.stopPropagation(); duplicatePage(${idx})">📋</button>
+          <button class="btn-tiny delete" title="Delete Slide" onclick="event.stopPropagation(); deletePage(${idx})">✕</button>
+        </div>
       </div>
     `;
     list.appendChild(item);
   });
 
-  document.getElementById("pageCountDisplay").innerText = `Pages (${bulletin.pages.length})`;
+  document.getElementById("pageCountDisplay").innerText = `Slides (${bulletin.pages.length})`;
 }
 
 function scrollToPage(idx) {
@@ -1803,6 +2011,7 @@ function renderEditorialPage(pageEl, page, pIdx) {
         </div>
         <div style="display: flex; gap: 18px; align-items: flex-start;">
           <div class="story-blurb" style="font-size: 14px; flex: 1.1;" contenteditable="${!page.isLocked}" onblur="updateStoryBlurb(${pIdx}, 0, this.innerText)">${story.blurb}</div>
+          <button class="btn-trim-ai" onclick="triggerAiTrim(this)" title="AI-condense overflowing text" style="align-self: flex-start; font-size: 10px; padding: 2px 8px; background: #334155; color: #a78bfa; border: 1px solid #6366f1; border-radius: 4px; cursor: pointer; margin-top: 4px;">✂️ AI Trim</button>
           <div class="image-placeholder-box ${!story.images[0] ? 'empty' : ''}" style="flex: 0.9; height: 230px;" 
                onclick="triggerSlotUpload(${pIdx}, 0, 0)"
                ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleSlotFileDrop(event, ${pIdx}, 0, 0)">
@@ -1843,6 +2052,7 @@ function renderEditorialPage(pageEl, page, pIdx) {
         <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
           <h2 class="story-headline ${s1.headline.includes('Story') ? 'placeholder-text' : ''}" contenteditable="${!page.isLocked}" onblur="updateStoryHeadline(${pIdx}, 0, this.innerText)">${s1.headline}</h2>
           <div class="story-blurb" contenteditable="${!page.isLocked}" onblur="updateStoryBlurb(${pIdx}, 0, this.innerText)">${s1.blurb}</div>
+          <button class="btn-trim-ai" onclick="triggerAiTrim(this)" title="AI-condense overflowing text" style="font-size: 10px; padding: 2px 8px; background: #334155; color: #a78bfa; border: 1px solid #6366f1; border-radius: 4px; cursor: pointer; margin-top: 4px;">✂️ AI Trim</button>
           <div class="image-placeholder-box ${!s1.images[0] ? 'empty' : ''}" style="flex: 1; min-height: 260px;" 
                onclick="triggerSlotUpload(${pIdx}, 0, 0)"
                ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleSlotFileDrop(event, ${pIdx}, 0, 0)">
@@ -1856,6 +2066,7 @@ function renderEditorialPage(pageEl, page, pIdx) {
         <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
           <h2 class="story-headline ${s2.headline.includes('Story') ? 'placeholder-text' : ''}" contenteditable="${!page.isLocked}" onblur="updateStoryHeadline(${pIdx}, 1, this.innerText)">${s2.headline}</h2>
           <div class="story-blurb" contenteditable="${!page.isLocked}" onblur="updateStoryBlurb(${pIdx}, 1, this.innerText)">${s2.blurb}</div>
+          <button class="btn-trim-ai" onclick="triggerAiTrim(this)" title="AI-condense overflowing text" style="font-size: 10px; padding: 2px 8px; background: #334155; color: #a78bfa; border: 1px solid #6366f1; border-radius: 4px; cursor: pointer; margin-top: 4px;">✂️ AI Trim</button>
           <div class="image-placeholder-box ${!s2.images[0] ? 'empty' : ''}" style="flex: 1; min-height: 260px;" 
                onclick="triggerSlotUpload(${pIdx}, 1, 0)"
                ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleSlotFileDrop(event, ${pIdx}, 1, 0)">
@@ -1884,6 +2095,7 @@ function renderEditorialPage(pageEl, page, pIdx) {
             </div>
           </div>
           <div class="story-blurb" contenteditable="${!page.isLocked}" onblur="updateStoryBlurb(${pIdx}, ${sIdx}, this.innerText)">${story.blurb}</div>
+          <button class="btn-trim-ai" onclick="triggerAiTrim(this)" title="AI-condense overflowing text" style="font-size: 10px; padding: 2px 8px; background: #334155; color: #a78bfa; border: 1px solid #6366f1; border-radius: 4px; cursor: pointer; margin-top: 4px;">✂️ AI Trim</button>
         </div>
         <div class="story-image-col">
           <div class="image-placeholder-box ${!story.images[0] ? 'empty' : ''}" 
@@ -2466,8 +2678,8 @@ function assignSegmentToPage(segIdx, targetVal) {
     const newPage = {
       id: "p-" + Date.now(),
       type: "hero-1-story",
-      theme: seg.category.includes("Top") ? "theme-orange" : (seg.category.includes("Citizen") ? "theme-coral" : "theme-blue"),
-      sectionTitle: seg.category.includes("Top") ? "Top Stories of the Day" : (seg.category.includes("Citizen") ? "Citizen Participation" : "State & ULB Initiatives"),
+      theme: (seg.category || '').includes("Top") ? "theme-orange" : ((seg.category || '').includes("Citizen") ? "theme-coral" : "theme-blue"),
+      sectionTitle: (seg.category || '').includes("Top") ? "Top Stories of the Day" : ((seg.category || '').includes("Citizen") ? "Citizen Participation" : "State & ULB Initiatives"),
       stories: [{
         headline: seg.title,
         blurb: seg.blurb,
@@ -2487,8 +2699,8 @@ function assignSegmentToPage(segIdx, targetVal) {
     const newPage = {
       id: "p-" + Date.now(),
       type: "split-2-story",
-      theme: seg.category.includes("Top") ? "theme-orange" : "theme-blue",
-      sectionTitle: seg.category.includes("Top") ? "Top Stories of the Day" : "State & ULB Initiatives",
+      theme: (seg.category || '').includes("Top") ? "theme-orange" : "theme-blue",
+      sectionTitle: (seg.category || '').includes("Top") ? "Top Stories of the Day" : "State & ULB Initiatives",
       stories: [
         { headline: seg.title, blurb: seg.blurb, images: seg.photos && seg.photos.length > 0 ? seg.photos : ["assets/sample4.jpg"] },
         { headline: "Enter Second Story Headline", blurb: "Enter description for second story...", images: ["assets/sample6.jpg"] }
@@ -2507,8 +2719,8 @@ function assignSegmentToPage(segIdx, targetVal) {
     const newPage = {
       id: "p-" + Date.now(),
       type: "standard-3-story",
-      theme: seg.category.includes("Citizen") ? "theme-coral" : "theme-blue",
-      sectionTitle: seg.category.includes("Citizen") ? "Citizen Participation" : "State & ULB Initiatives",
+      theme: (seg.category || '').includes("Citizen") ? "theme-coral" : "theme-blue",
+      sectionTitle: (seg.category || '').includes("Citizen") ? "Citizen Participation" : "State & ULB Initiatives",
       stories: [
         { headline: seg.title, blurb: seg.blurb, images: seg.photos && seg.photos.length > 0 ? seg.photos : ["assets/sample1.jpg"] },
         { headline: "Enter Story Headline Here", blurb: "Enter 3-4 sentence official description...", images: ["assets/sample3.jpg"] },
@@ -2533,7 +2745,7 @@ function assignSegmentToPage(segIdx, targetVal) {
   targetPage.stories.push({
     headline: seg.title,
     blurb: seg.blurb,
-    images: seg.photos.length > 0 ? seg.photos : ["assets/sample1.jpg"]
+    images: seg.photos && seg.photos.length > 0 ? seg.photos : ["assets/sample1.jpg"]
   });
 
   seg.status = "Placed on Page " + (pageIdx + 1);
@@ -2737,12 +2949,27 @@ function openWelcomeModal() {
 }
 
 function filterWelcomeTemplates(cat, btn) {
-  document.querySelectorAll(".template-filter-btn").forEach(b => b.classList.remove("active"));
-  if (btn) btn.classList.add("active");
+  if (btn) {
+    document.querySelectorAll(".template-filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  }
+  applyTemplateFilters();
+}
+
+function applyTemplateFilters() {
+  const activeBtn = document.querySelector(".template-filter-btn.active");
+  const cat = activeBtn ? (activeBtn.getAttribute("data-category") || "all") : "all";
+  const search = (document.getElementById("templateSearchInput")?.value || "").toLowerCase().trim();
+
   const cards = document.querySelectorAll("#officialTemplateGrid .template-card");
   cards.forEach(c => {
-    const cardCat = c.getAttribute("data-cat") || "";
-    if (cat === "all" || cardCat.includes(cat)) {
+    const cardCat = (c.getAttribute("data-cat") || "").toLowerCase();
+    const cardText = c.innerText.toLowerCase();
+
+    const matchesCat = (cat === "all" || cardCat.includes(cat));
+    const matchesSearch = !search || cardText.includes(search);
+
+    if (matchesCat && matchesSearch) {
       c.style.display = "flex";
     } else {
       c.style.display = "none";
@@ -3195,13 +3422,30 @@ function openLogoModal() {
   document.getElementById("logoModal").classList.add("open");
 }
 
+function onLogoToggleChange() {
+  if (!bulletin.logosConfig) {
+    bulletin.logosConfig = { jalShakti: true, swachhata: true, mohua: true, customLogo: null };
+  }
+  const chkJal = document.getElementById("chkLogoJalShakti");
+  const chkSwachh = document.getElementById("chkLogoSwachhata");
+  const chkMo = document.getElementById("chkLogoMoHUA");
+
+  if (chkJal) bulletin.logosConfig.jalShakti = chkJal.checked;
+  if (chkSwachh) bulletin.logosConfig.swachhata = chkSwachh.checked;
+  if (chkMo) bulletin.logosConfig.mohua = chkMo.checked;
+
+  updateModalLogoPreview();
+  renderCanvas();
+  setUnsavedStatus(true);
+}
+
 function updateModalLogoPreview() {
   const container = document.getElementById("headerPreviewContainer");
   if (!container) return;
 
-  const showJalShakti = document.getElementById("chkLogoJalShakti").checked;
-  const showSwachhata = document.getElementById("chkLogoSwachhata").checked;
-  const showMoHUA = document.getElementById("chkLogoMoHUA").checked;
+  const showJalShakti = document.getElementById("chkLogoJalShakti") ? document.getElementById("chkLogoJalShakti").checked : true;
+  const showSwachhata = document.getElementById("chkLogoSwachhata") ? document.getElementById("chkLogoSwachhata").checked : true;
+  const showMoHUA = document.getElementById("chkLogoMoHUA") ? document.getElementById("chkLogoMoHUA").checked : true;
   const customLogo = tempCustomLogoDataUrl;
 
   const hasAnyLogo = showJalShakti || showSwachhata || showMoHUA || customLogo;
@@ -3241,6 +3485,7 @@ function handleCustomLogoUpload(e) {
       }
       if (btnClear) btnClear.style.display = "inline-block";
       updateModalLogoPreview();
+      onLogoToggleChange();
     };
     reader.readAsDataURL(file);
   }
@@ -3254,15 +3499,16 @@ function clearCustomLogo() {
   const btnClear = document.getElementById("btnClearCustomLogo");
   if (customStatus) customStatus.style.display = "none";
   if (btnClear) btnClear.style.display = "none";
+  if (!bulletin.logosConfig) bulletin.logosConfig = {};
+  bulletin.logosConfig.customLogo = null;
   updateModalLogoPreview();
+  renderCanvas();
+  setUnsavedStatus(true);
 }
 
 async function saveLogosConfig() {
   pushState();
-  if (!bulletin.logosConfig) bulletin.logosConfig = {};
-  bulletin.logosConfig.jalShakti = document.getElementById("chkLogoJalShakti").checked;
-  bulletin.logosConfig.swachhata = document.getElementById("chkLogoSwachhata").checked;
-  bulletin.logosConfig.mohua = document.getElementById("chkLogoMoHUA").checked;
+  onLogoToggleChange();
 
   if (tempCustomLogoDataUrl) {
     if (tempCustomLogoDataUrl.startsWith("data:")) {
@@ -3277,6 +3523,7 @@ async function saveLogosConfig() {
   }
 
   renderCanvas();
+  saveToLocalStorage();
   document.getElementById("logoModal").classList.remove("open");
   showToast("Official header emblems updated across all pages!", "success");
 }
@@ -3285,13 +3532,18 @@ function resetDefaultLogos() {
   pushState();
   bulletin.logosConfig = { jalShakti: true, swachhata: true, mohua: true, customLogo: null };
   tempCustomLogoDataUrl = null;
+  if (document.getElementById("chkLogoJalShakti")) document.getElementById("chkLogoJalShakti").checked = true;
+  if (document.getElementById("chkLogoSwachhata")) document.getElementById("chkLogoSwachhata").checked = true;
+  if (document.getElementById("chkLogoMoHUA")) document.getElementById("chkLogoMoHUA").checked = true;
   const uploader = document.getElementById("customLogoUploader");
   if (uploader) uploader.value = "";
   const customStatus = document.getElementById("customLogoStatus");
   const btnClear = document.getElementById("btnClearCustomLogo");
   if (customStatus) customStatus.style.display = "none";
   if (btnClear) btnClear.style.display = "none";
+  updateModalLogoPreview();
   renderCanvas();
+  saveToLocalStorage();
   document.getElementById("logoModal").classList.remove("open");
   showToast("Reset to default Government Ministry emblems.", "info");
 }
@@ -3301,10 +3553,14 @@ function updateGeminiStatusUI() {
   const savedKey = localStorage.getItem("gov_bulletin_gemini_key");
   const isConfigured = !!(savedKey && savedKey.trim());
 
-  // Top Bar Indicator Dot
+  // Top Bar & Home Tab Indicator Dots
   const topDot = document.getElementById("topBarGeminiDot");
   if (topDot) {
     topDot.style.background = isConfigured ? "#10b981" : "#ef4444";
+  }
+  const homeDot = document.getElementById("homeBarGeminiDot");
+  if (homeDot) {
+    homeDot.style.background = isConfigured ? "#10b981" : "#ef4444";
   }
 
   // AI Modal Banner

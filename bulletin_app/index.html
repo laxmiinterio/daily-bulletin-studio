@@ -16,115 +16,141 @@
 </head>
 <body>
 
-  <!-- DUAL TOP APP BAR CONTAINER -->
-  <header class="top-bar-container">
-    <!-- ROW 1: PRIMARY APPLICATION & METADATA BAR -->
-    <div class="top-bar top-bar-primary">
+  <!-- RIBBON TOOLBAR — PowerPoint-inspired tabbed command bar -->
+  <header class="ribbon-container">
+    <!-- Title Bar -->
+    <div class="ribbon-title-bar">
       <div class="brand">
-        <span class="brand-badge">Gov v2.0</span>
+        <span class="brand-badge">Gov v3.0</span>
         <h1>Daily Bulletin Studio</h1>
-        
-        <!-- Auto-Save Status Indicator -->
         <div class="status-indicator" id="autoSaveIndicator">
           <span class="dot" id="saveDot"></span>
           <span id="saveStatusText">Saved</span>
         </div>
       </div>
+      <div class="ribbon-title-actions">
+        <button class="ribbon-btn ribbon-btn-sm" id="btnShortcutsHelp" title="Keyboard Shortcuts (?)">⌨️</button>
+      </div>
+    </div>
 
-      <!-- Date, Language & Utilities Controls -->
-      <div class="controls-group">
-        <!-- Date Selector Pill -->
-        <div class="date-pill">
-          <label>Date:</label>
-          <input type="text" id="globalDateInput" class="date-input" value="20th September, 2026" title="Change date across entire bulletin">
-          <button class="btn btn-secondary" id="btnSyncDate" title="Apply date to all pages">Sync All</button>
+    <!-- Tab Strip -->
+    <nav class="ribbon-tabs" id="ribbonTabs">
+      <button class="ribbon-tab active" data-panel="home">Home</button>
+      <button class="ribbon-tab" data-panel="design">Design</button>
+      <button class="ribbon-tab" data-panel="insert">Insert</button>
+      <button class="ribbon-tab" data-panel="export">Export</button>
+    </nav>
+
+    <!-- ═══ HOME PANEL ═══ -->
+    <div class="ribbon-panel active" id="ribbon-home">
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">Clipboard</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn" id="btnUndo" title="Undo (Ctrl+Z)">↩ Undo</button>
+          <button class="ribbon-btn" id="btnRedo" title="Redo (Ctrl+Y)">↪ Redo</button>
         </div>
-
-        <!-- Hindi / Bilingual Language Switcher -->
-        <div class="lang-toggle" id="langToggle">
+      </div>
+      <div class="ribbon-divider"></div>
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">Bulletin</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn ribbon-btn-primary" id="btnNewBulletin" title="New bulletin / template (Ctrl+N)">📄 New</button>
+          <button class="ribbon-btn" id="btnSaveDraftJson" title="Save draft (Ctrl+S)">💾 Save</button>
+          <label class="ribbon-btn" title="Open draft file">
+            📂 Open
+            <input type="file" id="fileLoadDraft" accept=".json" style="display: none;">
+          </label>
+        </div>
+      </div>
+      <div class="ribbon-divider"></div>
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">Document</span>
+        <div class="ribbon-btn-row">
+          <input type="text" id="globalDateInput" class="ribbon-input" value="20th September, 2026" title="Bulletin date">
+          <button class="ribbon-btn" id="btnSyncDate" title="Apply date to all pages">Sync</button>
+        </div>
+        <div class="ribbon-lang-toggle" id="langToggle">
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="hi">हिन्दी</button>
           <button class="lang-btn" data-lang="bi">Bilingual</button>
         </div>
-
-        <div class="toolbar-divider"></div>
-
-        <!-- Quick Utilities Group -->
-        <div class="btn-group-tight">
-          <button class="btn btn-secondary" id="btnOpenLogoModal" title="Manage official logos & emblems" style="font-size: 11.5px; padding: 5px 10px; display: inline-flex; align-items: center; gap: 5px;">🏛️ Logos</button>
-          <button class="btn btn-secondary" id="btnOpenGeminiSettings" title="Configure Google Gemini API Key" style="font-size: 11.5px; padding: 5px 10px; display: inline-flex; align-items: center; gap: 5px;"><span style="color:#f59e0b;">🔑</span> Gemini AI <span id="topBarGeminiDot" style="width: 7px; height: 7px; border-radius: 50%; background: #ef4444; display: inline-block;"></span></button>
-          <button class="btn" id="btnShortcutsHelp" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">⌨️</button>
+      </div>
+      <div class="ribbon-divider"></div>
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">AI Assistant</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn ribbon-btn-ai" id="btnOpenAIModal" title="AI Bureaucratic Copy">✨ AI Copy</button>
+          <button class="ribbon-btn" id="btnOpenBulkIngestTop" title="Paste field notes / WhatsApp forwards">📥 Ingest</button>
+          <button class="ribbon-btn" id="btnOpenGeminiSettingsHome" title="Connect Google Gemini API Key">🔑 Gemini AI <span id="homeBarGeminiDot" class="gemini-dot offline"></span></button>
+          <button class="ribbon-btn ribbon-btn-review" id="btnToggleReview" title="Pre-flight review">🔍 Check</button>
         </div>
       </div>
     </div>
 
-    <!-- ROW 2: ACTION & PRODUCTION COMMAND TOOLBAR -->
-    <div class="top-bar top-bar-secondary">
-      <!-- Left: Creation & Quality Actions -->
-      <div class="controls-group">
-        <!-- Undo / Redo Group -->
-        <div class="btn-group-tight">
-          <button class="btn" id="btnUndo" title="Undo (Ctrl+Z)">↩</button>
-          <button class="btn" id="btnRedo" title="Redo (Ctrl+Y)">↪</button>
+    <!-- ═══ DESIGN PANEL ═══ -->
+    <div class="ribbon-panel" id="ribbon-design">
+      <div class="ribbon-group ribbon-group-wide">
+        <span class="ribbon-group-label">Theme Gallery</span>
+        <div class="theme-strip" id="themeStripGallery">
+          <!-- Populated dynamically by renderThemeGallery() -->
         </div>
-
-        <div class="toolbar-divider"></div>
-
-        <button class="btn btn-secondary" id="btnNewBulletin" title="Start new bulletin or choose template (Ctrl+N)">
-          📄 New Bulletin
-        </button>
-
-        <button class="btn btn-ai" id="btnOpenAIModal" title="Formalize ground notes with AI">
-          ✨ AI Copy
-        </button>
-
-        <button class="btn btn-secondary" id="btnOpenBulkIngestTop" title="Paste raw WhatsApp forwards or field notes" style="display: inline-flex; align-items: center; gap: 5px;">
-          📥 Ingest Notes
-        </button>
-
-        <button class="btn btn-review" id="btnToggleReview" title="Review layout & empty slots before export">
-          🔍 Pre-Flight Check
-        </button>
       </div>
-
-      <!-- Right: Drafts & Export Actions -->
-      <div class="controls-group">
-        <!-- Unified Drafts Dropdown -->
-        <div class="dropdown" id="saveDropdown">
-          <button class="btn btn-secondary" id="btnSaveMenu" title="Draft & Template Management">
-            💾 Drafts ▾
-          </button>
-          <div class="dropdown-menu">
-            <button class="dropdown-item" id="btnSaveDraftJson">💾 Download Draft (.json)</button>
-            <label class="dropdown-item" style="cursor: pointer; margin: 0;">
-              📂 Open / Load Draft (.json)
-              <input type="file" id="fileLoadDraft" accept=".json" style="display: none;">
-            </label>
-            <div style="height: 1px; background: var(--border-color); margin: 3px 0;"></div>
-            <button class="dropdown-item" id="btnSaveAsTemplate">⭐ Save as Custom Template</button>
-            <button class="dropdown-item" id="btnCloneYesterday">📋 Clone Yesterday's Draft</button>
-          </div>
+      <div class="ribbon-divider"></div>
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">Scope</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn" id="btnApplyThemeAll" title="Apply active theme across entire bulletin">🎨 Apply to All Pages</button>
         </div>
+      </div>
+      <div class="ribbon-divider"></div>
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">Branding</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn" id="btnOpenLogoModal" title="Manage official logos & emblems">🏛️ Logos</button>
+          <button class="ribbon-btn" id="btnOpenGeminiSettings" title="Configure Gemini API Key">🔑 Gemini <span id="topBarGeminiDot" class="gemini-dot offline"></span></button>
+        </div>
+      </div>
+    </div>
 
-        <!-- Dual PDF Export Dropdown -->
-        <div class="dropdown" id="exportDropdown">
-          <button class="btn btn-export" id="btnExportMenu" title="Export Bulletin to PDF (Ctrl+P)">
-            📄 Export PDF ▾
-          </button>
-          <div class="dropdown-menu">
-            <button class="dropdown-item" id="btnExportPrintPdf">
-              <div>
-                <strong>📄 High-Res Print PDF</strong>
-                <span style="font-size:10px; color:#94a3b8; display:block;">Full vector & image clarity</span>
-              </div>
-            </button>
-            <button class="dropdown-item" id="btnExportWhatsAppPdf">
-              <div>
-                <strong>📱 WhatsApp-Optimized PDF</strong>
-                <span style="font-size:10px; color:#10b981; display:block;">Target &lt; 5 MB, fast sharing</span>
-              </div>
-            </button>
-          </div>
+    <!-- ═══ INSERT PANEL ═══ -->
+    <div class="ribbon-panel" id="ribbon-insert">
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">Pages</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn ribbon-btn-primary" id="btnAddPageMenu">+ Add Page</button>
+          <button class="ribbon-btn" id="btnDuplicateActivePage">📄 Duplicate</button>
+          <button class="ribbon-btn ribbon-btn-danger" id="btnDeleteActivePage">🗑️ Delete</button>
+        </div>
+      </div>
+      <div class="ribbon-divider"></div>
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">Content</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn" id="btnToggleDrawer" title="Story segments & media">📦 Segments</button>
+          <button class="ribbon-btn" id="btnSaveAsTemplate" title="Save layout as reusable template">⭐ Save Template</button>
+          <button class="ribbon-btn" id="btnCloneYesterday" title="Clone previous day">📋 Clone Yesterday</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ EXPORT PANEL ═══ -->
+    <div class="ribbon-panel" id="ribbon-export">
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">PDF Output</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn ribbon-btn-export" id="btnExportPrintPdf" title="High-resolution print-quality PDF">📄 High-Res Print PDF</button>
+          <button class="ribbon-btn ribbon-btn-export" id="btnExportWhatsAppPdf" title="Compressed PDF for WhatsApp (<5MB)">📱 WhatsApp PDF</button>
+        </div>
+      </div>
+      <div class="ribbon-divider"></div>
+      <div class="ribbon-group">
+        <span class="ribbon-group-label">Drafts</span>
+        <div class="ribbon-btn-row">
+          <button class="ribbon-btn" id="btnSaveDraftJsonExport">💾 Download Draft</button>
+          <label class="ribbon-btn">
+            📂 Load Draft
+            <input type="file" id="fileLoadDraftExport" accept=".json" style="display: none;">
+          </label>
         </div>
       </div>
     </div>
@@ -202,14 +228,20 @@
         <button class="btn-tiny" id="btnCloseWelcomeModal" style="font-size: 18px;">✕</button>
       </div>
 
+      <!-- Template Search Bar -->
+      <div class="template-search-row">
+        <span style="font-size: 14px; opacity: 0.7;">🔍</span>
+        <input type="text" id="templateSearchInput" placeholder="Search templates by theme, title, or keywords (e.g. green, executive, hindi, ctu)..." class="template-search-input">
+      </div>
+
       <!-- Category Filter Bar (Fixed Subheader) -->
       <div class="template-filter-bar">
-        <button class="template-filter-btn active" onclick="filterWelcomeTemplates('all', this)">All Templates (11)</button>
-        <button class="template-filter-btn" onclick="filterWelcomeTemplates('national', this)">🏛️ National & Exec</button>
-        <button class="template-filter-btn" onclick="filterWelcomeTemplates('campaign', this)">🌿 Green & CTU</button>
-        <button class="template-filter-btn" onclick="filterWelcomeTemplates('community', this)">👥 Citizens & Workers</button>
-        <button class="template-filter-btn" onclick="filterWelcomeTemplates('special', this)">🌊 Oceans & Lens</button>
-        <button class="template-filter-btn" onclick="filterWelcomeTemplates('custom', this)">📝 Custom & Blank</button>
+        <button class="template-filter-btn active" data-category="all" onclick="filterWelcomeTemplates('all', this)">All Templates (11)</button>
+        <button class="template-filter-btn" data-category="national" onclick="filterWelcomeTemplates('national', this)">🏛️ National & Exec</button>
+        <button class="template-filter-btn" data-category="campaign" onclick="filterWelcomeTemplates('campaign', this)">🌿 Green & CTU</button>
+        <button class="template-filter-btn" data-category="community" onclick="filterWelcomeTemplates('community', this)">👥 Citizens & Workers</button>
+        <button class="template-filter-btn" data-category="special" onclick="filterWelcomeTemplates('special', this)">🌊 Oceans & Lens</button>
+        <button class="template-filter-btn" data-category="custom" onclick="filterWelcomeTemplates('custom', this)">📝 Custom & Blank</button>
       </div>
 
       <div class="modal-body">
